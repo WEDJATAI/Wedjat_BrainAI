@@ -68,14 +68,14 @@ function HealthPanel() {
         {loading ? <Loading /> : data ? (
           <>
             <div className="flex items-center gap-2">
-              <Badge className={cn(data.state === "HEALTHY" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300")}>{data.state}</Badge>
+              <Badge className={cn(data.state === "HEALTHY" ? "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]" : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300")}>{data.state}</Badge>
               <span className="text-[10px] text-muted-foreground">{data.latencyMs}ms</span>
             </div>
             <div className="space-y-1">
               {Object.entries(data.checks).map(([k, v]: any) => (
                 <div key={k} className="flex items-center justify-between gap-2 text-xs">
                   <div className="flex items-center gap-1.5">
-                    {v.ok ? <CheckCircle2 className="h-3 w-3 text-emerald-500" /> : <XCircle className="h-3 w-3 text-rose-500" />}
+                    {v.ok ? <CheckCircle2 className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" /> : <XCircle className="h-3 w-3 text-rose-500" />}
                     <span className="font-medium">{k}</span>
                   </div>
                   <span className="truncate text-[10px] text-muted-foreground" title={v.detail}>{v.detail}</span>
@@ -94,7 +94,7 @@ function CapabilitiesPanel() {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-sm"><Layers className="h-4 w-4 text-emerald-600" /> Capabilities (§13)</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-sm"><Layers className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Capabilities (§13)</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         {loading || !data ? <Loading /> : (
@@ -143,7 +143,7 @@ function MetricsPanel() {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><Gauge className="h-4 w-4 text-emerald-600" /> Observability (§127)</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-sm"><Gauge className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Observability (§127)</CardTitle>
           <Button size="sm" variant="outline" className="h-7 gap-1 text-xs" onClick={runEval} disabled={running}>
             {running ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />}
             Run golden eval
@@ -215,7 +215,7 @@ function AuditPanel() {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><ScrollText className="h-4 w-4 text-emerald-600" /> Audit Log (§129)</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-sm"><ScrollText className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Audit Log (§129)</CardTitle>
           <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
@@ -300,7 +300,7 @@ function KnowledgePanel() {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><BookOpen className="h-4 w-4 text-emerald-600" /> Knowledge (§26)</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-sm"><BookOpen className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Knowledge (§26)</CardTitle>
           <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
@@ -333,7 +333,7 @@ function MemoryAdminPanel() {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-emerald-600" /> Memory (§20)</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Memory (§20)</CardTitle>
           <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>

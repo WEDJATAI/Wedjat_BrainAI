@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Brain, Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, Scale, GitBranch, Eye, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Sparkles, Network } from "lucide-react";
+import Image from "next/image";
+import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { streamBrainResponse, apiGet, apiPost, type BrainStreamState, initialStreamState } from "@/lib/brain/client";
@@ -93,10 +93,10 @@ export function BrainWidget() {
         <CardHeader className="border-b pb-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm">
-                <Brain className="h-5 w-5" />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-emerald-400 ring-2 ring-background">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-700" />
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg wedjat-gradient text-white shadow-sm wedjat-glow">
+                <Image src="/wedjat-logo.png" alt="WEDJAT" width={28} height={28} priority className="h-7 w-7 object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]" />
+                <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[color:var(--color-wedjat-cyan)] ring-2 ring-background">
+                  <span className="h-1.5 w-1.5 wedjat-pulse rounded-full bg-[color:var(--color-wedjat-cyan-deep)]" />
                 </span>
               </div>
               <div>
@@ -135,7 +135,7 @@ export function BrainWidget() {
                 <XCircle className="h-4 w-4" />
               </Button>
             ) : (
-              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 bg-gradient-to-br from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700" title="Send">
+              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 wedjat-gradient hover:opacity-90 wedjat-glow" title="Send">
                 <Send className="h-4 w-4" />
               </Button>
             )}
@@ -194,8 +194,8 @@ function ModeSelector({ value, onChange, disabled }: { value: BrainMode; onChang
 function EmptyState({ onPick }: { onPick: (p: string) => void }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-600/10 ring-1 ring-emerald-500/20">
-        <Sparkles className="h-8 w-8 text-emerald-600" />
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl wedjat-gradient-soft ring-1 ring-[color:var(--color-wedjat-cyan)]/30">
+        <Image src="/wedjat-logo.png" alt="WEDJAT Eye of Horus" width={56} height={56} priority className="h-14 w-14 object-contain drop-shadow-[0_0_10px_rgba(0,217,255,0.5)]" />
       </div>
       <div className="space-y-1">
         <h3 className="text-base font-semibold">Wedjat Brain V2</h3>
@@ -206,7 +206,7 @@ function EmptyState({ onPick }: { onPick: (p: string) => void }) {
       <div className="grid w-full max-w-md grid-cols-1 gap-1.5">
         {SAMPLE_PROMPTS.map((p) => (
           <button key={p} onClick={() => onPick(p)} className="group flex items-center gap-2 rounded-md border bg-card px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-            <ChevronRight className="h-3 w-3 text-emerald-600" />
+            <ChevronRight className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
             <span className="flex-1">{p}</span>
           </button>
         ))}
@@ -222,7 +222,7 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
   if (message.role === "user") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-gradient-to-br from-emerald-500 to-teal-600 px-3 py-2 text-sm text-white shadow-sm">
+        <div className="max-w-[85%] rounded-2xl rounded-br-sm wedjat-gradient px-3 py-2 text-sm text-white shadow-sm">
           {message.content}
         </div>
       </div>
@@ -233,18 +233,18 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-start gap-2">
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/15 to-teal-600/15 ring-1 ring-emerald-500/20">
-          <Brain className="h-4 w-4 text-emerald-600" />
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg wedjat-gradient-soft ring-1 ring-[color:var(--color-wedjat-cyan)]/30">
+          <Image src="/wedjat-logo.png" alt="" width={20} height={20} aria-hidden className="h-5 w-5 object-contain" />
         </div>
         <div className="min-w-0 flex-1 space-y-2">
           {message.content ? (
             <div className="whitespace-pre-wrap rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-sm leading-relaxed">
               {message.content}
-              {streaming && <span className="ml-0.5 inline-block h-3.5 w-1 animate-pulse bg-emerald-500 align-middle" />}
+              {streaming && <span className="ml-0.5 inline-block h-3.5 w-1 wedjat-pulse bg-[color:var(--color-wedjat-cyan)] align-middle" />}
             </div>
           ) : streaming ? (
             <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-600" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-[color:var(--color-wedjat-cyan)]" />
               <span>Brain is thinking…</span>
             </div>
           ) : null}
@@ -281,7 +281,7 @@ function ResponseChips({ state }: { state: BrainStreamState }) {
 
 function Chip({ icon, label, tone }: { icon: React.ReactNode; label: string; tone: "ok" | "warn" | "err" | "muted" }) {
   const cls = {
-    ok: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    ok: "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]",
     warn: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
     err: "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
     muted: "border-border bg-muted text-muted-foreground",
@@ -314,7 +314,7 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
   return (
     <Card className="hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden lg:flex">
       <CardHeader className="border-b pb-3">
-        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-emerald-600" /> Cognitive Trace</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Cognitive Trace</CardTitle>
         <CardDescription className="text-[11px]">Real-time execution path (§11) — no private hidden reasoning exposed (§85)</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
@@ -362,7 +362,7 @@ function TraceList({ steps }: { steps: TraceStep[] }) {
       {steps.map((s, i) => (
         <li key={i} className="relative">
           <span className={cn("absolute -left-[1.4rem] top-1 flex h-3 w-3 items-center justify-center rounded-full ring-2 ring-background",
-            s.status === "COMPLETED" ? "bg-emerald-500" : s.status === "FAILED" ? "bg-rose-500" : s.status === "SKIPPED" ? "bg-muted-foreground" : "bg-amber-500 animate-pulse")}>
+            s.status === "COMPLETED" ? "bg-[color:var(--color-wedjat-cyan)]" : s.status === "FAILED" ? "bg-rose-500" : s.status === "SKIPPED" ? "bg-muted-foreground" : "bg-amber-500 animate-pulse")}>
             {s.status === "COMPLETED" ? <CheckCircle2 className="h-2.5 w-2.5 text-white" /> : s.status === "FAILED" ? <XCircle className="h-2.5 w-2.5 text-white" /> : <CircleDot className="h-2 w-2 text-white" />}
           </span>
           <div className="flex items-baseline justify-between gap-2">
@@ -439,7 +439,7 @@ function ToolCard({ tool }: { tool: ToolResult }) {
     <div className="rounded-lg border bg-card p-2.5">
       <div className="mb-1 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <Wrench className="h-3 w-3 text-emerald-600" />
+          <Wrench className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
           <span className="text-xs font-medium">{current.toolId}</span>
         </div>
         <Badge variant="outline" className={cn("text-[9px]", actionStateClass(current.state))}>{current.state}</Badge>
@@ -489,13 +489,13 @@ function EmptyHint({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 function verificationToneClass(s: EvidenceStatus) {
-  if (s === "VERIFIED" || s === "SUPPORTED") return "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
+  if (s === "VERIFIED" || s === "SUPPORTED") return "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]";
   if (s === "INFERRED" || s === "UNCERTAIN" || s === "CONFLICTED") return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300";
   return "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300";
 }
 
 function actionStateClass(s: string) {
-  if (s === "VERIFIED" || s === "EXECUTED") return "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
+  if (s === "VERIFIED" || s === "EXECUTED") return "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]";
   if (s === "AUTHORIZED") return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300";
   if (s === "FAILED" || s === "TIMED_OUT" || s === "REJECTED") return "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300";
   return "border-border bg-muted text-muted-foreground";

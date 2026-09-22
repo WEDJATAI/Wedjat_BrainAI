@@ -83,3 +83,63 @@ Stage Summary:
 - Demonstrates the spec's core architectural concepts: identity/tenant isolation, policy, memory (3 domains + lifecycle), knowledge (sources/claims/evidence/provenance/versions/conflicts), hybrid retrieval, context engine, model router with fallback, governed tools with action state machine + human approval, verification with honest evidence labels, learning candidates (never auto-promote), observability (brain runs/steps/events/audit), cost tracking
 - The LLM (z-ai-web-dev-sdk) is one replaceable component; the Brain owns all cognition
 - Per spec §218: "WEDJAT HAS BUILT THE COGNITIVE SYSTEM. The LLM is only one component inside it."
+
+---
+Task ID: 8
+Agent: orchestrator (main)
+Task: Import WEDJAT logo design from uploaded emsss.jpg, remove background, merge with UI theme colors
+
+Work Log:
+- Loaded VLM skill + image-edit skill
+- Analyzed uploaded logo `/home/z/my-project/upload/emsss.jpg` with z-ai vision: confirmed it's the Eye of Horus (Wedjat) symbol with glowing neon cyan (#00D9FF) circuit-board lines, hexagonal iris, hanging data nodes, "WEDJAT AI / DIGITAL IDENTITY SOLUTIONS" text, dark charcoal background, sci-fi/cyberpunk aesthetic
+- Wrote `/home/z/my-project/scripts/gen-logo.ts`:
+  - Reads uploaded JPG, base64-encodes it
+  - Calls `zai.images.generations.edit` with prompt to isolate ONLY the Eye of Horus symbol, remove all text, make background pure transparent, keep the cyan glow
+  - Uses Sharp to chroma-key residual dark pixels to true alpha=0 (luminance<70 + saturation<0.45 → transparent; cyan pixels b>90, b-r>30 kept opaque + saturation-boosted)
+  - Trims to content bbox, generates favicon (256×256 padded), generates alpha-mask variant
+- Ran the script: produced `/home/z/my-project/public/wedjat-logo.png` (595×477, 203 KB, hasAlpha=true, 82.1% pixels transparent) + `/home/z/my-project/public/wedjat-favicon.png` + `/home/z/my-project/public/wedjat-logo-mask.png`
+- Verified transparency with VLM: confirmed background is transparent, Eye of Horus with glowing cyan circuit-board lines preserved
+- Updated `src/app/globals.css`:
+  - Added WEDJAT brand tokens: `--color-wedjat-cyan` (#00d9ff), `--color-wedjat-cyan-soft`, `--color-wedjat-cyan-deep` (#00a8cc), `--color-wedjat-electric` (#1ab8e6), `--color-wedjat-glow` (#66e8ff), `--color-wedjat-ink/surface/edge`
+  - Replaced primary palette in `:root` and `.dark` with cyan-based oklch values (primary = oklch(0.78 0.16 220) light, oklch(0.82 0.16 220) dark)
+  - Replaced chart-1..5 with cyan/teal/electric-blue/aqua/deep-blue
+  - Added brand utilities: `wedjat-gradient`, `wedjat-gradient-soft`, `wedjat-text-glow`, `wedjat-glow`, `wedjat-ring`, `wedjat-grid-bg`, `wedjat-pulse` keyframe
+  - Custom scrollbar styled with cyan tint
+- Updated `src/app/layout.tsx`: favicon → `/wedjat-favicon.png`, themeColor → `#00D9FF`, OpenGraph image → `/wedjat-logo.png`
+- Updated `src/app/page.tsx`:
+  - Header now uses `next/image` with `/wedjat-logo.png` (transparent, drop-shadow cyan glow)
+  - "WEDJAT" text gets `wedjat-text-glow`, "BRAIN" muted
+  - V2 badge in cyan, status dot cyan with `wedjat-pulse`
+  - Added theme toggle (Sun/Moon) using next-themes
+  - Added subtle `wedjat-grid-bg` circuit-grid backdrop
+  - Footer uses cyan accents
+- Updated `src/components/brain/brain-widget.tsx`:
+  - Replaced all `from-emerald-500 to-teal-600` gradients with `wedjat-gradient` / `wedjat-gradient-soft`
+  - Replaced `text-emerald-600` / `text-emerald-500` with `text-[color:var(--color-wedjat-cyan)]`
+  - Replaced `border-emerald-*` / `bg-emerald-*` with `border-[color:var(--color-wedjat-cyan)]/*` / `bg-[color:var(--color-wedjat-cyan)]/*`
+  - Brain icon in widget header → `next/image` of `/wedjat-logo.png` on cyan gradient with `wedjat-glow` box-shadow
+  - Empty state hero → large logo on `wedjat-gradient-soft` with cyan drop-shadow
+  - User chat bubble → cyan gradient
+  - Assistant chat bubble avatar → small logo on cyan gradient-soft
+  - Send button → cyan gradient with glow
+  - Streaming cursor → cyan `wedjat-pulse`
+  - Trace completed-step dots → cyan
+  - Tool wrench icon → cyan
+  - Evidence/verification badges → cyan tones
+- Updated `src/components/brain/admin-console.tsx`: sed-replaced all `emerald-*` and `teal-*` references with `wedjat-cyan` equivalents
+- Removed unused imports (Brain icon, Sparkles, Separator, Scale, Eye from brain-widget)
+- Lint clean (0 errors, 0 warnings)
+- Self-verified with Agent Browser:
+  - Page renders cleanly, no console errors
+  - VLM confirms: logo visible (top-left + panel), transparent background (dark UI shows through, no black rectangle), dominant accent is cyan/electric-blue, aesthetic is cyber-tech/sci-fi
+  - Invoice query → VERIFIED, evidence + trace flow intact
+  - Email send → AUTHORIZED → click Approve → VERIFIED (action state machine intact)
+  - Light theme toggle: logo merges cleanly with white background, cyan accents consistent
+  - Favicon + OpenGraph image set to new logo
+
+Stage Summary:
+- WEDJAT logo successfully imported from `emsss.jpg`, background removed (chroma-keyed to true transparency), saved as `public/wedjat-logo.png` (595×477) + `wedjat-favicon.png` (256×256)
+- UI theme fully rebranded from emerald/teal to cyan/electric-blue cyber-tech palette matching the logo's #00D9FF neon glow
+- Logo appears in: page header, widget header, empty-state hero, assistant chat bubble avatar
+- Both light and dark themes verified — logo transparently merges with both backgrounds
+- All existing functionality (chat, trace, evidence, tools, approval, audit, metrics, candidates, knowledge, memory) preserved

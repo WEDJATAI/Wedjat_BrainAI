@@ -41,75 +41,103 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* WEDJAT brand tokens — neon cyan/electric-blue cyber-tech palette
+     derived from the WEDJAT AI logo (Eye of Horus, #00D9FF). */
+  --color-wedjat-cyan: #00d9ff;
+  --color-wedjat-cyan-soft: #38e1ff;
+  --color-wedjat-cyan-deep: #00a8cc;
+  --color-wedjat-electric: #1ab8e6;
+  --color-wedjat-glow: #66e8ff;
+  --color-wedjat-ink: #050b14;
+  --color-wedjat-surface: #0a1422;
+  --color-wedjat-surface-2: #0f1c30;
+  --color-wedjat-edge: #1a2f4a;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+
+  /* Light theme — clean white with cyan accents (logo blends in). */
+  --background: oklch(0.99 0.002 220);
+  --foreground: oklch(0.18 0.03 230);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.18 0.03 230);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.18 0.03 230);
+
+  /* Primary = WEDJAT cyan (#00D9FF → oklch approximation) */
+  --primary: oklch(0.78 0.16 220);
+  --primary-foreground: oklch(0.12 0.04 230);
+
+  --secondary: oklch(0.96 0.01 220);
+  --secondary-foreground: oklch(0.22 0.04 230);
+  --muted: oklch(0.96 0.008 220);
+  --muted-foreground: oklch(0.52 0.02 225);
+  --accent: oklch(0.94 0.03 215);
+  --accent-foreground: oklch(0.22 0.06 225);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.9 0.015 220);
+  --input: oklch(0.92 0.015 220);
+  --ring: oklch(0.78 0.16 220);
+
+  --chart-1: oklch(0.78 0.16 220); /* cyan */
+  --chart-2: oklch(0.7 0.14 195); /* teal */
+  --chart-3: oklch(0.62 0.18 250); /* electric blue */
+  --chart-4: oklch(0.82 0.12 180); /* aqua */
+  --chart-5: oklch(0.55 0.2 240); /* deep blue */
+
+  --sidebar: oklch(0.985 0.005 220);
+  --sidebar-foreground: oklch(0.18 0.03 230);
+  --sidebar-primary: oklch(0.78 0.16 220);
+  --sidebar-primary-foreground: oklch(0.12 0.04 230);
+  --sidebar-accent: oklch(0.94 0.03 215);
+  --sidebar-accent-foreground: oklch(0.22 0.06 225);
+  --sidebar-border: oklch(0.9 0.015 220);
+  --sidebar-ring: oklch(0.78 0.16 220);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Dark theme — deep ink surface with glowing cyan accents, matching the
+     WEDJAT logo's cyberpunk / tech-noir aesthetic. */
+  --background: oklch(0.16 0.02 230);
+  --foreground: oklch(0.97 0.01 220);
+  --card: oklch(0.21 0.025 230);
+  --card-foreground: oklch(0.97 0.01 220);
+  --popover: oklch(0.21 0.025 230);
+  --popover-foreground: oklch(0.97 0.01 220);
+
+  /* Primary = WEDJAT cyan glow */
+  --primary: oklch(0.82 0.16 220);
+  --primary-foreground: oklch(0.12 0.04 230);
+
+  --secondary: oklch(0.27 0.03 230);
+  --secondary-foreground: oklch(0.97 0.01 220);
+  --muted: oklch(0.25 0.025 230);
+  --muted-foreground: oklch(0.72 0.03 220);
+  --accent: oklch(0.3 0.06 220);
+  --accent-foreground: oklch(0.92 0.05 220);
+
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: oklch(0.32 0.03 225 / 50%);
+  --input: oklch(0.28 0.03 225 / 60%);
+  --ring: oklch(0.82 0.16 220);
+
+  --chart-1: oklch(0.82 0.16 220); /* cyan */
+  --chart-2: oklch(0.75 0.15 195); /* teal */
+  --chart-3: oklch(0.7 0.18 250); /* electric blue */
+  --chart-4: oklch(0.78 0.13 180); /* aqua */
+  --chart-5: oklch(0.65 0.22 240); /* deep blue */
+
+  --sidebar: oklch(0.18 0.025 230);
+  --sidebar-foreground: oklch(0.97 0.01 220);
+  --sidebar-primary: oklch(0.82 0.16 220);
+  --sidebar-primary-foreground: oklch(0.12 0.04 230);
+  --sidebar-accent: oklch(0.3 0.06 220);
+  --sidebar-accent-foreground: oklch(0.92 0.05 220);
+  --sidebar-border: oklch(0.32 0.03 225 / 50%);
+  --sidebar-ring: oklch(0.82 0.16 220);
 }
 
 @layer base {
@@ -118,5 +146,64 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* WEDJAT brand utilities — reusable gradients + glows that match the logo. */
+@utility wedjat-gradient {
+  background-image: linear-gradient(135deg, var(--color-wedjat-cyan) 0%, var(--color-wedjat-electric) 55%, var(--color-wedjat-cyan-deep) 100%);
+}
+
+@utility wedjat-gradient-soft {
+  background-image: linear-gradient(135deg, color-mix(in oklch, var(--color-wedjat-cyan) 18%, transparent) 0%, color-mix(in oklch, var(--color-wedjat-electric) 12%, transparent) 100%);
+}
+
+@utility wedjat-text-glow {
+  text-shadow: 0 0 12px color-mix(in oklch, var(--color-wedjat-cyan) 60%, transparent),
+               0 0 24px color-mix(in oklch, var(--color-wedjat-cyan) 30%, transparent);
+}
+
+@utility wedjat-glow {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-wedjat-cyan) 30%, transparent),
+              0 0 20px -4px color-mix(in oklch, var(--color-wedjat-cyan) 45%, transparent),
+              0 0 40px -8px color-mix(in oklch, var(--color-wedjat-electric) 30%, transparent);
+}
+
+@utility wedjat-ring {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-wedjat-cyan) 35%, transparent);
+}
+
+/* Subtle circuit-grid backdrop used behind the brain widget. */
+.wedjat-grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--color-wedjat-cyan) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--color-wedjat-cyan) 6%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Custom scrollbar to match the cyber-tech theme. */
+@layer base {
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--color-wedjat-cyan) 30%, var(--color-border));
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklch, var(--color-wedjat-cyan) 50%, var(--color-border));
+  }
+
+  /* Smooth pulse animation for the live brain indicator. */
+  @keyframes wedjat-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+  .wedjat-pulse {
+    animation: wedjat-pulse 1.8s ease-in-out infinite;
   }
 }
