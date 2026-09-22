@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WEDJAT BRAIN V2 — Cognitive Widget",
+  title: "WEDJAT BRAIN — Cognitive Widget",
   description:
     "A model-independent cognitive operating layer. The LLM is one replaceable component; the Brain owns identity, memory, knowledge, evidence, retrieval, context, tools, policy, verification, learning, observability, cost, audit.",
   keywords: ["WEDJAT", "Brain", "cognitive platform", "model-independent", "Next.js", "AI"],
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     apple: "/wedjat-favicon.png",
   },
   openGraph: {
-    title: "WEDJAT BRAIN V2",
+    title: "WEDJAT BRAIN",
     description: "Model-independent cognitive operating layer",
     siteName: "Wedjat",
     type: "website",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "WEDJAT BRAIN V2",
+    title: "WEDJAT BRAIN",
     description: "Model-independent cognitive operating layer",
     images: ["/wedjat-logo.png"],
   },

@@ -232,7 +232,7 @@ function EmptyState({ onPick }: { onPick: (p: string) => void }) {
         <Image src="/wedjat-logo.png" alt="WEDJAT Eye of Horus" width={56} height={56} priority className="h-14 w-14 object-contain drop-shadow-[0_0_10px_rgba(0,217,255,0.5)]" />
       </div>
       <div className="space-y-1">
-        <h3 className="text-base font-semibold">Wedjat Brain V2</h3>
+        <h3 className="text-base font-semibold">Wedjat Brain</h3>
         <p className="mx-auto max-w-sm text-xs text-muted-foreground">
           A model-independent cognitive layer. Identity, memory, knowledge, evidence, retrieval, tools, policy, verification, learning, observability — all owned by the Brain, not the model.
         </p>
@@ -296,6 +296,9 @@ function ResponseChips({ state }: { state: BrainStreamState }) {
       <Chip key="model" icon={<Cpu className="h-3 w-3" />} label={`${state.model.model}${state.model.fallbackUsed ? " (fallback)" : ""}`} tone={state.model.fallbackUsed ? "warn" : "ok"} />
     );
   }
+  if (state.research) {
+    chips.push(<Chip key="research" icon={<Globe className="h-3 w-3" />} label={`web: ${state.research.ingestedCount} learned`} tone="info" />);
+  }
   if (state.verification) {
     chips.push(<Chip key="ver" icon={<ShieldCheck className="h-3 w-3" />} label={state.verification.status} tone={verificationTone(state.verification.status)} />);
   }
@@ -313,9 +316,10 @@ function ResponseChips({ state }: { state: BrainStreamState }) {
   return <div className="flex flex-wrap items-center gap-1">{chips}</div>;
 }
 
-function Chip({ icon, label, tone }: { icon: React.ReactNode; label: string; tone: "ok" | "warn" | "err" | "muted" }) {
+function Chip({ icon, label, tone }: { icon: React.ReactNode; label: string; tone: "ok" | "warn" | "err" | "muted" | "info" }) {
   const cls = {
     ok: "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]",
+    info: "border-[color:var(--color-wedjat-cyan)]/40 bg-[color:var(--color-wedjat-cyan)]/15 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]",
     warn: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
     err: "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
     muted: "border-border bg-muted text-muted-foreground",
@@ -349,13 +353,14 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
     <Card className="hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden lg:flex">
       <CardHeader className="border-b pb-3">
         <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Cognitive Trace</CardTitle>
-        <CardDescription className="text-[11px]">Real-time execution path (§11) — no private hidden reasoning exposed (§85)</CardDescription>
+        <CardDescription className="text-[11px]">Real-time execution path — no private hidden reasoning exposed</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
         <Tabs defaultValue="trace" className="flex h-full flex-col">
-          <TabsList className="mx-3 mt-2 grid grid-cols-4">
+          <TabsList className="mx-3 mt-2 grid grid-cols-5">
             <TabsTrigger value="trace" className="text-xs">Trace</TabsTrigger>
             <TabsTrigger value="evidence" className="text-xs">Evidence</TabsTrigger>
+            <TabsTrigger value="research" className="text-xs">Research</TabsTrigger>
             <TabsTrigger value="tools" className="text-xs">Tools</TabsTrigger>
             <TabsTrigger value="memory" className="text-xs">Memory</TabsTrigger>
           </TabsList>
@@ -372,6 +377,9 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
                   </TabsContent>
                   <TabsContent value="evidence" className="mt-0">
                     <EvidenceList state={state} />
+                  </TabsContent>
+                  <TabsContent value="research" className="mt-0">
+                    <ResearchList state={state} />
                   </TabsContent>
                   <TabsContent value="tools" className="mt-0">
                     <ToolsList state={state} />
@@ -437,7 +445,7 @@ function EvidenceList({ state }: { state: BrainStreamState }) {
           )}
         </div>
       ))}
-      <p className="pt-1 text-[10px] text-muted-foreground">Lineage: answer → claim → evidence → source (§29, §66)</p>
+      <p className="pt-1 text-[10px] text-muted-foreground">Lineage: answer → claim → evidence → source.</p>
     </div>
   );
 }
@@ -485,13 +493,40 @@ function ToolCard({ tool }: { tool: ToolResult }) {
       {current.requiresApproval && !current.approved && current.state === "AUTHORIZED" && (
         <Button size="sm" className="mt-2 h-7 w-full text-xs" onClick={approve} disabled={approving}>
           {approving ? <Loader2 className="mr-1 h-3 w-3 animate-spin" /> : <ShieldCheck className="mr-1 h-3 w-3" />}
-          Approve (human authorization §56)
+          Approve (human authorization)
         </Button>
       )}
       <div className="mt-1 flex items-center justify-between text-[10px] text-muted-foreground">
         <span>{current.durationMs}ms</span>
-        <span>§52 governed execution</span>
+        <span>governed execution</span>
       </div>
+    </div>
+  );
+}
+
+function ResearchList({ state }: { state: BrainStreamState }) {
+  if (!state.research || state.research.resultsCount === 0) {
+    return <EmptyHint icon={<Globe className="h-4 w-4" />} text="No web research triggered for this request. The Brain only searches the web when local knowledge is insufficient." />;
+  }
+  return (
+    <div className="space-y-2">
+      <div className="rounded-lg border border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/5 p-2.5">
+        <p className="text-xs font-medium text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]">Web research triggered</p>
+        <p className="mt-0.5 text-[10px] text-muted-foreground">Query: "{state.research.query}"</p>
+        <p className="text-[10px] text-muted-foreground">{state.research.resultsCount} results · {state.research.ingestedCount} new facts ingested as knowledge</p>
+      </div>
+      <div className="space-y-1.5">
+        {state.research.sources.map((s, i) => (
+          <a key={i} href={s.url} target="_blank" rel="noreferrer" className="block rounded-lg border bg-card p-2 hover:bg-accent/50 transition-colors">
+            <div className="flex items-center gap-1.5">
+              <Globe className="h-3 w-3 shrink-0 text-[color:var(--color-wedjat-cyan)]" />
+              <span className="truncate text-xs font-medium">{s.title}</span>
+            </div>
+            <p className="mt-0.5 truncate text-[9px] text-muted-foreground">{s.url}</p>
+          </a>
+        ))}
+      </div>
+      <p className="pt-1 text-[10px] text-muted-foreground">Auto-learned: these web results are now stored as knowledge for future questions.</p>
     </div>
   );
 }

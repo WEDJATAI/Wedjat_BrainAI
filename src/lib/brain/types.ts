@@ -87,6 +87,8 @@ export interface BrainResponse {
     toolsUsed: string[];
     retrievalUsed: boolean;
     verificationUsed: boolean;
+    researchUsed: boolean;
+    researchSources: Array<{ title: string; url: string }>;
   };
   evidence?: EvidenceRef[];
   state?: {
@@ -108,7 +110,7 @@ export interface BrainResponse {
 export interface TraceStep {
   stepType:
     | "identity" | "policy" | "task_router" | "memory" | "knowledge"
-    | "retrieval" | "context" | "model_router" | "model_call"
+    | "retrieval" | "research" | "context" | "model_router" | "model_call"
     | "tool" | "verification" | "response" | "learning" | "audit";
   stepName: string;
   status: "STARTED" | "COMPLETED" | "FAILED" | "SKIPPED";
@@ -361,6 +363,7 @@ export type BrainStreamEvent =
   | { type: "model"; model: string; provider: string; fallbackUsed: boolean; reason?: string }
   | { type: "tool"; tool: ToolResult }
   | { type: "verification"; status: EvidenceStatus; reason?: string }
+  | { type: "research"; query: string; resultsCount: number; ingestedCount: number; sources: Array<{ title: string; url: string }> }
   | { type: "cost"; tokensIn: number; tokensOut: number; costUsd: number; latencyMs: number }
   | { type: "learning"; candidateId: string; category: string; preview: string }
   | { type: "done"; response: BrainResponse }

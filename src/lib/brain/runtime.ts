@@ -22,6 +22,7 @@ import { verifyAnswer } from "./verification";
 import { createLearningCandidate } from "./learning";
 import { recordEpisodic, createMemoryCandidate } from "./memory";
 import { estimateTokens } from "./vectors";
+import { researchAndLearn, type IngestedKnowledge } from "./web-search";
 import type { PolicyRules } from "./policy";
 import type {
   BrainRequest, BrainResponse, IdentityContext, PolicyMode,
@@ -160,6 +161,64 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
         conflict: !!(c as any).conflict,
       }));
     if (evidence.length > 0) emit({ type: "evidence", evidence });
+
+    // Web research fallback (spec §115): when local knowledge is insufficient
+    // AND no structured hit AND external search is allowed, search the web,
+    // ingest results as ACTIVE knowledge (per user request: "learn and expand"),
+    // and feed them to the model as additional context.
+    let researchUsed = false;
+    let researchSources: Array<{ title: string; url: string }> = [];
+    const knowledgeCandidates = candidates.filter((c) => c.kind === "knowledge");
+    // Trigger web research only when local knowledge is genuinely insufficient:
+    // check the raw semantic relevance (not the trust-boosted total score).
+    // A semantic score below 0.15 means the question isn't covered by what
+    // we have, even if a loosely-related fact was retrieved.
+    const topSemanticScore = knowledgeCandidates.length > 0
+      ? Math.max(...knowledgeCandidates.map((c) => c.semanticScore ?? 0))
+      : 0;
+    const hasSufficientKnowledge = topSemanticScore > 0.3;
+    const allowResearch = req.constraints?.allowExternalSearch !== false && policy.externalSearchAllowed !== false;
+
+    if (!structured.matched && !hasSufficientKnowledge && allowResearch && (req.input.text ?? "").trim().length > 2) {
+      await step("research", "Web research — local knowledge insufficient, searching internet", async () => {
+        const researchQuery = (req.input.text ?? "").trim().slice(0, 200);
+        const research = await researchAndLearn({
+          tenantId: identity.tenant.id,
+          applicationId: identity.application.id,
+          query: researchQuery,
+          maxResults: 6,
+        });
+        researchUsed = research.results.length > 0;
+        researchSources = research.ingested.slice(0, 5).map((i) => ({ title: i.sourceTitle, url: i.sourceUri }));
+        emit({
+          type: "research",
+          query: researchQuery,
+          resultsCount: research.results.length,
+          ingestedCount: research.ingested.filter((i) => i.freshlyIngested).length,
+          sources: researchSources,
+        });
+        // Merge web-sourced evidence into the candidates pool for the model call
+        if (research.ingested.length > 0) {
+          // Re-run retrieval now that web knowledge is in the DB — picks up the
+          // freshly ingested items.
+          const reRetrieve = await hybridRetrieve({
+            identity,
+            text: req.input.text ?? "",
+            topK: 8,
+          });
+          // Merge new knowledge candidates without losing prior memory hits
+          const newKnowledge = reRetrieve.candidates.filter((c) => c.kind === "knowledge");
+          // Add web-sourced evidence to the evidence list
+          for (const ev of research.evidence) {
+            if (!evidence.find((e) => e.id === ev.id)) evidence.push(ev);
+          }
+          // Replace knowledge candidates with the refreshed set (includes web)
+          candidates = [...candidates.filter((c) => c.kind !== "knowledge"), ...newKnowledge];
+          if (evidence.length > 0) emit({ type: "evidence", evidence });
+        }
+        return research;
+      }, researchUsed ? `web search: ${researchSources.length} sources ingested` : "web search returned no results");
+    }
 
     // §163 — if structured hit, answer deterministically without LLM (§79, §191)
     let answer = "";
@@ -359,6 +418,8 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
         toolsUsed,
         retrievalUsed: candidates.length > 0,
         verificationUsed: true,
+        researchUsed,
+        researchSources,
       },
       evidence,
       state: { actionStatus: toolsUsed.length > 0 ? "executed" : "none" },
@@ -496,7 +557,7 @@ function errorResponse(requestId: string, err: any, trace: TraceStep[]): BrainRe
   return {
     requestId,
     answer: `Brain error: ${err?.message ?? "unknown"}`,
-    execution: { model: "none", provider: "none", fallbackUsed: false, toolsUsed: [], retrievalUsed: false, verificationUsed: false },
+    execution: { model: "none", provider: "none", fallbackUsed: false, toolsUsed: [], retrievalUsed: false, verificationUsed: false, researchUsed: false, researchSources: [] },
     quality: { evidenceStatus: "UNSUPPORTED" },
     cost: { tokensIn: 0, tokensOut: 0, costUsd: 0, latencyMs: 0 },
     trace,

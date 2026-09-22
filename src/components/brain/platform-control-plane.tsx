@@ -133,7 +133,7 @@ export function PlatformControlPlane() {
       <Card className="border-[color:var(--color-wedjat-cyan)]/20">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Cross-Platform Acceptance (§176-181)</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Cross-Platform Acceptance</CardTitle>
             <Button size="sm" variant="outline" className="h-6 gap-1 px-2 text-[10px]" onClick={runAcceptance} disabled={acceptanceRunning}>
               {acceptanceRunning ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />}
               Run all
@@ -161,7 +161,7 @@ export function PlatformControlPlane() {
       <Card className="flex-1 min-h-0">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Connected Platforms (§4-18, §27)</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Connected Platforms</CardTitle>
             <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={load} disabled={loading}><RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} /></Button>
           </div>
         </CardHeader>
@@ -249,7 +249,7 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
           <div className="mt-2 flex items-center justify-between">
             <span className="text-[9px] text-muted-foreground">requests: {p.requestCount} · errors: {p.errorCount} · cost: ${p.costUsdTotal.toFixed(4)}</span>
             <Button size="sm" variant="outline" className="h-6 px-2 text-[9px]" onClick={onDisable}>
-              {p.status === "ACTIVE" ? "Disable (§167)" : "Enable"}
+              {p.status === "ACTIVE" ? "Disable" : "Enable"}
             </Button>
           </div>
         </div>
@@ -287,7 +287,7 @@ function RiskBadge({ risk }: { risk: string }) {
             <Shield className="h-2 w-2" /> {risk}
           </Badge>
         </TooltipTrigger>
-        <TooltipContent className="text-[10px]">Risk ceiling (§56)</TooltipContent>
+        <TooltipContent className="text-[10px]">Risk ceiling</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
@@ -303,7 +303,7 @@ function ClassBadge({ cls }: { cls: string }) {
             {cls}
           </Badge>
         </TooltipTrigger>
-        <TooltipContent className="text-[10px]">Data classification ceiling (§24)</TooltipContent>
+        <TooltipContent className="text-[10px]">Data classification ceiling</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

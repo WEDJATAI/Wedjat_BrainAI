@@ -11,6 +11,7 @@ export interface BrainStreamState {
   model?: { model: string; provider: string; fallbackUsed: boolean; reason?: string };
   tools: ToolResult[];
   verification?: { status: EvidenceStatus; reason?: string };
+  research?: { query: string; resultsCount: number; ingestedCount: number; sources: Array<{ title: string; url: string }> };
   cost?: { tokensIn: number; tokensOut: number; costUsd: number; latencyMs: number };
   learning?: { candidateId: string; category: string; preview: string };
   response?: BrainResponse;
@@ -94,6 +95,7 @@ function applyEvent(state: BrainStreamState, ev: BrainStreamEvent) {
     case "model": state.model = { model: ev.model, provider: ev.provider, fallbackUsed: ev.fallbackUsed, reason: ev.reason }; break;
     case "tool": state.tools = [...state.tools, ev.tool]; break;
     case "verification": state.verification = { status: ev.status, reason: ev.reason }; break;
+    case "research": state.research = { query: ev.query, resultsCount: ev.resultsCount, ingestedCount: ev.ingestedCount, sources: ev.sources }; break;
     case "cost": state.cost = { tokensIn: ev.tokensIn, tokensOut: ev.tokensOut, costUsd: ev.costUsd, latencyMs: ev.latencyMs }; break;
     case "learning": state.learning = { candidateId: ev.candidateId, category: ev.category, preview: ev.preview }; break;
     case "done": state.response = ev.response; state.done = true; break;

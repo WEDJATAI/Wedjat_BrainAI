@@ -47,9 +47,6 @@ function Header() {
               Cognitive Operating Layer
             </span>
           </div>
-          <Badge variant="outline" className="ml-1 hidden border-[color:var(--color-wedjat-cyan)]/40 bg-[color:var(--color-wedjat-cyan)]/10 text-[10px] text-[color:var(--color-wedjat-cyan)] sm:inline-flex">
-            V2
-          </Badge>
         </div>
         <div className="flex items-center gap-1.5">
           <Badge variant="outline" className="hidden gap-1 text-[10px] md:inline-flex">
@@ -94,16 +91,16 @@ function Footer() {
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
-            Tenant isolation · §62
+            Tenant isolation
           </span>
           <span className="hidden items-center gap-1.5 sm:flex">
             <Activity className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
-            Brain owns cognition, model is replaceable · §2
+            Brain owns cognition, model is replaceable
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline">Authorization outside the model · §4 R3</span>
-          <span className="font-mono text-[color:var(--color-wedjat-cyan)]">v0.1.0</span>
+          <span className="hidden sm:inline">Authorization outside the model</span>
+          <span className="font-mono text-[color:var(--color-wedjat-cyan)]">WEDJAT BRAIN</span>
         </div>
       </div>
     </footer>

@@ -6,6 +6,7 @@
 
 import { db } from "@/lib/db";
 import { buildTermVector, serializeVector } from "./vectors";
+import { seedGeneralKnowledge } from "./knowledge-base";
 
 export async function seedBrain(): Promise<{ created: Record<string, number>; skipped: boolean }> {
   const created: Record<string, number> = {};
@@ -227,6 +228,15 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
   });
   created.knowledgeSources = 2;
   created.knowledgeItems = 7;
+
+  // ----- General knowledge seed (broad factual base for the Brain) -----
+  try {
+    const result = await seedGeneralKnowledge(acme.id, mashahd.id);
+    created.generalKnowledgeItems = result.itemCount;
+  } catch (err) {
+    // Failures here must not break the rest of the seed.
+    console.warn("[seed] seedGeneralKnowledge failed:", err);
+  }
 
   // ----- Memory (semantic, active) -----
   await ensureMemory(acme.id, mashahd.id, alice.id, {
