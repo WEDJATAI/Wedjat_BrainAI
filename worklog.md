@@ -1,0 +1,85 @@
+# WEDJAT BRAIN V2 — Widget Implementation Worklog
+
+This file is the shared worklog for all agents implementing the WEDJAT AI Brain widget.
+Each agent MUST read this file before starting and append a new section (starting with `---`) after finishing.
+
+---
+Task ID: 0
+Agent: orchestrator (main)
+Task: Audit current project + design Brain MVP architecture
+
+Work Log:
+- Read uploaded spec `/home/z/my-project/upload/Pasted Content_1790067982409.txt` (5868 lines, WEDJAT BRAIN V2 master spec)
+- Audited existing project: Next.js 16 + Turbopack, Prisma SQLite, shadcn/ui (New York), z-ai-web-dev-sdk installed, single `/` route, dev server on port 3000
+- Loaded LLM skill — z-ai-web-dev-sdk provides `chat.completions.create` (backend only). Use `thinking: { type: 'disabled' }` for standard completions.
+- Designed MVP scope based on spec section #178 "Minimum Viable Brain":
+  - Brain API (consolidated interface, §13)
+  - Identity + tenant context (§16, §62)
+  - Policy layer (§100, §101)
+  - Model abstraction + router + fallback (§45-48)
+  - Episodic + semantic + procedural memory with lifecycle (§20-25)
+  - Knowledge: sources, claims, evidence, provenance, versions, conflicts (§26-33)
+  - Hybrid retrieval: semantic + keyword + structured + reranking (§34-40)
+  - Context engine with budgeting (§41-43)
+  - Tool registry + governed execution + action state machine (§51-57)
+  - Verification engine + evidence status (§83-85)
+  - Learning candidate pipeline (§94, §192)
+  - Observability: brain_runs/steps/events + audit + cost (§73, §127-130, §75)
+  - Evaluation baseline (§86-92)
+
+Stage Summary:
+- Tech stack confirmed: Next.js 16 App Router, TypeScript, Prisma SQLite, shadcn/ui, z-ai-web-dev-sdk (LLM provider abstraction)
+- SQLite has no pgvector → implement semantic retrieval via in-memory TF-cosine similarity on stored memory/knowledge (pragmatic, avoids over-engineering per §179)
+- Single `/` route hosts the Brain widget; all intelligence exposed via `/api/brain/*`
+- Architecture follows spec §9 high-level diagram + §11 real-time path
+- Ready to implement Prisma schema → brain library → API → UI
+
+---
+Task ID: 1-7
+Agent: orchestrator (main)
+Task: Full implementation of WEDJAT BRAIN V2 widget (Prisma schema → brain library → API → UI → verification)
+
+Work Log:
+- Wrote Prisma schema covering 24 models across all Brain domains (identity, conversations, memory, knowledge, documents, models/routes/usage, tools/executions, brain_runs/steps/events, audit, policies, learning_candidates, feedback, evaluation). Fixed relation back-references and pushed to SQLite.
+- Built Brain core library in `src/lib/brain/`:
+  - `types.ts` — BrainRequest/BrainResponse/BrainEvent/BrainStreamEvent + all enums (mode, status, risk, evidence, action states)
+  - `vectors.ts` — pragmatic TF cosine similarity + Jaccard (SQLite has no pgvector; avoids over-engineering per §179)
+  - `identity.ts` — tenant isolation enforcement (§62, §63), cross-tenant attack fails safely
+  - `policy.ts` — executable policy engine (§100), global→tenant→application inheritance (§102), data-class ceiling (§60)
+  - `memory.ts` — episodic/semantic/procedural (§20), lifecycle RAW→...→DELETED (§21), candidate pipeline (§22), supersession (§30, §188)
+  - `knowledge.ts` — sources/claims/evidence/provenance/versions/conflicts (§26-33), candidate→active promotion (§32)
+  - `retrieval.ts` — hybrid semantic+keyword+structured (§34), reranking (§39), deterministic structured lookup (§37, §191)
+  - `models.ts` — model abstraction over z-ai-web-dev-sdk (§45), tier-based router (§47), explicit fallback (§48), cost tracking (§50, §75)
+  - `tools.ts` — governed execution pipeline (§52), action state machine PROPOSED→...→VERIFIED (§55), idempotency (§54), risk gating + human approval (§56)
+  - `verification.ts` — evidence status labels (§84), UNKNOWN/INSUFFICIENT EVIDENCE (§163), no fake confidence (§165)
+  - `learning.ts` — candidate pipeline (§94), novelty/conflict detection, never auto-promotes (Rule 9, §97)
+  - `prompts.ts` — modular prompts (§99), never encodes critical rules only in prompts (§100)
+  - `runtime.ts` — BrainRuntime orchestrator implementing §11 real-time path with full trace emission
+  - `seed.ts` — Phase 0 baseline: tenants, applications, models, tools, policies, knowledge sources/items/evidence, memory, golden dataset (§86)
+- Implemented 14 Brain API routes under `/api/brain/*`:
+  - `respond` (streaming NDJSON), `retrieve`, `memory`, `knowledge`, `tools/execute`, `tools/approve`, `evaluate`, `capabilities`, `health`, `trace`, `audit`, `metrics`, `seed`, `candidates`
+- Built Brain widget UI on `/`:
+  - Chat panel with streaming tokens, mode selector (auto/fast/balanced/deep), sample prompts
+  - Cognitive Trace panel (middle) with 4 tabs: Trace (real-time steps with durations + reason codes), Evidence (provenance + validity windows), Tools (action state machine + Approve button for HIGH risk), Memory (recalled memories)
+  - Admin Console (right) with 3 tabs: Health (self-diagnostics §110), Metrics (observability §127 with by-model/by-tool breakdown + golden eval runner), Audit (full audit log §129), plus Knowledge/Memory/Candidates management panels
+  - Response chips show model used, verification status, tool count, evidence count, cost, latency
+  - Sticky footer + header, dark mode (next-themes), responsive (3-col desktop / 2-col laptop / 1-col mobile)
+- Seeded database: 2 tenants, 3 applications, 3 models, 6 tools, 7 knowledge items, 2 memories, 1 policy, 6 golden eval cases
+- Self-verified with Agent Browser:
+  - Page renders cleanly (no hydration errors, no console errors)
+  - Invoice 1827 query → deterministic structured path, no LLM, VERIFIED evidence
+  - Calc query (23+19) → calc.add tool VERIFIED, GLM Flash model, honest UNKNOWN verification (§163)
+  - Email query → email.send tool AUTHORIZED state, Approve button → click → VERIFIED with idempotency key (§54)
+  - Cognitive trace shows all steps with durations and reason codes
+  - Evidence tab shows provenance (source title, validity window, evidence status)
+  - Tools tab shows action state machine transitions
+  - Audit panel shows tool.approval.required / tool.approved / tool.executed / brain.responded events
+  - Metrics panel shows real observability data (16 runs, 11 model calls, p50/p95 latency)
+  - Sticky footer at viewport bottom, responsive at mobile (390x844) and desktop (1280x800)
+  - Lint clean, no dev server errors
+
+Stage Summary:
+- WEDJAT BRAIN V2 widget is fully functional end-to-end
+- Demonstrates the spec's core architectural concepts: identity/tenant isolation, policy, memory (3 domains + lifecycle), knowledge (sources/claims/evidence/provenance/versions/conflicts), hybrid retrieval, context engine, model router with fallback, governed tools with action state machine + human approval, verification with honest evidence labels, learning candidates (never auto-promote), observability (brain runs/steps/events/audit), cost tracking
+- The LLM (z-ai-web-dev-sdk) is one replaceable component; the Brain owns all cognition
+- Per spec §218: "WEDJAT HAS BUILT THE COGNITIVE SYSTEM. The LLM is only one component inside it."

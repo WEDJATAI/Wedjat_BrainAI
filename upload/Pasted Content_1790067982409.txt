@@ -1,0 +1,5868 @@
+# WEDJAT AI — BRAIN V2
+
+## MASTER CTO / AI ARCHITECTURE / ENGINEERING / LEARNING / SECURITY / PRODUCTION IMPLEMENTATION PROMPT
+
+---
+
+# 0. MANDATORY INSTRUCTION
+
+You are not being asked to build another chatbot.
+
+You are being asked to build **WEDJAT AI as a serious model-independent cognitive platform / Platform Brain** that can serve multiple products, applications, organizations, workflows, and future systems.
+
+The objective is not:
+
+```text
+LLM + prompt + vector database
+```
+
+The objective is:
+
+```text
+WEDJAT BRAIN
+=
+Identity
++
+Memory
++
+Knowledge
++
+Evidence
++
+Retrieval
++
+Context
++
+Task Routing
++
+Reasoning
++
+Tools
++
+Policies
++
+Authorization
++
+Verification
++
+Learning
++
+Evaluation
++
+Feedback
++
+Provenance
++
+Observability
++
+Cost Control
++
+Auditability
+```
+
+The underlying LLM is only one replaceable reasoning component.
+
+Do not confuse:
+
+```text
+model
+```
+
+with:
+
+```text
+brain
+```
+
+The model can change while the Brain remains.
+
+---
+
+# 1. THIS DOCUMENT SUPERSEDES THE PREVIOUS BRAIN DOCUMENTS
+
+Use this document as the current governing specification for Wedjat AI Brain architecture.
+
+It incorporates and replaces the weaknesses identified in previous Platform Brain and Master Prompt documents.
+
+The previous documents remain useful as historical design context, but they must not override this specification where they conflict with it.
+
+The purpose of this version is to convert broad architectural philosophy into an **actual executable engineering program**.
+
+This specification has five levels:
+
+```text
+LEVEL 0
+Brain Constitution
+
+LEVEL 1
+Production Core
+
+LEVEL 2
+Scale / Advanced Intelligence
+
+LEVEL 3
+Advanced / Research Capabilities
+
+LEVEL 4
+Experimental Capabilities
+```
+
+Do not implement Level 3 or Level 4 merely because they are listed.
+
+Do not over-engineer Level 1.
+
+The system must earn complexity through measurable requirements.
+
+---
+
+# 2. THE MOST IMPORTANT PRINCIPLE
+
+## THE MODEL IS NOT THE BRAIN.
+
+The Brain is the complete system around the model.
+
+The model is responsible for tasks such as:
+
+* language generation
+* reasoning
+* interpretation
+* planning
+* classification
+* extraction
+* tool selection
+* multimodal interpretation
+
+The Brain is responsible for:
+
+* identity
+* authorization
+* memory
+* knowledge
+* evidence
+* retrieval
+* provenance
+* context construction
+* policy
+* tool governance
+* model selection
+* verification
+* state
+* learning
+* evaluation
+* feedback
+* auditing
+* reliability
+* cost control
+
+The model must never be the final authority for authorization, truth, system policy, tenant access, or external side effects.
+
+---
+
+# 3. DESIGN PHILOSOPHY
+
+Build:
+
+```text
+A cognitive operating layer
+```
+
+not:
+
+```text
+A larger prompt
+```
+
+not:
+
+```text
+A RAG chatbot
+```
+
+not:
+
+```text
+A multi-agent demo
+```
+
+not:
+
+```text
+A vector database with an LLM
+```
+
+not:
+
+```text
+A fake continuously self-training model
+```
+
+---
+
+# 4. WEDJAT BRAIN CONSTITUTION
+
+The following rules are mandatory and override convenience.
+
+## Rule 1 — No false intelligence claims
+
+Do not claim that Wedjat trained its underlying model when the system merely:
+
+* stored memory
+* added documents
+* updated prompts
+* changed retrieval
+* changed routing
+* changed tool policies
+
+Use accurate terminology.
+
+---
+
+## Rule 2 — Model output is not automatically truth
+
+Never automatically convert:
+
+```text
+LLM output
+```
+
+into:
+
+```text
+verified knowledge
+```
+
+unless independent evidence or an explicit validated workflow justifies doing so.
+
+---
+
+## Rule 3 — Authorization is outside the model
+
+The model may request an action.
+
+The policy/authorization layer decides whether that action is permitted.
+
+---
+
+## Rule 4 — Retrieved content is untrusted
+
+Documents, websites, emails, tool results, user-provided text, and external data may contain malicious instructions.
+
+They must never be treated as system-level instructions.
+
+---
+
+## Rule 5 — Tenant isolation is mandatory
+
+The Brain must never leak:
+
+* memories
+* documents
+* knowledge
+* conversation information
+* tools
+* data
+* credentials
+* hidden metadata
+
+between unauthorized tenants, users, applications, or organizations.
+
+---
+
+## Rule 6 — Side effects require explicit authorization
+
+A model recommendation is not execution.
+
+Distinguish:
+
+```text
+recommendation
+draft
+simulation
+requested action
+authorized action
+executed action
+verified result
+```
+
+---
+
+## Rule 7 — Important knowledge has provenance
+
+The Brain must be able to determine:
+
+```text
+where did this information come from?
+when was it obtained?
+what evidence supports it?
+what version was used?
+is it still valid?
+does conflicting evidence exist?
+```
+
+---
+
+## Rule 8 — Knowledge is temporal
+
+The Brain must distinguish:
+
+```text
+current
+historical
+future/scheduled
+expired
+unknown
+conflicted
+```
+
+---
+
+## Rule 9 — Learning is controlled
+
+Production activity may generate:
+
+```text
+learning candidates
+```
+
+It must not silently modify trusted knowledge, prompts, policies, or model behavior.
+
+---
+
+## Rule 10 — Simplicity wins unless complexity is justified
+
+Do not introduce:
+
+* another database
+* another vector database
+* another queue
+* another gateway
+* another microservice
+* another cache
+* another orchestration system
+
+without a measurable reason.
+
+---
+
+## Rule 11 — Logical modularity does not require microservices
+
+Implement strong boundaries in code first.
+
+Create physically independent services only when justified by:
+
+* scale
+* security
+* deployment independence
+* reliability
+* performance
+* organizational ownership
+
+---
+
+## Rule 12 — Every capability must be testable
+
+Nothing is “done” because code exists.
+
+A capability is done only when:
+
+```text
+implemented
++
+tested
++
+secured
++
+observable
++
+documented
++
+deployed
++
+verified
+```
+
+---
+
+# 5. CURRENT PLATFORM-FIRST RULE
+
+Before modifying the platform, inspect the existing implementation.
+
+Do not assume the repository is empty.
+
+Do not assume any previous architecture was fully implemented.
+
+Do not replace functioning code merely because a cleaner architecture exists.
+
+Do not duplicate functionality.
+
+Do not create competing:
+
+* AI clients
+* model routers
+* memory services
+* vector stores
+* API routes
+* event systems
+* database schemas
+* environment variables
+* caches
+* authentication systems
+
+unless there is a documented reason.
+
+---
+
+# 6. MANDATORY PRE-BUILD AUDIT
+
+Before writing significant code, inspect:
+
+## Application
+
+* framework
+* Next.js version
+* React version
+* TypeScript
+* package manager
+* build configuration
+* runtime configuration
+* server/client boundaries
+* middleware
+* API routes
+* server actions
+* existing AI SDK usage
+
+## AI
+
+* current providers
+* current models
+* model abstractions
+* embeddings
+* RAG
+* memory
+* agents
+* tools
+* prompt files
+* AI routes
+* streaming
+* structured output
+* retries
+* fallbacks
+
+## Data
+
+* Neon
+* Turso
+* schemas
+* migrations
+* indexes
+* vector columns
+* search
+* existing documents
+* existing chat history
+* existing user data
+* current caching
+
+## Workflow
+
+* Inngest
+* background jobs
+* queues
+* cron
+* event schemas
+* retry strategy
+* existing workflows
+
+## Security
+
+* authentication
+* session handling
+* authorization
+* tenant isolation
+* secrets
+* environment variables
+* API exposure
+* rate limiting
+* logging
+* audit
+
+## Deployment
+
+* GitHub
+* CI/CD
+* Vercel
+* preview environments
+* production environments
+* environment separation
+
+## Quality
+
+* unit tests
+* integration tests
+* E2E tests
+* linting
+* type checking
+* build
+* deployment checks
+* observability
+
+---
+
+# 7. AUDIT DELIVERABLE
+
+Before implementation, produce:
+
+```text
+CURRENT STATE
+TARGET STATE
+GAPS
+DUPLICATES
+RISKS
+DEPENDENCIES
+MIGRATION REQUIREMENTS
+RECOMMENDED ORDER
+```
+
+Also classify every planned capability:
+
+```text
+EXISTS
+PARTIAL
+BROKEN
+MISSING
+OBSOLETE
+```
+
+Do not invent implementation status.
+
+---
+
+# 8. PRIORITY SYSTEM
+
+Every requirement must receive a priority.
+
+## P0 — Constitutional
+
+Must always exist.
+
+Examples:
+
+* tenant isolation
+* authorization
+* policy enforcement
+* secret protection
+* provenance for trusted knowledge
+* audit of significant actions
+* no automatic hallucination promotion
+* deterministic validation
+* safe tool execution
+
+## P1 — Production Core
+
+Required for a production Brain.
+
+Examples:
+
+* Brain API
+* Brain Runtime
+* model abstraction
+* model router
+* memory
+* knowledge
+* retrieval
+* context engine
+* tool engine
+* observability
+* evaluation baseline
+* cost tracking
+* failure handling
+
+## P2 — Scale / Optimization
+
+Add when justified.
+
+Examples:
+
+* advanced reranking
+* edge retrieval
+* Turso local replicas
+* advanced routing
+* complex cache layers
+* graph optimization
+* large-scale evaluation
+* advanced cost optimization
+
+## P3 — Advanced Intelligence
+
+Examples:
+
+* local models
+* sophisticated agent networks
+* fine-tuning
+* specialized models
+* predictive systems
+* multimodal knowledge graphs
+
+## P4 — Experimental
+
+Research features only.
+
+Do not allow experimental functionality to contaminate production architecture.
+
+---
+
+# 9. TARGET HIGH-LEVEL ARCHITECTURE
+
+Build toward:
+
+```text
+                          WEDJAT AI
+                              │
+                       ┌──────▼──────┐
+                       │  BRAIN API  │
+                       └──────┬──────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │   BRAIN RUNTIME   │
+                    └─────────┬─────────┘
+                              │
+       ┌──────────────┬───────┼────────┬───────────────┐
+       ▼              ▼       ▼        ▼               ▼
+   Identity        Policy   Memory  Knowledge      Task Router
+                              │        │               │
+                              └────┬───┘               │
+                                   ▼                   │
+                             Context Engine            │
+                                   │                   │
+                             Retrieval Engine          │
+                                   │                   │
+                      ┌────────────┼────────────┐      │
+                      ▼            ▼            ▼      │
+                   Semantic     Keyword      SQL/Data  │
+                      │            │            │       │
+                      └────────────┼────────────┘       │
+                                   ▼                    │
+                                Reranker                │
+                                   │                    │
+                                   └────────┬───────────┘
+                                            ▼
+                                      Model Router
+                                            │
+                           ┌────────────────┼────────────────┐
+                           ▼                ▼                ▼
+                       Fast Model      Reasoning Model   Specialist Model
+                           │                │                │
+                           └────────────────┼────────────────┘
+                                            ▼
+                                      Tool / Action
+                                            │
+                                         Policy
+                                            │
+                                  Human approval if needed
+                                            │
+                                         Execute
+                                            │
+                                        Verify
+                                            │
+                                        Respond
+                                            │
+                    ┌───────────────────────┴───────────────────────┐
+                    ▼                                               ▼
+                 USER                                           EVENTS
+                                                                    │
+                                                                  Inngest
+                                                                    │
+                       ┌────────────────────────────────────────────┼────────┐
+                       ▼                                            ▼        ▼
+                    Learning                                    Evaluation Refresh
+                       │                                            │        │
+                       └────────────────────────────────────────────┴────────┘
+                                                                    │
+                                                                    ▼
+                                                                   Neon
+```
+
+Turso is an optional secondary/local capability, not automatically a second canonical brain.
+
+---
+
+# 10. INFRASTRUCTURE RESPONSIBILITIES
+
+Use the current project stack intelligently.
+
+## GitHub
+
+Source of truth for:
+
+* application code
+* Brain code
+* migrations
+* prompts
+* policies
+* schemas
+* tools
+* evaluation datasets
+* tests
+* documentation
+* architecture decisions
+* CI/CD
+
+---
+
+## Vercel + Next.js
+
+Use primarily for:
+
+* application UI
+* synchronous API path
+* streaming responses
+* real-time interactions
+* lightweight server execution
+* Brain API entry point
+* authentication-facing workflows
+
+Do not force every request through a durable background workflow.
+
+---
+
+## Neon
+
+Use as the principal canonical persistent data layer for the Brain:
+
+* relational data
+* users
+* tenants
+* memory
+* knowledge
+* provenance
+* embeddings
+* evaluations
+* audit
+* model metadata
+* tool metadata
+* learning records
+
+Use PostgreSQL features rather than inventing application-level replacements.
+
+Use pgvector for semantic retrieval where appropriate.
+
+---
+
+## Inngest
+
+Use for:
+
+* durable background processing
+* document ingestion
+* embedding generation
+* knowledge extraction
+* knowledge validation
+* memory consolidation
+* scheduled refresh
+* evaluations
+* long-running research
+* human approval waits
+* retryable external operations
+* asynchronous learning
+
+Interactive chat should not automatically become an Inngest workflow simply because Inngest exists.
+
+---
+
+## Model Gateway
+
+Use one primary model-access abstraction.
+
+A current provider gateway may be used underneath it.
+
+The application must still maintain its own provider abstraction.
+
+Do not hard-code every product to one vendor API.
+
+---
+
+## Turso
+
+Use only where actual requirements justify it:
+
+* local inference
+* embedded data
+* offline operation
+* mobile/device-local retrieval
+* edge caching
+* regional/local vector access
+
+Do not maintain duplicate canonical memory simply because Turso supports vectors.
+
+---
+
+# 11. THE REAL-TIME PATH
+
+Default interactive flow:
+
+```text
+USER
+ ↓
+Brain API
+ ↓
+Authenticate
+ ↓
+Resolve identity
+ ↓
+Resolve tenant/application
+ ↓
+Policy check
+ ↓
+Task classification
+ ↓
+Memory retrieval
+ ↓
+Knowledge retrieval
+ ↓
+Structured data retrieval if needed
+ ↓
+Tool planning if needed
+ ↓
+Model selection
+ ↓
+Reasoning
+ ↓
+Verification where required
+ ↓
+Streaming response
+ ↓
+Persist interaction
+ ↓
+Emit background events
+```
+
+Do not perform expensive nonessential learning inline.
+
+---
+
+# 12. BACKGROUND PATH
+
+```text
+EVENT
+ ↓
+Inngest
+ ↓
+durable step
+ ↓
+process
+ ↓
+persist checkpoint
+ ↓
+next step
+ ↓
+evaluate
+ ↓
+promote/reject
+ ↓
+index
+ ↓
+record outcome
+```
+
+Use checkpoints around:
+
+* external API calls
+* model calls
+* document processing
+* side effects
+* long waits
+
+A later failure should not automatically repeat successfully completed work.
+
+---
+
+# 13. BRAIN API
+
+Create or consolidate around a small, coherent interface.
+
+Conceptually:
+
+```text
+POST /api/brain/respond
+POST /api/brain/stream
+POST /api/brain/retrieve
+POST /api/brain/memory
+POST /api/brain/knowledge
+POST /api/brain/tools/execute
+POST /api/brain/evaluate
+GET  /api/brain/capabilities
+GET  /api/brain/health
+```
+
+Do not create unnecessary endpoints.
+
+Existing routes should be reused when they already fulfill a responsibility.
+
+---
+
+# 14. BRAIN REQUEST CONTRACT
+
+Define a typed request structure similar to:
+
+```typescript
+interface BrainRequest {
+  requestId: string;
+  tenantId: string;
+  applicationId: string;
+  userId?: string;
+  sessionId?: string;
+  conversationId?: string;
+
+  input: {
+    text?: string;
+    attachments?: AttachmentRef[];
+  };
+
+  mode?: "auto" | "fast" | "balanced" | "deep";
+
+  permissions: {
+    scopes: string[];
+  };
+
+  constraints?: {
+    maxLatencyMs?: number;
+    maxCost?: number;
+    allowExternalSearch?: boolean;
+    allowTools?: boolean;
+  };
+
+  metadata?: Record<string, unknown>;
+}
+```
+
+Do not copy this blindly.
+
+Adapt it to the existing platform.
+
+Validate all fields.
+
+---
+
+# 15. BRAIN RESPONSE CONTRACT
+
+Return structured metadata internally.
+
+Conceptually:
+
+```typescript
+interface BrainResponse {
+  requestId: string;
+  answer: string;
+
+  execution: {
+    model: string;
+    provider: string;
+    fallbackUsed: boolean;
+    toolsUsed: string[];
+    retrievalUsed: boolean;
+    verificationUsed: boolean;
+  };
+
+  evidence?: EvidenceRef[];
+
+  state?: {
+    actionStatus?: "none" | "proposed" | "authorized" | "executed";
+  };
+
+  quality?: {
+    evidenceStatus:
+      | "verified"
+      | "supported"
+      | "inferred"
+      | "uncertain"
+      | "conflicted"
+      | "unsupported";
+  };
+}
+```
+
+Do not expose internal-only fields unless appropriate to the product.
+
+---
+
+# 16. IDENTITY MODEL
+
+Separate:
+
+```text
+user
+organization
+tenant
+application
+agent
+service
+session
+device
+```
+
+Do not use a generic user ID as a substitute for an authorization model.
+
+The Brain must know:
+
+```text WHO
+IS ASKING
+FROM WHICH APPLICATION
+UNDER WHICH TENANT
+WITH WHICH PERMISSIONS
+IN WHICH SESSION
+```
+
+---
+
+# 17. MULTI-PLATFORM ARCHITECTURE
+
+Wedjat AI is intended to serve multiple products.
+
+Design application scopes for platforms such as:
+
+```text
+Mashahd
+Wasl
+SGTX
+Wedjat RMS
+Aurienta
+Wedjat Justice OS
+Wedjat Dental OS
+MTQ-related systems
+Cirkle ecosystem
+future Wedjat products
+```
+
+The Brain should provide common intelligence while preserving platform-specific isolation.
+
+Each application should have:
+
+```text
+application_id
+permissions
+knowledge scope
+memory scope
+tool scope
+policy scope
+model policy
+```
+
+Do not merge every application's database into one unrestricted context.
+
+---
+
+# 18. CROSS-PLATFORM KNOWLEDGE RULE
+
+Global knowledge and platform-specific knowledge must be separated.
+
+For example:
+
+```text
+GLOBAL VERIFIED KNOWLEDGE
+APPLICATION KNOWLEDGE
+TENANT KNOWLEDGE
+ORGANIZATION KNOWLEDGE
+USER MEMORY
+SESSION MEMORY
+```
+
+A private application fact must not become global Brain knowledge.
+
+---
+
+# 19. SGTX INTEGRATION RULE
+
+Where Wedjat Brain integrates with SGTX, it must respect SGTX's existing governance architecture.
+
+Do not replace, bypass, or weaken:
+
+```text
+Governor
+OPA
+WasmEdge constitutional engine
+Human authorization where required
+Cryptographic signing
+Loom
+NATS
+Authorized execution
+```
+
+The Brain may advise, retrieve knowledge, analyze, classify, or prepare information.
+
+The Brain must not become a replacement for SGTX's governance pipeline.
+
+For SGTX:
+
+```text
+USER INTENT
+→ SGTX API GATEWAY
+→ BUSINESS SERVICE
+→ GOVERNOR
+→ OPA
+→ WASMEDGE
+→ AI / COMPLIANCE CONSULTATION
+→ HUMAN AUTHORIZATION WHERE REQUIRED
+→ CRYPTOGRAPHIC SIGNATURE
+→ LOOM
+→ NATS EVENT
+→ AUTHORIZED EXECUTION
+```
+
+Wedjat AI should integrate as an intelligence layer without bypassing those controls.
+
+---
+
+# 20. MEMORY ARCHITECTURE
+
+Implement three explicit memory domains.
+
+## 20.1 EPISODIC MEMORY
+
+Records what happened.
+
+Examples:
+
+```text
+conversation
+message
+action
+tool call
+observation
+event
+outcome
+decision
+```
+
+Do not replace raw historical records with summaries.
+
+Summaries are derived representations.
+
+---
+
+## 20.2 SEMANTIC MEMORY
+
+Stores useful durable information.
+
+Examples:
+
+```text
+user preference
+organization fact
+recurring requirement
+known system relationship
+durable project fact
+```
+
+Every durable semantic memory should support:
+
+```text
+memoryId
+tenantId
+scope
+type
+content
+source
+confidence/evidence state
+createdAt
+updatedAt
+validFrom
+validUntil
+status
+version
+supersedes
+supersededBy
+```
+
+---
+
+## 20.3 PROCEDURAL MEMORY
+
+Stores how something should be done.
+
+Examples:
+
+```text
+workflow
+procedure
+playbook
+tool procedure
+domain operating sequence
+```
+
+Procedural memory must be versioned.
+
+Do not let a casual conversational message silently replace a trusted operational procedure.
+
+---
+
+# 21. MEMORY LIFECYCLE
+
+Use:
+
+```text
+RAW
+CANDIDATE
+VALIDATING
+VALIDATED
+ACTIVE
+SUPERSEDED
+EXPIRED
+REJECTED
+DELETED
+```
+
+Do not create a single boolean:
+
+```text learned = true
+```
+
+That is insufficient.
+
+---
+
+# 22. MEMORY CANDIDATE PIPELINE
+
+```text
+Interaction
+ ↓
+Candidate extraction
+ ↓
+Classify memory type
+ ↓
+Check novelty
+ ↓
+Check duplication
+ ↓
+Check contradiction
+ ↓
+Check scope
+ ↓
+Check evidence
+ ↓
+Determine promotion eligibility
+ ↓
+Promote or reject
+```
+
+---
+
+# 23. MEMORY PROMOTION RULES
+
+Strong promotion signals may include:
+
+* explicit user instruction to remember
+* confirmed stable preference
+* repeatedly observed stable fact
+* verified external fact
+* confirmed workflow state
+
+Weak signals include:
+
+* one-off model assumptions
+* speculative conclusions
+* inferred personality claims
+* unverified statements
+* temporary conversation context
+
+Do not confuse repetition with truth.
+
+---
+
+# 24. MEMORY DECAY
+
+Memory relevance can decay.
+
+Do not delete required history merely because relevance declines.
+
+Maintain separate concepts:
+
+```text
+historical retention
+```
+
+and:
+
+```text
+retrieval relevance
+```
+
+A five-year-old event can remain historically important while receiving low default retrieval weight.
+
+---
+
+# 25. MEMORY CONSOLIDATION
+
+Use scheduled workflows to:
+
+```text
+collect recent memories
+ ↓
+deduplicate
+ ↓
+merge compatible facts
+ ↓
+identify conflicts
+ ↓
+expire stale memories
+ ↓
+promote stable memories
+ ↓
+preserve historical events
+```
+
+Do not repeatedly feed the entire historical database into the model.
+
+---
+
+# 26. KNOWLEDGE ARCHITECTURE
+
+Knowledge must be more structured than:
+
+```text
+document + embedding
+```
+
+Model at least:
+
+```text
+knowledge_item
+knowledge_version
+knowledge_claim
+knowledge_source
+knowledge_evidence
+knowledge_entity
+knowledge_relation
+knowledge_conflict
+knowledge_review
+knowledge_embedding
+```
+
+Use actual relational structure where appropriate.
+
+---
+
+# 27. KNOWLEDGE TYPES
+
+Classify important information.
+
+At minimum:
+
+```text
+FACT
+RULE
+POLICY
+PROCEDURE
+OBSERVATION
+OPINION
+INFERENCE
+PREFERENCE
+EVENT
+```
+
+The Brain should not treat all types identically.
+
+---
+
+# 28. PROVENANCE
+
+Every trusted knowledge object should track:
+
+```text
+sourceType
+sourceId
+sourceURI when available
+publisher/author when available
+retrievedAt
+publishedAt when available
+documentVersion
+section/page where available
+extractionMethod
+validationMethod
+verificationStatus
+```
+
+Do not invent missing provenance.
+
+---
+
+# 29. KNOWLEDGE EVIDENCE
+
+A claim should be able to point to evidence.
+
+Conceptually:
+
+```text
+CLAIM
+ ↓
+EVIDENCE
+ ↓
+SOURCE
+```
+
+The Brain should be able to trace:
+
+```text
+Answer
+ ↓
+Knowledge claim
+ ↓
+Evidence
+ ↓
+Source
+```
+
+---
+
+# 30. KNOWLEDGE VERSIONING
+
+Support:
+
+```text
+version
+validFrom
+validUntil
+supersedes
+supersededBy
+```
+
+When information changes, preserve history.
+
+Do not overwrite historical truth.
+
+---
+
+# 31. CONTRADICTION MANAGEMENT
+
+When a new claim conflicts with existing knowledge:
+
+```text
+New claim
+ ↓
+Find related claims
+ ↓
+Compare
+ ↓
+Detect conflict
+ ↓
+Compare source quality
+ ↓
+Compare temporal validity
+ ↓
+Determine:
+   compatible
+   superseding
+   unresolved
+   human review
+```
+
+Do not blindly pick the newest statement.
+
+Do not blindly pick the most recent embedding.
+
+---
+
+# 32. KNOWLEDGE PROMOTION
+
+Use:
+
+```text
+CANDIDATE
+ ↓
+VALIDATING
+ ↓
+VALIDATED
+ ↓
+ACTIVE
+```
+
+A model-generated statement should normally enter:
+
+```text
+CANDIDATE
+```
+
+rather than:
+
+```text
+ACTIVE
+```
+
+unless it is generated inside a deterministic trusted workflow with known authority.
+
+---
+
+# 33. KNOWLEDGE REFRESH
+
+Support refresh schedules based on data type:
+
+```text
+real-time
+hourly
+daily
+weekly
+monthly
+manual
+event-triggered
+```
+
+Do not refresh everything on one schedule.
+
+---
+
+# 34. RETRIEVAL ENGINE
+
+The Brain must not depend on pure vector similarity.
+
+Use a hybrid retrieval architecture.
+
+```text
+QUERY
+ ↓
+Query understanding
+ ↓
+┌──────────────┬──────────────┬───────────────┐
+│ semantic     │ keyword      │ structured SQL│
+│ retrieval    │ retrieval    │ retrieval     │
+└──────────────┴──────────────┴───────────────┘
+ ↓
+candidate pool
+ ↓
+metadata filtering
+ ↓
+deduplication
+ ↓
+reranking
+ ↓
+evidence filtering
+ ↓
+context assembly
+```
+
+---
+
+# 35. SEMANTIC RETRIEVAL
+
+Use embeddings for:
+
+* semantic similarity
+* conceptual recall
+* related memories
+* related documents
+* approximate meaning
+
+Do not expect vectors to solve:
+
+* exact IDs
+* exact codes
+* numbers
+* legal citations
+* dates
+* version identifiers
+
+---
+
+# 36. KEYWORD RETRIEVAL
+
+Use lexical search when the task requires:
+
+* exact terms
+* names
+* identifiers
+* product codes
+* legal clauses
+* document terms
+* technical tokens
+
+---
+
+# 37. STRUCTURED RETRIEVAL
+
+Use direct SQL/domain queries when the answer already exists in structured data.
+
+Example:
+
+```text
+“How much was invoice 1827?”
+```
+
+should normally become:
+
+```text
+database query
+```
+
+not:
+
+```text
+expensive LLM reasoning
+```
+
+---
+
+# 38. DETERMINISTIC TASK ROUTER
+
+Build a Cognitive Task Router.
+
+It decides:
+
+```text
+Can this task be answered deterministically?
+```
+
+Potential paths:
+
+```text
+SQL
+calculator
+rules engine
+policy engine
+API
+search
+retrieval
+LLM
+agent workflow
+```
+
+The Brain should use AI when AI is useful, not merely because AI is available.
+
+---
+
+# 39. RERANKING
+
+Retrieve a broader candidate set.
+
+Then rerank according to:
+
+```text
+semantic relevance
+keyword relevance
+source quality
+freshness
+scope
+verification status
+entity match
+task relevance
+```
+
+Do not rank solely by vector distance.
+
+---
+
+# 40. RETRIEVAL SECURITY
+
+Filtering must respect:
+
+```text
+tenant
+application
+user
+permission
+data classification
+validity
+policy
+```
+
+Security filtering must occur before unauthorized information can become part of model context.
+
+---
+
+# 41. CONTEXT ENGINE
+
+The Context Engine determines what information is actually sent to the model.
+
+Inputs:
+
+```text
+current request
+recent conversation
+relevant memory
+relevant knowledge
+tool results
+policy
+identity context
+task context
+```
+
+Outputs:
+
+```text
+minimal sufficient model context
+```
+
+Do not dump every memory and document chunk into every request.
+
+---
+
+# 42. CONTEXT PRIORITIZATION
+
+Prefer:
+
+```text
+current task
++
+relevant recent context
++
+relevant durable memory
++
+relevant verified knowledge
++
+necessary policy
++
+relevant tool results
+```
+
+over:
+
+```text
+everything we know
+```
+
+---
+
+# 43. CONTEXT BUDGETING
+
+Track:
+
+```text
+system tokens
+instruction tokens
+memory tokens
+knowledge tokens
+tool tokens
+history tokens
+expected output tokens
+```
+
+Set limits.
+
+When context exceeds the budget:
+
+```text
+remove low-value history
+ ↓
+compress
+ ↓
+retain important evidence
+ ↓
+retrieve more selectively
+```
+
+---
+
+# 44. ENTITY LAYER
+
+Build a structured entity abstraction.
+
+Entities may include:
+
+```text
+person
+company
+organization
+product
+document
+transaction
+contract
+location
+regulation
+project
+application
+API
+event
+```
+
+Relationships may include:
+
+```text
+OWNS
+WORKS_FOR
+LOCATED_IN
+USES
+PARTY_TO
+RELATED_TO
+DEPENDS_ON
+MANAGES
+CREATED
+UPDATED
+```
+
+Do not deploy a graph database merely because the model contains relationships.
+
+Use relational structures first.
+
+Introduce specialized graph infrastructure only when measurement justifies it.
+
+---
+
+# 45. MODEL ABSTRACTION
+
+Applications should not directly depend on provider-specific SDKs.
+
+Create a model abstraction such as:
+
+```typescript
+interface ModelProvider {
+  generate(...)
+  stream(...)
+  structuredOutput(...)
+  toolCall(...)
+  embed(...)
+}
+```
+
+Add capability metadata:
+
+```text
+text
+vision
+audio
+video
+toolCalling
+structuredOutput
+longContext
+reasoning
+coding
+embedding
+reranking
+```
+
+---
+
+# 46. MODEL REGISTRY
+
+Maintain a model registry containing:
+
+```text
+modelId
+provider
+version
+capabilities
+contextLimit
+latencyProfile
+costProfile
+reliability
+availability
+privacy/data policy
+evaluation results
+```
+
+Do not hard-code assumptions permanently.
+
+---
+
+# 47. MODEL ROUTER
+
+Route according to:
+
+```text
+task
+complexity
+required modality
+context
+privacy
+latency
+cost
+quality requirement
+historical evaluation
+availability
+```
+
+Conceptually:
+
+```text
+simple task
+→ fast model
+
+normal task
+→ balanced model
+
+complex reasoning
+→ reasoning model
+
+specialized task
+→ specialist
+
+high-risk task
+→ stronger model + verification
+
+provider unavailable
+→ approved fallback
+```
+
+---
+
+# 48. MODEL FALLBACK
+
+Implement explicit fallback.
+
+Fallback can be triggered by:
+
+```text
+timeout
+rate limit
+provider outage
+context overflow
+unsupported modality
+tool incompatibility
+malformed output
+provider failure
+```
+
+Record:
+
+```text
+primary model
+fallback model
+failure reason
+latency
+cost
+outcome
+```
+
+---
+
+# 49. DO NOT STACK MODEL GATEWAYS UNNECESSARILY
+
+Choose one primary infrastructure gateway.
+
+Wedjat should still own the abstraction.
+
+Avoid:
+
+```text
+Wedjat
+→ Gateway A
+→ Gateway B
+→ Provider
+```
+
+without a reason.
+
+Prefer:
+
+```text
+Wedjat Model Router
+→ one gateway abstraction
+→ approved providers/models
+```
+
+The provider infrastructure underneath can evolve.
+
+---
+
+# 50. MODEL ROUTING SHOULD LEARN FROM MEASURED DATA
+
+Track:
+
+```text
+task type
+model
+quality
+latency
+failure
+cost
+fallback frequency
+user outcome
+evaluation score
+```
+
+Use this to improve routing.
+
+Do not route based merely on model marketing claims.
+
+---
+
+# 51. TOOL SYSTEM
+
+Create a governed tool registry.
+
+Every tool should define:
+
+```text
+toolId
+name
+description
+inputSchema
+outputSchema
+requiredScopes
+riskLevel
+timeout
+retryPolicy
+idempotencyPolicy
+auditRequirement
+approvalRequirement
+costProfile
+```
+
+---
+
+# 52. TOOL EXECUTION
+
+Never:
+
+```text
+LLM
+→ arbitrary HTTP request
+```
+
+Instead:
+
+```text
+LLM intent
+ ↓
+tool lookup
+ ↓
+schema validation
+ ↓
+authorization
+ ↓
+tenant validation
+ ↓
+policy validation
+ ↓
+risk check
+ ↓
+approval if necessary
+ ↓
+execute
+ ↓
+validate output
+ ↓
+audit
+```
+
+---
+
+# 53. TOOL OUTPUT IS UNTRUSTED
+
+A tool can return malicious or malformed content.
+
+Never allow tool output to rewrite:
+
+* system instructions
+* policies
+* authorization
+* system configuration
+
+---
+
+# 54. TOOL IDEMPOTENCY
+
+Any external side effect must use an idempotency mechanism.
+
+Examples:
+
+```text
+send
+create
+submit
+update
+purchase
+book
+publish
+delete
+```
+
+A retry must not accidentally perform the side effect twice.
+
+---
+
+# 55. ACTION STATE MACHINE
+
+Represent external actions explicitly:
+
+```text
+PROPOSED
+ ↓
+VALIDATED
+ ↓
+AUTHORIZED
+ ↓
+EXECUTING
+ ↓
+EXECUTED
+ ↓
+VERIFIED
+```
+
+With possible failure states:
+
+```text
+REJECTED
+FAILED
+CANCELLED
+TIMED_OUT
+```
+
+Do not represent external actions with a single boolean.
+
+---
+
+# 56. HUMAN APPROVAL
+
+Define risk levels:
+
+```text
+LOW
+MEDIUM
+HIGH
+CRITICAL
+```
+
+Example principle:
+
+```text
+LOW
+→ automatic
+
+MEDIUM
+→ configurable
+
+HIGH
+→ human approval
+
+CRITICAL
+→ mandatory human approval
+```
+
+The exact classification is domain-specific.
+
+---
+
+# 57. DURABLE HUMAN APPROVAL
+
+For workflows requiring waiting:
+
+```text
+Inngest
+ ↓
+pause
+ ↓
+await approval event
+ ↓
+resume
+```
+
+Do not keep servers occupied while waiting.
+
+---
+
+# 58. PROMPT INJECTION DEFENSE
+
+Defend against:
+
+```text
+direct prompt injection
+indirect prompt injection
+malicious documents
+malicious websites
+malicious emails
+tool-output injection
+data exfiltration
+system-prompt extraction
+instruction smuggling
+```
+
+Treat:
+
+```text
+system rules
+developer rules
+user instructions
+retrieved content
+tool output
+external content
+```
+
+as different trust domains.
+
+---
+
+# 59. DATA CLASSIFICATION
+
+Support:
+
+```text
+PUBLIC
+INTERNAL
+CONFIDENTIAL
+RESTRICTED
+```
+
+Apply policy to:
+
+```text
+storage
+retrieval
+model selection
+tool use
+logging
+export
+sharing
+```
+
+---
+
+# 60. MODEL DATA POLICY
+
+The model router must know whether a particular provider/model is permitted to receive particular data classes.
+
+For example:
+
+```text
+restricted data
+→ only approved providers
+```
+
+Do not rely on developers remembering provider rules manually.
+
+Enforce policy centrally.
+
+---
+
+# 61. SECURITY BOUNDARY
+
+The architecture must distinguish:
+
+```text
+authentication
+authorization
+policy
+data access
+model access
+tool access
+audit
+```
+
+Do not collapse all security into authentication.
+
+---
+
+# 62. TENANT ISOLATION
+
+Use a concrete strategy.
+
+For most ordinary data, investigate:
+
+```text
+tenant_id
++
+Postgres authorization / RLS
++
+application authorization
+```
+
+Use stronger physical isolation when justified by:
+
+* regulatory requirements
+* threat model
+* customer requirements
+* scale
+* operational boundaries
+
+Do not blindly create one database branch per tenant.
+
+Do not assume a branch is a universal multi-tenancy mechanism.
+
+---
+
+# 63. CROSS-TENANT ATTACK TESTING
+
+Create explicit adversarial tests:
+
+```text
+tenant A asks for tenant B data
+tenant A supplies tenant B identifiers
+retrieved chunk belongs to another tenant
+memory search crosses tenant boundary
+tool request targets another organization
+```
+
+Every one must fail safely.
+
+---
+
+# 64. KNOWLEDGE VS. MEMORY VS. APPLICATION DATA
+
+Do not mix these concepts.
+
+```text
+APPLICATION DATA
+= operational source of truth
+
+KNOWLEDGE
+= derived/curated information used for cognition
+
+MEMORY
+= retained experience/preferences/context
+
+MODEL
+= reasoning engine
+```
+
+The Brain should query the correct layer based on task.
+
+---
+
+# 65. SOURCE-OF-TRUTH RULE
+
+If operational data exists in an authoritative application database, that database remains authoritative.
+
+The Brain should not create an AI-generated duplicate truth source.
+
+For example:
+
+```text
+transaction status
+```
+
+should come from the transaction system.
+
+The Brain may interpret it.
+
+---
+
+# 66. KNOWLEDGE PROVENANCE LINEAGE
+
+Maintain lineage such as:
+
+```text
+SOURCE DOCUMENT
+ ↓
+DOCUMENT VERSION
+ ↓
+SECTION
+ ↓
+CHUNK
+ ↓
+CLAIM
+ ↓
+EVIDENCE
+ ↓
+KNOWLEDGE ITEM
+ ↓
+EMBEDDING
+ ↓
+RETRIEVAL
+ ↓
+ANSWER
+```
+
+Each stage should have stable identifiers.
+
+---
+
+# 67. DOCUMENT INGESTION PIPELINE
+
+Use a durable pipeline:
+
+```text
+upload
+ ↓
+validation
+ ↓
+security scan
+ ↓
+extraction
+ ↓
+parsing
+ ↓
+normalization
+ ↓
+metadata
+ ↓
+structure detection
+ ↓
+chunking
+ ↓
+embedding
+ ↓
+claim extraction
+ ↓
+provenance
+ ↓
+indexing
+ ↓
+quality validation
+```
+
+Use background processing for expensive jobs.
+
+---
+
+# 68. CHUNKING
+
+Chunk according to content structure.
+
+Different content may require different strategies:
+
+```text
+legal
+technical
+code
+tables
+contracts
+conversations
+FAQs
+manuals
+reports
+```
+
+Preserve document hierarchy.
+
+Do not destroy section relationships.
+
+---
+
+# 69. EMBEDDING VERSIONING
+
+Store:
+
+```text
+embedding_model
+embedding_version
+dimensions
+created_at
+```
+
+Do not mix incompatible embeddings carelessly.
+
+Support reindexing:
+
+```text
+old index
+ ↓
+new embedding generation
+ ↓
+validation
+ ↓
+new index
+ ↓
+controlled cutover
+```
+
+---
+
+# 70. MEMORY EMBEDDINGS
+
+Use the same infrastructure principles for memory.
+
+Do not assume the embedding model remains unchanged forever.
+
+Memory retrieval must know which embedding version produced each vector.
+
+---
+
+# 71. SEMANTIC CACHE
+
+Caching can be used where appropriate.
+
+Potential caches:
+
+```text
+response cache
+retrieval cache
+embedding cache
+tool result cache
+document processing cache
+```
+
+Every cache requires:
+
+```text
+expiry
+scope
+version
+invalidation
+privacy boundary
+```
+
+Do not cache restricted data without understanding the security consequences.
+
+---
+
+# 72. TURSO STRATEGY
+
+Do not use Turso merely because:
+
+> “Turso supports vector search.”
+
+Use it where it solves an actual requirement.
+
+Potential valid uses:
+
+```text
+local/offline retrieval
+device-local memory
+embedded replicas
+edge retrieval
+mobile workloads
+local model integration
+```
+
+Canonical authoritative Brain state remains in the chosen source of truth unless a subsystem is explicitly designed otherwise.
+
+---
+
+# 73. OBSERVABILITY
+
+Every Brain request needs a trace.
+
+Conceptually:
+
+```text
+request
+ ↓
+identity
+ ↓
+policy
+ ↓
+task routing
+ ↓
+memory
+ ↓
+knowledge
+ ↓
+retrieval
+ ↓
+reranking
+ ↓
+model
+ ↓
+tools
+ ↓
+verification
+ ↓
+response
+ ↓
+learning event
+```
+
+Track:
+
+```text
+requestId
+tenant
+application
+model
+provider
+latency
+tokens
+retrieval count
+tool count
+fallback
+error
+cost
+```
+
+Never log secrets.
+
+---
+
+# 74. CORRELATION IDS
+
+All asynchronous and cross-service workflows should preserve:
+
+```text
+requestId
+traceId
+tenantId
+applicationId
+sessionId
+workflowId
+```
+
+This is essential for debugging and audit.
+
+---
+
+# 75. COST ENGINE
+
+Measure:
+
+```text
+cost/request
+cost/user
+cost/tenant
+cost/application
+cost/model
+cost/tool
+cost/workflow
+cost/learning job
+```
+
+The Brain should know its economics.
+
+---
+
+# 76. COST-AWARE ROUTING
+
+Create policy modes:
+
+```text
+LOW_COST
+BALANCED
+HIGH_QUALITY
+CRITICAL
+```
+
+Do not use the most expensive model unnecessarily.
+
+Do not force high-risk work onto cheap models merely to save money.
+
+---
+
+# 77. LATENCY ENGINEERING
+
+Measure:
+
+```text
+TTFT
+p50
+p95
+p99
+retrieval latency
+database latency
+model latency
+tool latency
+verification latency
+```
+
+Do not invent unrealistic targets before measuring the current system.
+
+First establish baseline.
+
+Then define targets.
+
+---
+
+# 78. PERFORMANCE BASELINE
+
+Phase 0 should create a baseline.
+
+Record:
+
+```text
+current latency
+current token usage
+current cost
+current error rate
+current retrieval metrics
+current failure rate
+```
+
+Every future optimization should compare against baseline.
+
+---
+
+# 79. COGNITIVE ROUTING
+
+The Brain should decide the minimal amount of intelligence needed.
+
+Example:
+
+```text
+Known database value
+→ SQL
+
+Simple arithmetic
+→ calculator
+
+Known policy
+→ policy engine
+
+Exact document question
+→ retrieval
+
+Complex synthesis
+→ reasoning model
+
+Multi-step external workflow
+→ agent
+```
+
+This is one of the most important cost and reliability mechanisms.
+
+---
+
+# 80. AGENT ARCHITECTURE
+
+Agents are optional execution strategies.
+
+Do not make every request agentic.
+
+Use:
+
+```text
+direct response
+```
+
+before:
+
+```text
+retrieval
+```
+
+before:
+
+```text
+tool use
+```
+
+before:
+
+```text
+bounded agent
+```
+
+before:
+
+```text
+multi-agent workflow
+```
+
+Only escalate when necessary.
+
+---
+
+# 81. AGENT LOOP
+
+A bounded agent may use:
+
+```text
+UNDERSTAND
+ ↓
+PLAN
+ ↓
+ACT
+ ↓
+OBSERVE
+ ↓
+VERIFY
+ ↓
+COMPLETE / CONTINUE
+```
+
+Every loop must have:
+
+```text
+max iterations
+max tool calls
+max time
+max cost
+progress detection
+repeat detection
+failure handling
+```
+
+---
+
+# 82. MULTI-AGENT
+
+Use multiple agents only when specialization materially improves outcomes.
+
+Potential roles:
+
+```text
+research
+reasoning
+coding
+document analysis
+verification
+compliance
+operations
+```
+
+Do not create dozens of agents for cosmetic architecture.
+
+---
+
+# 83. VERIFICATION ENGINE
+
+Verification should be independent enough to catch errors.
+
+Possible checks:
+
+```text
+schema correctness
+source existence
+citation correctness
+calculation
+policy compliance
+tool result consistency
+temporal consistency
+contradiction
+```
+
+Do not assume:
+
+```text
+second LLM says correct
+```
+
+means:
+
+```text
+factually correct
+```
+
+Evidence is stronger than another model's confidence.
+
+---
+
+# 84. EVIDENCE STATUS
+
+Use interpretable labels:
+
+```text
+VERIFIED
+SUPPORTED
+INFERRED
+UNCERTAIN
+CONFLICTED
+UNSUPPORTED
+UNKNOWN
+```
+
+Do not expose arbitrary probability numbers as if they were objectively calibrated truth unless calibration has actually been demonstrated.
+
+---
+
+# 85. NO HIDDEN CHAIN-OF-THOUGHT FEATURE
+
+Do not design the product around exposing private hidden reasoning.
+
+Instead preserve useful structured audit information:
+
+```text
+decision
+reason code
+evidence
+tool used
+policy applied
+verification status
+```
+
+This supports debugging without requiring exposure of private internal reasoning.
+
+---
+
+# 86. EVALUATION SYSTEM — START NOW
+
+Do not defer evaluation to the end of the project.
+
+Begin with a small golden dataset.
+
+Grow it continuously.
+
+---
+
+# 87. GOLDEN DATASET
+
+Create representative cases covering:
+
+```text
+simple questions
+complex questions
+memory
+knowledge
+retrieval
+tool use
+authorization
+security
+contradictions
+temporal questions
+multilingual cases
+failure cases
+```
+
+Every major Brain change should run against the golden set.
+
+---
+
+# 88. RETRIEVAL METRICS
+
+Track:
+
+```text
+Recall
+Precision
+MRR
+nDCG
+hit rate
+evidence coverage
+```
+
+Measure whether the correct evidence was retrieved.
+
+Do not optimize vector similarity in isolation.
+
+---
+
+# 89. ANSWER METRICS
+
+Track where measurable:
+
+```text
+groundedness
+factual correctness
+instruction compliance
+task completion
+citation correctness
+hallucination
+security violations
+```
+
+Use automated evaluation where reliable.
+
+Use human evaluation where automated judgment is weak.
+
+---
+
+# 90. TOOL METRICS
+
+Track:
+
+```text
+correct tool selection
+correct parameters
+tool success
+tool failure
+unnecessary tool calls
+duplicate tool calls
+authorization failures
+```
+
+---
+
+# 91. MEMORY METRICS
+
+Track:
+
+```text
+memory precision
+memory recall
+irrelevant retrieval
+stale memory
+duplicate memory
+incorrect memory
+user correction rate
+```
+
+A larger memory is not automatically a better memory.
+
+---
+
+# 92. MODEL ROUTING METRICS
+
+Track:
+
+```text
+quality by task
+cost by task
+latency by task
+fallback rate
+failure rate
+```
+
+Use results to improve routing.
+
+---
+
+# 93. ONLINE FEEDBACK
+
+Capture:
+
+```text
+thumbs up/down
+corrections
+edits
+retries
+regenerations
+task completion
+tool outcome
+```
+
+Do not treat feedback as ground truth automatically.
+
+Feedback becomes evidence for analysis.
+
+---
+
+# 94. LEARNING PIPELINE
+
+The full learning system is:
+
+```text
+PRODUCTION EVENT
+ ↓
+OBSERVATION
+ ↓
+CANDIDATE INSIGHT
+ ↓
+CLASSIFICATION
+ ↓
+PROVENANCE
+ ↓
+NOVELTY
+ ↓
+DUPLICATION
+ ↓
+CONTRADICTION
+ ↓
+QUALITY
+ ↓
+PROMOTION DECISION
+ ↓
+INDEX / MEMORY / KNOWLEDGE
+```
+
+---
+
+# 95. LEARNING CATEGORIES
+
+Distinguish:
+
+```text
+memory learning
+knowledge learning
+procedural learning
+retrieval improvement
+routing improvement
+prompt improvement
+tool improvement
+evaluation improvement
+model training
+```
+
+Do not collapse all of these into “learning.”
+
+---
+
+# 96. CONTINUOUS IMPROVEMENT
+
+The Brain should improve through:
+
+```text
+data
+ ↓
+evaluation
+ ↓
+experiments
+ ↓
+measured improvement
+ ↓
+controlled deployment
+ ↓
+monitoring
+```
+
+Not:
+
+```text
+AI talks
+ ↓
+AI remembers itself
+ ↓
+AI becomes smarter
+```
+
+---
+
+# 97. PRODUCTION SELF-CHANGE PROHIBITION
+
+Do not allow the Brain to silently modify:
+
+```text
+production policies
+authorization
+security rules
+system prompts
+tool permissions
+model routing
+data retention
+database schemas
+```
+
+based solely on its own generated output.
+
+These must be version-controlled and governed.
+
+---
+
+# 98. EXPERIMENT FRAMEWORK
+
+Test changes such as:
+
+```text
+prompt version
+retrieval strategy
+chunking
+reranking
+model
+routing
+memory policy
+tool strategy
+verification
+```
+
+Each experiment should contain:
+
+```text
+experimentId
+hypothesis
+baseline
+variant
+population
+metrics
+result
+decision
+rollback
+```
+
+---
+
+# 99. PROMPT MANAGEMENT
+
+Prompts must be modular.
+
+Separate:
+
+```text
+identity
+system policy
+task instruction
+tool instruction
+domain rules
+context
+output format
+```
+
+Do not create one giant prompt containing the entire Brain.
+
+---
+
+# 100. POLICY ENGINE
+
+Policies must be executable code/configuration.
+
+Do not encode critical rules only inside natural-language prompts.
+
+Policies may control:
+
+```text
+data access
+model selection
+tool use
+memory
+retention
+external providers
+human approval
+actions
+```
+
+---
+
+# 101. POLICY VERSIONING
+
+Every major policy should have:
+
+```text
+version
+effectiveAt
+status
+author
+reason
+change record
+```
+
+Where applicable:
+
+```text
+draft
+active
+deprecated
+retired
+```
+
+---
+
+# 102. APPLICATION-SPECIFIC POLICIES
+
+Applications such as:
+
+```text
+SGTX
+Wasl
+Mashahd
+Wedjat RMS
+Aurienta
+Justice OS
+Dental OS
+```
+
+may require different rules.
+
+Do not make every application obey one giant undifferentiated Brain policy.
+
+Use inheritance:
+
+```text
+global Brain policy
+↓
+application policy
+↓
+tenant policy
+↓
+user/session policy
+```
+
+with explicit override rules.
+
+---
+
+# 103. GOVERNANCE BOUNDARY
+
+The Brain can advise other systems.
+
+It does not automatically replace their internal governance engines.
+
+Examples:
+
+```text
+SGTX Governor remains authoritative
+application authorization remains authoritative
+financial controls remain authoritative
+court workflow authorization remains authoritative
+restaurant operational permissions remain authoritative
+```
+
+The Brain integrates with systems rather than swallowing them.
+
+---
+
+# 104. DATA RETENTION
+
+Create retention policies by data type:
+
+```text
+raw conversation
+episodic memory
+semantic memory
+knowledge
+audit
+security event
+tool result
+evaluation
+learning candidate
+```
+
+Do not retain everything indefinitely.
+
+Do not delete required audit/history merely because it is no longer useful to retrieval.
+
+---
+
+# 105. DELETION
+
+Support:
+
+```text
+user-requested deletion
+tenant deletion
+memory deletion
+knowledge removal
+document removal
+derived-index removal
+embedding removal
+cache invalidation
+```
+
+Deleting a source should trigger investigation of derived objects.
+
+---
+
+# 106. DERIVED-DATA GRAPH
+
+Track which objects derive from which sources.
+
+For example:
+
+```text
+document
+→ chunks
+→ embeddings
+→ claims
+→ knowledge
+→ memories
+→ cached retrieval
+```
+
+This helps with deletion, correction, and reprocessing.
+
+---
+
+# 107. CORRECTION PROPAGATION
+
+When a source changes:
+
+```text
+source changed
+ ↓
+identify dependent knowledge
+ ↓
+revalidate
+ ↓
+supersede
+ ↓
+reindex
+ ↓
+invalidate cache
+```
+
+Do not allow stale derived knowledge to survive indefinitely.
+
+---
+
+# 108. KNOWLEDGE HEALTH
+
+Monitor:
+
+```text
+freshness
+provenance coverage
+conflict rate
+duplication
+verification coverage
+retrieval success
+staleness
+```
+
+Do not reduce all knowledge quality to one meaningless score.
+
+---
+
+# 109. MEMORY HEALTH
+
+Monitor:
+
+```text
+irrelevant-memory rate
+stale-memory rate
+wrong-memory rate
+duplicate-memory rate
+correction rate
+retrieval usefulness
+```
+
+---
+
+# 110. BRAIN SELF-DIAGNOSTICS
+
+The Brain should monitor:
+
+```text
+model availability
+database availability
+retrieval health
+embedding health
+tool health
+event backlog
+learning backlog
+evaluation backlog
+cost anomalies
+latency anomalies
+security anomalies
+```
+
+The Brain should be able to report degraded subsystem status.
+
+---
+
+# 111. FAILURE ARCHITECTURE
+
+Handle:
+
+```text
+provider outage
+timeout
+rate limit
+database outage
+retrieval failure
+tool failure
+malformed output
+network error
+workflow interruption
+duplicate event
+replayed event
+partial completion
+```
+
+Use:
+
+```text
+retry
+backoff
+fallback
+idempotency
+circuit breaker where appropriate
+dead-letter handling where appropriate
+durable checkpoints
+```
+
+---
+
+# 112. DO NOT RETRY EVERYTHING
+
+Retries must be context-aware.
+
+Safe retry:
+
+```text
+read operation
+```
+
+Potentially unsafe retry:
+
+```text
+external side effect
+```
+
+Always understand whether the operation is idempotent.
+
+---
+
+# 113. EVENT ARCHITECTURE
+
+Use versioned events.
+
+Examples:
+
+```text
+brain.requested
+brain.responded
+brain.failed
+brain.memory.candidate
+brain.memory.promoted
+brain.memory.superseded
+brain.knowledge.candidate
+brain.knowledge.validated
+brain.knowledge.conflict
+brain.document.ingested
+brain.tool.requested
+brain.tool.completed
+brain.tool.failed
+brain.evaluation.requested
+brain.evaluation.completed
+brain.model.fallback
+brain.approval.required
+brain.approval.received
+```
+
+Events must be:
+
+```text
+versioned
+traceable
+idempotent
+auditable
+```
+
+---
+
+# 114. EVENT SCHEMA
+
+Conceptually:
+
+```typescript
+interface BrainEvent<T> {
+  eventId: string;
+  eventType: string;
+  eventVersion: number;
+
+  timestamp: string;
+
+  requestId?: string;
+  tenantId: string;
+  applicationId: string;
+
+  actor?: {
+    type: "user" | "agent" | "service" | "system";
+    id: string;
+  };
+
+  data: T;
+}
+```
+
+Adapt to current infrastructure.
+
+---
+
+# 115. DATABASE ARCHITECTURE
+
+Do not implement the following blindly.
+
+First compare them against the current schema.
+
+Potential domains:
+
+```text
+users
+organizations
+tenants
+applications
+agents
+
+sessions
+conversations
+messages
+
+memory_items
+memory_versions
+memory_events
+
+knowledge_items
+knowledge_versions
+knowledge_claims
+knowledge_entities
+knowledge_relations
+knowledge_sources
+knowledge_evidence
+knowledge_conflicts
+knowledge_reviews
+
+documents
+document_versions
+document_sections
+document_chunks
+embeddings
+
+tools
+tool_permissions
+tool_executions
+
+brain_runs
+brain_steps
+brain_events
+
+models
+model_capabilities
+model_routes
+model_usage
+
+prompts
+prompt_versions
+
+policies
+policy_versions
+
+feedback
+learning_candidates
+learning_decisions
+
+evaluation_sets
+evaluation_cases
+evaluation_runs
+evaluation_results
+
+audit_events
+security_events
+
+cache_entries
+jobs
+```
+
+Merge with existing tables wherever safe.
+
+---
+
+# 116. DATABASE PRINCIPLES
+
+Use:
+
+```text
+foreign keys
+unique constraints
+check constraints
+transactions
+indexes
+proper types
+migration files
+```
+
+Do not treat JSONB as an excuse not to model important relationships.
+
+Use JSONB for legitimately flexible metadata.
+
+---
+
+# 117. INDEXING
+
+Index based on actual queries.
+
+Expected indexing areas may include:
+
+```text
+tenant
+application
+user
+status
+timestamp
+validity
+entity
+knowledge type
+memory type
+source
+embedding
+```
+
+Do not add hundreds of speculative indexes.
+
+Measure query performance.
+
+---
+
+# 118. VECTOR INDEXING
+
+Use pgvector where it makes sense.
+
+Tune:
+
+```text
+HNSW parameters
+search depth
+filter strategy
+candidate count
+reranking
+```
+
+based on actual evaluation and workload.
+
+Do not blindly copy benchmark parameters from unrelated datasets.
+
+---
+
+# 119. HYBRID SEARCH
+
+Where available and useful, combine:
+
+```text
+vector
++
+keyword/full-text
++
+structured filters
+```
+
+Do not add Elasticsearch/OpenSearch or another search system automatically.
+
+First determine whether Postgres capabilities are sufficient.
+
+---
+
+# 120. MICROservice POLICY
+
+Default:
+
+```text
+modular monolith
+```
+
+Potentially split:
+
+```text
+ingestion worker
+evaluation worker
+heavy processing
+special security boundary
+high-scale subsystem
+```
+
+only when justified.
+
+Avoid:
+
+```text
+30 microservices because the architecture has 30 modules
+```
+
+---
+
+# 121. MODULE BOUNDARIES
+
+At minimum maintain logical boundaries for:
+
+```text
+identity
+policy
+memory
+knowledge
+retrieval
+context
+models
+tools
+verification
+learning
+evaluation
+observability
+```
+
+These can initially live inside one or a small number of deployables.
+
+---
+
+# 122. DEVELOPER EXPERIENCE
+
+The system must be easy to maintain.
+
+Provide:
+
+```text
+typed contracts
+clear module ownership
+documentation
+architecture decision records
+test fixtures
+local development setup
+seed data
+evaluation fixtures
+debug tooling
+```
+
+Do not make developers reverse-engineer Brain behavior from prompts.
+
+---
+
+# 123. ENVIRONMENT MANAGEMENT
+
+Use separate environments:
+
+```text
+development
+preview
+staging where applicable
+production
+```
+
+Do not use production secrets locally unless explicitly required and securely handled.
+
+Never print secret values.
+
+---
+
+# 124. SECRET MANAGEMENT
+
+Secrets must never enter:
+
+```text
+logs
+memory
+knowledge
+embeddings
+prompts
+tool results
+audit content
+evaluation datasets
+Git
+```
+
+unless intentionally redacted/safely represented.
+
+---
+
+# 125. RATE LIMITING
+
+Implement separate limits for:
+
+```text
+user
+tenant
+application
+IP where applicable
+tool
+model
+workflow
+```
+
+Do not let one tenant consume all available Brain capacity.
+
+---
+
+# 126. ABUSE CONTROLS
+
+Detect:
+
+```text
+prompt flooding
+tool abuse
+expensive loops
+automated scraping
+repeated failed auth
+repeated expensive requests
+```
+
+Use appropriate throttling.
+
+---
+
+# 127. BRAIN OBSERVABILITY DASHBOARD
+
+Build internal visibility into:
+
+```text
+requests
+latency
+model usage
+cost
+fallbacks
+tool calls
+errors
+retrieval
+memory
+knowledge
+learning
+evaluation
+security
+```
+
+Important anomalies should be visible without searching raw logs manually.
+
+---
+
+# 128. REQUEST TRACE VIEW
+
+For authorized administrators, provide an execution trace such as:
+
+```text
+Request
+ ↓
+Task Router
+ ↓
+Memory Retrieval
+ ↓
+Knowledge Retrieval
+ ↓
+Model Selection
+ ↓
+Tool
+ ↓
+Verification
+ ↓
+Response
+```
+
+Show metadata and reason codes.
+
+Do not expose private hidden reasoning.
+
+---
+
+# 129. AUDIT LOG
+
+Significant events must be recorded.
+
+Examples:
+
+```text
+knowledge promotion
+policy change
+tool authorization
+external action
+human approval
+model fallback
+security violation
+tenant boundary violation attempt
+configuration change
+```
+
+---
+
+# 130. AUDIT IMMUTABILITY
+
+Where audit requirements justify it:
+
+```text
+append-only records
+tamper-evident identifiers
+restricted modification
+```
+
+Do not let ordinary application code silently rewrite historical audit records.
+
+---
+
+# 131. EXPERIMENT VERSIONING
+
+Version:
+
+```text
+prompts
+retrieval strategy
+reranking
+models
+model routes
+memory policies
+embedding models
+tools
+policies
+evaluation sets
+```
+
+A production result must be traceable to the versions used.
+
+---
+
+# 132. FEATURE FLAGS
+
+Use controlled rollout for:
+
+```text
+new_model_router
+new_retriever
+new_memory_policy
+new_embedding
+new_verifier
+new_agent strategy
+```
+
+Allow:
+
+```text
+enable
+disable
+roll back
+```
+
+without emergency code rewrites.
+
+---
+
+# 133. DEFINITION OF DONE
+
+A Brain component is NOT complete until:
+
+```text
+DESIGNED
+IMPLEMENTED
+UNIT TESTED
+INTEGRATION TESTED
+SECURITY TESTED
+OBSERVABLE
+DOCUMENTED
+MIGRATED
+DEPLOYED
+SMOKE TESTED
+ROLLBACK CONSIDERED
+```
+
+---
+
+# 134. ARCHITECTURE GATES
+
+## GATE 0 — CURRENT STATE
+
+Must have:
+
+```text
+repository audit
+dependency audit
+database audit
+AI audit
+deployment audit
+security audit
+```
+
+---
+
+## GATE 1 — FOUNDATION
+
+Must have:
+
+```text
+Brain API
+identity
+tenant context
+policy layer
+correlation IDs
+basic observability
+database integration
+model abstraction
+```
+
+---
+
+## GATE 2 — MEMORY
+
+Must have:
+
+```text
+episodic memory
+semantic memory
+procedural memory
+lifecycle
+scope
+retrieval
+deletion
+tests
+```
+
+---
+
+## GATE 3 — KNOWLEDGE
+
+Must have:
+
+```text
+source
+evidence
+provenance
+versions
+claims
+conflict state
+promotion workflow
+```
+
+---
+
+## GATE 4 — INTELLIGENCE
+
+Must have:
+
+```text
+task router
+retrieval
+context engine
+model router
+fallback
+verification
+```
+
+---
+
+## GATE 5 — ACTION
+
+Must have:
+
+```text
+tool registry
+permissions
+schema validation
+risk classification
+idempotency
+audit
+approval where required
+```
+
+---
+
+## GATE 6 — LEARNING
+
+Must have:
+
+```text
+candidate generation
+feedback
+evaluation
+promotion
+memory consolidation
+knowledge refresh
+```
+
+---
+
+## GATE 7 — SCALE
+
+Only after actual traffic demonstrates need:
+
+```text
+advanced caching
+edge retrieval
+advanced routing
+local models
+more specialized services
+```
+
+---
+
+# 135. PHASE 0 — AUDIT
+
+Deliver:
+
+```text
+Current architecture diagram
+Current database map
+Current AI integration map
+Current API map
+Current deployment map
+Security findings
+Performance baseline
+Cost baseline
+Gap analysis
+Migration plan
+```
+
+Do not modify major components yet.
+
+---
+
+# 136. PHASE 1 — BRAIN FOUNDATION
+
+Implement:
+
+```text
+Brain API
+Brain Runtime
+identity context
+tenant context
+policy interface
+model abstraction
+request tracing
+structured errors
+basic audit
+baseline evaluation harness
+```
+
+---
+
+# 137. PHASE 2 — MEMORY
+
+Implement:
+
+```text
+episodic
+semantic
+procedural
+memory lifecycle
+promotion
+retrieval
+consolidation
+deletion
+scope
+```
+
+---
+
+# 138. PHASE 3 — KNOWLEDGE
+
+Implement:
+
+```text
+sources
+documents
+claims
+evidence
+provenance
+versions
+conflicts
+validation
+promotion
+```
+
+---
+
+# 139. PHASE 4 — RETRIEVAL + CONTEXT
+
+Implement:
+
+```text
+semantic retrieval
+keyword retrieval
+SQL retrieval
+metadata filters
+reranking
+context assembly
+temporal retrieval
+entity-aware retrieval
+```
+
+---
+
+# 140. PHASE 5 — MODEL ROUTING
+
+Implement:
+
+```text
+model registry
+capabilities
+routing
+fallbacks
+cost
+latency
+evaluation-based routing
+```
+
+---
+
+# 141. PHASE 6 — TOOLS + ACTIONS
+
+Implement:
+
+```text
+tool registry
+permissions
+risk
+schemas
+execution
+idempotency
+audit
+approval
+verification
+```
+
+---
+
+# 142. PHASE 7 — LEARNING
+
+Implement:
+
+```text
+feedback
+candidate learning
+knowledge promotion
+memory promotion
+consolidation
+refresh
+```
+
+---
+
+# 143. PHASE 8 — EVALUATION
+
+Expand:
+
+```text
+retrieval benchmarks
+answer benchmarks
+security benchmarks
+tool benchmarks
+memory benchmarks
+routing benchmarks
+regression suite
+```
+
+Evaluation is already present in primitive form from Phase 1.
+
+---
+
+# 144. PHASE 9 — SECURITY HARDENING
+
+Expand into:
+
+```text
+red-team testing
+prompt injection
+tool abuse
+cross-tenant leakage
+data exfiltration
+secret extraction
+replay
+authorization bypass
+```
+
+---
+
+# 145. PHASE 10 — PERFORMANCE
+
+Optimize based on measured bottlenecks:
+
+```text
+retrieval
+database
+model selection
+prompt size
+cache
+tool latency
+```
+
+Do not optimize hypothetical bottlenecks.
+
+---
+
+# 146. PHASE 11 — COST OPTIMIZATION
+
+Optimize:
+
+```text
+routing
+caching
+context
+embeddings
+learning frequency
+background workloads
+```
+
+Measure savings.
+
+---
+
+# 147. PHASE 12 — CROSS-PLATFORM BRAIN
+
+Integrate applications through stable Brain contracts.
+
+Each application must retain:
+
+```text
+application identity
+policy
+tools
+knowledge scope
+memory scope
+permissions
+```
+
+---
+
+# 148. PHASE 13 — ADVANCED LOCAL AI
+
+Only after the primary system works:
+
+```text
+local models
+local embeddings
+Turso local retrieval
+Ollama where appropriate
+hybrid cloud/local routing
+```
+
+Local AI should solve privacy, cost, latency, or availability requirements—not be added as decoration.
+
+---
+
+# 149. PHASE 14 — FINE-TUNING / SPECIALIZED MODELS
+
+Only after a large curated evaluation and training dataset exists.
+
+Fine-tuning must have:
+
+```text
+measured problem
+training dataset
+held-out evaluation
+baseline
+success criteria
+rollback
+```
+
+---
+
+# 150. TRAINING DATA GOVERNANCE
+
+Production data must pass:
+
+```text
+RAW
+ ↓
+ELIGIBILITY
+ ↓
+REDACTION
+ ↓
+CURATION
+ ↓
+APPROVAL
+ ↓
+TRAINING OR EVALUATION
+```
+
+Never mix benchmark/evaluation cases into training accidentally.
+
+---
+
+# 151. MODEL TRAINING VS SYSTEM LEARNING
+
+Explicitly maintain:
+
+```text
+SYSTEM LEARNING
+=
+memory
+knowledge
+retrieval
+routing
+policies
+prompts
+tools
+evaluation
+
+MODEL TRAINING
+=
+weights or model parameters
+```
+
+Do not call system-level memory updates “model retraining.”
+
+---
+
+# 152. MULTIMODAL ARCHITECTURE
+
+Design for:
+
+```text
+text
+images
+documents
+audio
+video
+structured data
+```
+
+All modalities should eventually connect to:
+
+```text
+identity
+memory
+knowledge
+evidence
+retrieval
+tools
+evaluation
+```
+
+Do not build unrelated intelligence stacks for each modality.
+
+---
+
+# 153. TEMPORAL REASONING
+
+Support questions such as:
+
+```text
+What is true now?
+What was true in 2024?
+What changed?
+What became effective yesterday?
+What will become effective next month?
+```
+
+Temporal metadata must influence retrieval.
+
+---
+
+# 154. MULTILINGUAL ARCHITECTURE
+
+Support multilingual content.
+
+Track:
+
+```text
+language
+original language
+translation
+locale
+```
+
+Preserve original evidence.
+
+Do not translate away critical source meaning before storing provenance.
+
+---
+
+# 155. INTERNATIONALIZATION
+
+The Brain should not assume that:
+
+```text
+one law
+one currency
+one date format
+one jurisdiction
+one language
+```
+
+applies globally.
+
+Domain/application context must influence reasoning.
+
+---
+
+# 156. DOMAIN ONTOLOGIES
+
+Build domain-specific ontologies only where useful.
+
+Examples may include:
+
+```text
+trade
+restaurants
+media
+business formation
+documents
+courts
+dental
+finance
+```
+
+These should be modular.
+
+Do not contaminate global knowledge with domain assumptions.
+
+---
+
+# 157. WEDJAT BRAIN + DOMAIN ENGINES
+
+The architecture should eventually support:
+
+```text
+Core Brain
+  +
+Domain Intelligence Modules
+```
+
+Example:
+
+```text
+Core Brain
+   │
+   ├── Trade intelligence
+   ├── Media intelligence
+   ├── Restaurant intelligence
+   ├── Business intelligence
+   ├── Justice intelligence
+   └── Dental intelligence
+```
+
+The core Brain supplies:
+
+```text
+memory
+retrieval
+reasoning
+policy
+tools
+evaluation
+```
+
+Domain modules supply specialized knowledge and tools.
+
+---
+
+# 158. APPLICATION API OWNERSHIP
+
+Each major product may maintain its own domain APIs.
+
+Wedjat Brain should not force every domain operation into a generic “AI API.”
+
+For example:
+
+```text
+SGTX APIs
+RMS APIs
+Mashahd APIs
+Wasl APIs
+```
+
+remain domain systems.
+
+Brain APIs provide intelligence on top.
+
+---
+
+# 159. NO DATABASE COUPLING ACROSS APPLICATIONS
+
+Do not let every product directly query every other product's database.
+
+Prefer:
+
+```text
+application API
++
+Brain abstraction
++
+authorized service contracts
+```
+
+This reduces accidental coupling.
+
+---
+
+# 160. BRAIN ORCHESTRATION
+
+The Brain should coordinate intelligence.
+
+It should not become a replacement for every application's backend.
+
+Keep:
+
+```text
+business truth
+```
+
+inside the owning application.
+
+Keep:
+
+```text
+cognitive coordination
+```
+
+inside Wedjat Brain.
+
+---
+
+# 161. DETERMINISTIC RULES
+
+Where exactness matters, use deterministic mechanisms.
+
+Examples:
+
+```text
+authorization
+calculations
+schema validation
+state transitions
+limits
+data integrity
+workflow constraints
+```
+
+Use LLMs for reasoning, not for tasks that software can execute more reliably.
+
+---
+
+# 162. BRAIN SELF-CHECK
+
+Before finalizing an answer/action, ask internally:
+
+```text
+Do I have sufficient evidence?
+Am I using current data?
+Am I allowed to access this?
+Am I allowed to act?
+Did I use the correct tool?
+Did the tool succeed?
+Is there a conflict?
+Is this fact, inference, or opinion?
+```
+
+This must be implemented partly in code, not merely in prompts.
+
+---
+
+# 163. UNKNOWN / INSUFFICIENT EVIDENCE
+
+The Brain must be able to return:
+
+```text
+UNKNOWN
+```
+
+or:
+
+```text
+INSUFFICIENT EVIDENCE
+```
+
+rather than inventing an answer.
+
+This is a strength, not a failure.
+
+---
+
+# 164. SOURCE-AWARE ANSWERS
+
+Where source-backed information matters, retain:
+
+```text
+source
+timestamp
+version
+evidence
+```
+
+Do not invent citations.
+
+Do not cite a source the system did not use.
+
+---
+
+# 165. NO FAKE CONFIDENCE
+
+Do not allow a model to say:
+
+```text
+confidence = 97%
+```
+
+unless the metric has a documented interpretation.
+
+Prefer:
+
+```text
+verified
+supported
+inferred
+uncertain
+conflicted
+unsupported
+```
+
+---
+
+# 166. KNOWLEDGE CONFLICT UX
+
+When evidence conflicts, the system should be able to explain:
+
+```text
+Source A says X.
+Source B says Y.
+The records refer to different effective dates.
+Therefore the current conclusion is uncertain.
+```
+
+This is preferable to silently choosing one.
+
+---
+
+# 167. MEMORY CONTROL UX
+
+Where the product supports persistent memory, allow appropriate users to:
+
+```text
+view memory
+correct memory
+delete memory
+disable memory
+scope memory
+```
+
+Memory should be controllable.
+
+---
+
+# 168. DATA EXPLANATION
+
+For important retrieved knowledge, make it possible to inspect:
+
+```text
+where it came from
+when it entered the Brain
+why it was selected
+what scope it belongs to
+```
+
+Do not expose private reasoning.
+
+---
+
+# 169. TESTING MATRIX
+
+Build tests across:
+
+```text
+unit
+integration
+E2E
+security
+retrieval
+memory
+knowledge
+tool
+routing
+performance
+cost
+failure recovery
+```
+
+---
+
+# 170. ADVERSARIAL TESTING
+
+Intentionally test:
+
+```text
+malicious prompts
+malicious documents
+malicious tool output
+conflicting facts
+stale knowledge
+tenant crossover
+invalid tool arguments
+provider outage
+database timeout
+replayed events
+```
+
+---
+
+# 171. REGRESSION TESTING
+
+Every significant Brain change must run the golden suite.
+
+A change that improves one metric while breaking another must be identified.
+
+Do not evaluate only average quality.
+
+---
+
+# 172. LOAD TESTING
+
+Simulate:
+
+```text
+single user
+many concurrent users
+large tenant
+many tenants
+high tool usage
+high retrieval traffic
+provider outage
+database pressure
+```
+
+Measure:
+
+```text
+throughput
+latency
+errors
+cost
+```
+
+---
+
+# 173. FAILURE GAME DAYS
+
+Periodically simulate:
+
+```text
+primary model unavailable
+database unavailable
+Inngest workflow failure
+tool timeout
+bad retrieval
+embedding mismatch
+```
+
+Verify graceful degradation.
+
+---
+
+# 174. DEGRADATION MODES
+
+Define what happens when:
+
+```text
+model unavailable
+retrieval unavailable
+tool unavailable
+knowledge unavailable
+```
+
+Examples:
+
+```text
+Model unavailable
+→ fallback model
+
+Tool unavailable
+→ explain inability / alternative
+
+Knowledge unavailable
+→ answer from allowed context or state limitation
+
+Database unavailable
+→ safe degraded behavior
+```
+
+Never silently fabricate.
+
+---
+
+# 175. ROLLBACK
+
+Every meaningful change must have a rollback strategy.
+
+Examples:
+
+```text
+prompt rollback
+model rollback
+retrieval rollback
+embedding rollback
+policy rollback
+database migration rollback where practical
+feature flag disable
+```
+
+---
+
+# 176. CHANGE MANAGEMENT
+
+Any high-impact change must record:
+
+```text
+what changed
+why
+risk
+expected effect
+tests
+deployment
+rollback
+```
+
+---
+
+# 177. ARCHITECTURE DECISION RECORDS
+
+For significant decisions create ADRs.
+
+At minimum:
+
+```text
+decision
+context
+options
+selected approach
+reason
+trade-offs
+security
+performance
+cost
+rollback
+```
+
+---
+
+# 178. MINIMUM VIABLE BRAIN
+
+The first real production Brain does NOT need every advanced capability.
+
+Minimum acceptable core:
+
+```text
+Brain API
+Identity
+Tenant isolation
+Policy
+Model abstraction
+Model router
+Episodic memory
+Semantic memory
+Knowledge
+Provenance
+Hybrid retrieval
+Context engine
+Tool registry
+Basic verification
+Observability
+Basic evaluation
+Cost tracking
+Inngest background learning
+```
+
+That is the initial target.
+
+---
+
+# 179. WHAT MUST NOT BE IMPLEMENTED JUST FOR APPEARANCE
+
+Do not add merely because it sounds sophisticated:
+
+```text
+graph database
+multi-agent swarm
+second vector database
+autonomous self-rewriting prompts
+fully autonomous production actions
+fine-tuning
+reinforcement learning
+large-scale distributed microservices
+custom inference infrastructure
+```
+
+unless real evidence justifies them.
+
+---
+
+# 180. ARCHITECTURAL MATURITY MODEL
+
+The Brain should evolve:
+
+```text
+Stage 1
+Structured chatbot
+
+Stage 2
+Memory-aware assistant
+
+Stage 3
+Knowledge-grounded assistant
+
+Stage 4
+Tool-using cognitive system
+
+Stage 5
+Governed agent
+
+Stage 6
+Cross-platform cognitive layer
+
+Stage 7
+Self-improving system infrastructure
+
+Stage 8
+Selective specialized models / local intelligence
+```
+
+Do not pretend Stage 8 exists during Stage 1.
+
+---
+
+# 181. SUCCESS DEFINITION
+
+The Brain is successful when it can demonstrate:
+
+```text
+better retrieval
+better memory
+better evidence
+better tool decisions
+better model selection
+fewer hallucinations
+fewer unnecessary expensive model calls
+better reliability
+better auditability
+better cross-platform reuse
+```
+
+Not merely:
+
+```text
+more tokens
+more agents
+more databases
+more code
+```
+
+---
+
+# 182. FINAL END-TO-END ACCEPTANCE TEST
+
+Create one comprehensive test scenario that performs:
+
+```text
+USER AUTHENTICATION
+ ↓
+TENANT RESOLUTION
+ ↓
+TASK CLASSIFICATION
+ ↓
+MEMORY RETRIEVAL
+ ↓
+KNOWLEDGE RETRIEVAL
+ ↓
+EXACT DATABASE LOOKUP
+ ↓
+MODEL ROUTING
+ ↓
+TOOL CALL
+ ↓
+POLICY CHECK
+ ↓
+AUTHORIZATION
+ ↓
+EXECUTION
+ ↓
+VERIFICATION
+ ↓
+RESPONSE
+ ↓
+AUDIT
+ ↓
+BACKGROUND LEARNING
+ ↓
+EVALUATION
+```
+
+Demonstrate:
+
+1. correct memory retrieval
+2. correct knowledge retrieval
+3. correct temporal reasoning
+4. correct tenant isolation
+5. correct model selection
+6. correct tool selection
+7. correct authorization
+8. safe failure
+9. provenance
+10. audit
+11. learning candidate generation
+12. evaluation
+13. cost tracking
+
+---
+
+# 183. EXPLICIT ANTI-HALLUCINATION TEST
+
+Insert false information into:
+
+```text
+retrieved document
+tool output
+user prompt
+old memory
+```
+
+Verify that the Brain does not blindly promote it to trusted knowledge.
+
+---
+
+# 184. EXPLICIT TENANT-ISOLATION TEST
+
+Create:
+
+```text
+Tenant A
+Tenant B
+```
+
+Add unique secrets/data to each.
+
+Attempt:
+
+```text
+A requesting B
+B requesting A
+indirect retrieval
+semantic search crossover
+tool access crossover
+memory crossover
+```
+
+Every unauthorized path must fail.
+
+---
+
+# 185. EXPLICIT PROVIDER-OUTAGE TEST
+
+Simulate primary model outage.
+
+Verify:
+
+```text
+router detects failure
+ ↓
+approved fallback selected
+ ↓
+response continues
+ ↓
+fallback logged
+ ↓
+cost recorded
+```
+
+---
+
+# 186. EXPLICIT TOOL FAILURE TEST
+
+Make a tool fail after an earlier step succeeded.
+
+Verify:
+
+```text
+previous steps are not unnecessarily repeated
+```
+
+where durable execution semantics permit.
+
+---
+
+# 187. EXPLICIT KNOWLEDGE-CONFLICT TEST
+
+Create:
+
+```text
+Source A: Rule X effective Jan 1
+Source B: Rule Y effective Jul 1
+```
+
+Verify the Brain understands:
+
+```text
+historical period
+current period
+supersession
+```
+
+rather than choosing one blindly.
+
+---
+
+# 188. EXPLICIT MEMORY-CORRECTION TEST
+
+Create a wrong memory.
+
+Then correct it.
+
+Verify:
+
+```text
+old memory
+ ↓
+superseded
+ ↓
+new memory active
+```
+
+and that retrieval prefers the correct current state.
+
+---
+
+# 189. EXPLICIT DELETION TEST
+
+Delete:
+
+```text
+source document
+```
+
+Verify relevant derived records are:
+
+```text
+deleted
+invalidated
+superseded
+or reprocessed
+```
+
+according to the data model.
+
+---
+
+# 190. EXPLICIT COST TEST
+
+Run equivalent requests through:
+
+```text
+fast
+balanced
+deep
+```
+
+Verify:
+
+```text
+cost
+latency
+quality
+```
+
+are measured and visible.
+
+---
+
+# 191. EXPLICIT DETERMINISTIC-ROUTING TEST
+
+Send:
+
+```text
+“What is invoice #1827?”
+```
+
+Verify that a suitable structured source is used rather than unnecessarily consuming a reasoning model.
+
+Send a complex synthesis task and verify model reasoning is selected.
+
+---
+
+# 192. EXPLICIT LEARNING TEST
+
+Send a new conversational statement.
+
+Verify it becomes:
+
+```text
+candidate memory
+```
+
+or:
+
+```text
+candidate knowledge
+```
+
+rather than automatically becoming trusted global truth.
+
+---
+
+# 193. EXPLICIT MODEL-AGNOSTIC TEST
+
+Change the configured model/provider.
+
+Verify application logic does not need to be rewritten.
+
+---
+
+# 194. EXPLICIT EMBEDDING-MIGRATION TEST
+
+Change embedding version.
+
+Verify:
+
+```text
+old index
+new index
+validation
+controlled cutover
+```
+
+works without corrupting memory or knowledge.
+
+---
+
+# 195. EXPLICIT PROMPT-INJECTION TEST
+
+Place malicious instructions inside:
+
+```text
+document
+website
+tool result
+```
+
+Verify that the Brain treats them as untrusted content.
+
+---
+
+# 196. ADMIN CONTROL PLANE
+
+Create a secure administrative layer for:
+
+```text
+models
+providers
+routes
+tools
+policies
+prompts
+evaluations
+knowledge sources
+refresh schedules
+feature flags
+cost policies
+```
+
+Administration must be authorization-controlled and auditable.
+
+---
+
+# 197. MODEL PROVIDER ALLOWLIST
+
+Only approved providers may receive Brain traffic.
+
+The provider policy must be centrally governed.
+
+Do not allow a random developer or agent to silently route restricted data to an unapproved provider.
+
+---
+
+# 198. BRAIN HEALTH STATES
+
+Define:
+
+```text
+HEALTHY
+DEGRADED
+PARTIALLY_AVAILABLE
+READ_ONLY
+SAFE_MODE
+OFFLINE
+```
+
+The system should respond appropriately to subsystem failures.
+
+---
+
+# 199. SAFE MODE
+
+When critical controls fail, the Brain should prefer:
+
+```text
+no external side effect
++
+truthful limitation
+```
+
+rather than autonomous execution.
+
+---
+
+# 200. NO “AUTONOMOUS BRAIN” MARKETING REQUIREMENT
+
+Do not optimize architecture around the claim:
+
+```text
+fully autonomous AI
+```
+
+Optimize around:
+
+```text
+reliable cognitive system
+```
+
+Autonomy is a capability that should be granted selectively.
+
+---
+
+# 201. FUTURE RESEARCH CAPABILITIES
+
+Potential later research areas:
+
+```text
+fine-tuning
+distillation
+local models
+specialized reasoning models
+reinforcement learning
+synthetic data generation
+advanced memory compression
+predictive retrieval
+adaptive routing
+self-evaluation
+knowledge graph optimization
+multimodal reasoning
+```
+
+These are not required for the first production Brain.
+
+They must remain modular.
+
+---
+
+# 202. WHAT “CONTINUOUSLY LEARNING” SHOULD MEAN FOR WEDJAT
+
+Wedjat may continuously improve through:
+
+```text
+better memory
+better knowledge
+better retrieval
+better context
+better tools
+better routing
+better prompts
+better policies
+better evaluation
+better domain modules
+better data
+```
+
+The underlying model weights may remain unchanged.
+
+That is acceptable and should be described accurately.
+
+---
+
+# 203. WHAT WOULD JUSTIFY ACTUAL MODEL TRAINING
+
+Only consider training/fine-tuning when:
+
+```text
+repeated problem exists
+```
+
+and:
+
+```text
+prompt/RAG/tool improvements are insufficient
+```
+
+and:
+
+```text
+high-quality dataset exists
+```
+
+and:
+
+```text
+evaluation proves a likely benefit
+```
+
+and:
+
+```text
+cost/latency/ownership benefits justify it
+```
+
+---
+
+# 204. FINAL IMPLEMENTATION DISCIPLINE
+
+Do not implement everything in one giant change.
+
+Use:
+
+```text
+small phase
+ ↓
+tests
+ ↓
+deployment
+ ↓
+measurement
+ ↓
+next phase
+```
+
+Preserve working functionality throughout.
+
+---
+
+# 205. BEFORE EVERY NEW COMPONENT
+
+Ask:
+
+```text
+Does this already exist?
+Can it be extended?
+Can it be merged?
+Is it necessary?
+What measurable problem does it solve?
+What happens if we don't build it?
+```
+
+If no strong answer exists, defer it.
+
+---
+
+# 206. BEFORE EVERY NEW DATABASE
+
+Ask:
+
+```text
+Can Neon already solve this?
+Can existing tables solve this?
+Can an index solve this?
+Can caching solve this?
+Can partitioning solve this?
+```
+
+Only add another persistence system when justified.
+
+---
+
+# 207. BEFORE EVERY NEW AI MODEL
+
+Ask:
+
+```text
+What task requires it?
+What benchmark proves it helps?
+What is the cost?
+What is the latency?
+What fallback exists?
+What data is it permitted to receive?
+```
+
+---
+
+# 208. BEFORE EVERY NEW AGENT
+
+Ask:
+
+```text
+Why can't the normal Brain Runtime solve this?
+```
+
+Only create an agent where specialization creates measurable value.
+
+---
+
+# 209. BEFORE EVERY NEW BACKGROUND JOB
+
+Ask:
+
+```text
+Does this need durability?
+Does this need retry?
+Can it run synchronously?
+Can it be batched?
+Can it be event-driven?
+```
+
+Use Inngest where durability is actually valuable.
+
+---
+
+# 210. BEFORE EVERY MEMORY PROMOTION
+
+Ask:
+
+```text
+Is this true?
+Where did it come from?
+Is it stable?
+Is it relevant?
+Is it tenant-scoped?
+Does it conflict?
+Should it expire?
+```
+
+---
+
+# 211. BEFORE EVERY KNOWLEDGE PROMOTION
+
+Ask:
+
+```text
+What evidence supports it?
+What source supports it?
+When is it valid?
+Does another source disagree?
+Who/what validated it?
+```
+
+---
+
+# 212. BEFORE EVERY EXTERNAL ACTION
+
+Ask:
+
+```text
+Is this action authorized?
+Is the actor authorized?
+Is the tenant correct?
+Is the tool authorized?
+Is approval required?
+Is it idempotent?
+Can the output be verified?
+Is it auditable?
+```
+
+---
+
+# 213. FINAL ARCHITECTURAL PRINCIPLE
+
+The Brain must become smarter primarily by becoming:
+
+```text
+better informed
+better organized
+better governed
+better evaluated
+better routed
+better verified
+better connected to tools
+```
+
+not merely:
+
+```text
+larger
+more complicated
+more autonomous
+```
+
+---
+
+# 214. REQUIRED FINAL REPORT FROM THE AI DEVELOPER
+
+At completion of each phase, report exactly:
+
+## 1. What existed before
+
+## 2. What was changed
+
+## 3. What was added
+
+## 4. What was removed
+
+## 5. What was preserved
+
+## 6. Database changes
+
+## 7. API changes
+
+## 8. Event changes
+
+## 9. Security changes
+
+## 10. Tests executed
+
+## 11. Tests passed
+
+## 12. Tests failed
+
+## 13. Known limitations
+
+## 14. Performance measurements
+
+## 15. Cost measurements
+
+## 16. Rollback method
+
+## 17. Next phase
+
+Never state that something is complete if it is only partially implemented.
+
+---
+
+# 215. FINAL ACCEPTANCE STANDARD
+
+Do not declare:
+
+```text
+WEDJAT BRAIN PRODUCTION READY
+```
+
+until:
+
+```text
+P0 CONSTITUTION
+✓
+
+P1 CORE
+✓
+
+SECURITY
+✓
+
+TENANT ISOLATION
+✓
+
+OBSERVABILITY
+✓
+
+EVALUATION BASELINE
+✓
+
+FAILURE HANDLING
+✓
+
+MEMORY
+✓
+
+KNOWLEDGE
+✓
+
+RETRIEVAL
+✓
+
+MODEL ROUTING
+✓
+
+TOOLS
+✓
+
+VERIFICATION
+✓
+
+AUDIT
+✓
+
+COST TRACKING
+✓
+
+END-TO-END TESTS
+✓
+```
+
+and all known critical failures are resolved or explicitly accepted by the responsible owner.
+
+---
+
+# 216. FINAL CTO DIRECTIVE
+
+Build Wedjat AI as:
+
+```text
+A MODEL-INDEPENDENT COGNITIVE OPERATING LAYER
+```
+
+where:
+
+```text
+LLMs
+```
+
+are interchangeable reasoning engines,
+
+while:
+
+```text
+Wedjat
+```
+
+owns:
+
+```text
+identity
+memory
+knowledge
+provenance
+retrieval
+context
+task routing
+tools
+policies
+authorization
+verification
+evaluation
+feedback
+learning infrastructure
+audit
+observability
+cost control
+domain intelligence
+cross-platform orchestration
+```
+
+The strategic objective is not to pretend to have built a frontier foundation model.
+
+The objective is to build a **strong cognitive system whose intelligence compounds through controlled data, memory, verified knowledge, tools, evaluation and system-level learning, while remaining independent of any one model provider.**
+
+---
+
+# 217. NON-NEGOTIABLE FINAL “DO NOT” LIST
+
+DO NOT:
+
+* build a generic chatbot and call it the Brain
+* equate RAG with intelligence
+* equate embeddings with learning
+* automatically turn model outputs into truth
+* let the LLM authorize itself
+* let retrieved content override system policy
+* allow cross-tenant retrieval
+* expose secrets to models
+* expose secrets to memory
+* create unnecessary databases
+* create unnecessary microservices
+* make Turso a duplicate central brain without a reason
+* force every user request through Inngest
+* force every task through an agent
+* use an LLM when deterministic software is better
+* use the most expensive model for every task
+* use the cheapest model for critical work
+* assume model confidence equals truth
+* overwrite historical knowledge
+* silently change production policies from model output
+* expose hidden private reasoning
+* claim model training when only system memory changed
+* declare production readiness because the application builds
+* declare success without measurement
+* duplicate existing platform functionality
+* replace domain governance systems with the Brain
+* bypass application authorization
+* bypass SGTX Governor / OPA / WasmEdge / signing / Loom / NATS governance
+* introduce paid infrastructure without justification
+* introduce complexity merely to make the architecture look advanced
+
+---
+
+# 218. THE FINAL SUCCESS TEST
+
+When complete, ask one question:
+
+> **Is Wedjat merely using an LLM, or has Wedjat built a cognitive system around the LLM?**
+
+The answer must demonstrably be:
+
+```text
+WEDJAT HAS BUILT THE COGNITIVE SYSTEM.
+```
+
+The LLM is only one component inside it.
+
+END OF MASTER SPECIFICATION.
