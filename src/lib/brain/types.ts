@@ -110,7 +110,7 @@ export interface BrainResponse {
 export interface TraceStep {
   stepType:
     | "identity" | "policy" | "task_router" | "memory" | "knowledge"
-    | "retrieval" | "research" | "context" | "model_router" | "model_call"
+    | "retrieval" | "research" | "context" | "reasoning" | "model_router" | "model_call"
     | "tool" | "verification" | "response" | "learning" | "audit";
   stepName: string;
   status: "STARTED" | "COMPLETED" | "FAILED" | "SKIPPED";

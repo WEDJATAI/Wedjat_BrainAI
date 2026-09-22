@@ -39,12 +39,16 @@ export interface RuntimeCallbacks {
 export function classifyTask(text: string, structured: StructuredLookup): TaskType {
   const t = text.toLowerCase();
   if (structured.matched) return "factual";
-  if (/(analyze|compare|design|architect|reason|why|trade-off|tradeoff)/.test(t)) return "reasoning";
-  if (/(synthesize|summarize|draft|write|compose|generate)/.test(t)) return "synthesis";
-  if (/(code|function|bug|implement|refactor)/.test(t)) return "coding";
+  if (/(analyze|compare|design|architect|reason|why|trade-off|tradeoff|explain|derive|prove|calculate how|step.by.step|how does|how do|what is the mechanism|what causes|consequence|implication)/.test(t)) return "reasoning";
+  if (/(synthesize|summarize|draft|write|compose|generate|essay|article|report|outline)/.test(t)) return "synthesis";
+  if (/(code|function|bug|implement|refactor|algorithm|debug|program|script)/.test(t)) return "coding";
   if (/(send|create|update|delete|book|publish|purchase|approve)/.test(t)) return "tool_use";
   if (/(danger|critical|high.?risk|authorize|approve|restricted)/.test(t)) return "high_risk";
+  // Questions with "what is X", "who", "when", "where" are factual lookups
+  if (/^(what|who|when|where|which|how many|how much)\b/.test(t.trim())) return "factual";
   if (text.length < 60 && /\?$/.test(text.trim())) return "simple";
+  // Default: treat longer questions as reasoning (better answers)
+  if (text.length > 80) return "reasoning";
   return "simple";
 }
 
@@ -264,8 +268,9 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
         return false;
       }).slice(0, 3);
 
-      // Context engine (§41-43) — assemble minimal sufficient context
-      const assembly = await step("context", "Assemble minimal sufficient context (§41-43)", async () => {
+      // Context engine — assemble minimal sufficient context with platform
+      // personality + governance boundaries + conversation history.
+      const assembly = await step("context", "Assemble minimal sufficient context", async () => {
         // §157 — apply platform personality + governance boundaries.
         const platformSlug = (req.metadata as any)?.platformSlug as string | undefined;
         let platformSuffix = "";
@@ -280,21 +285,36 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
               if (p.vocabulary?.length) platformSuffix += ` Domain vocabulary: ${p.vocabulary.join(", ")}.`;
             } catch { /* ignore malformed personality */ }
           }
-          // §11/§45/§46/§47 — governance boundaries injected as hard policy text
           const { getPlatformBySlug } = await import("./platform-registry");
           const cat = getPlatformBySlug(platformSlug);
           if (cat?.governanceBoundary) governanceBoundary = `\n\nGOVERNANCE BOUNDARY: ${cat.governanceBoundary}`;
         }
+        // Fetch conversation history for multi-turn context (last 6 messages)
+        let conversationHistory: Array<{ role: "user" | "assistant"; content: string }> = [];
+        if (req.conversationId) {
+          const recentMsgs = await db.message.findMany({
+            where: { conversationId: req.conversationId, role: { in: ["user", "assistant"] } },
+            orderBy: { createdAt: "desc" },
+            take: 6,
+          }).catch(() => []);
+          conversationHistory = recentMsgs.reverse().map((m) => ({
+            role: m.role as "user" | "assistant",
+            content: m.content,
+          })).filter((m) => m.content && m.content.length > 0);
+        }
+        // Use reasoning mode for complex tasks (chain-of-thought like DeepSeek-R1)
+        const useReasoning = taskType === "reasoning" || taskType === "synthesis" || taskType === "high_risk" || req.mode === "deep";
         const { systemPrompt } = assembleSystemPrompt({
           identity, tools: plannedTools, candidates, evidenceStatus: "SUPPORTED", taskType,
+          conversationHistory,
+          reasoningMode: useReasoning,
         });
         const fullSystemPrompt = systemPrompt + (platformSuffix ? `\n\nPLATFORM CONTEXT: ${platformSuffix}` : "") + governanceBoundary;
         const budget = selected.model.contextLimit;
         const sysTokens = estimateTokens(fullSystemPrompt);
-        const historyTokens = estimateTokens((req.input.text ?? "").slice(0, 2000));
         const memoryTokens = candidates.filter((c) => c.kind === "memory").reduce((s, c) => s + estimateTokens(c.content), 0);
         const knowledgeTokens = candidates.filter((c) => c.kind === "knowledge").reduce((s, c) => s + estimateTokens(c.content), 0);
-        return { systemPrompt: fullSystemPrompt, budget, sysTokens, historyTokens, memoryTokens, knowledgeTokens };
+        return { systemPrompt: fullSystemPrompt, budget, sysTokens, memoryTokens, knowledgeTokens, conversationHistory, useReasoning };
       }, "token-budgeted");
 
       // Optionally execute a planned tool BEFORE generation (single-shot; not a full agent loop)
@@ -316,13 +336,39 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
         }, `risk=${tool.riskLevel}`);
       }
 
-      // Model call
+      // Reasoning step (DeepSeek-R1 style chain-of-thought) — for complex tasks,
+      // run the model twice: first to reason/plan, then to produce the final
+      // answer. The reasoning output is fed as additional context.
+      let reasoningContext = "";
+      if (assembly.useReasoning) {
+        await step("reasoning", "Chain-of-thought reasoning pass", async () => {
+          const { buildReasoningPrompt } = await import("./prompts");
+          const reasoningPrompt = buildReasoningPrompt(req.input.text ?? "", candidates);
+          const reasoningMessages = [
+            { role: "system" as const, content: "You are an expert reasoner. Think step-by-step about the question, then outline your answer. Be concise." },
+            { role: "user" as const, content: reasoningPrompt },
+          ];
+          const r = await callModel({
+            model: selected.model,
+            messages: reasoningMessages,
+            fallback: selected.fallback,
+            tenantId: identity.tenant.id,
+            taskType: "reasoning",
+          }).catch(() => null);
+          if (r && r.content) {
+            reasoningContext = `\n\nREASONING (your step-by-step analysis):\n${r.content.slice(0, 1500)}`;
+          }
+          return r;
+        }, "chain-of-thought");
+      }
+
+      // Model call — final answer generation with reasoning context
       const modelResult = await step("model_call", `Reasoning via ${selected.model.displayName}`, async () => {
         const toolContext = toolResult?.output
           ? `\n\nTool result (${toolResult.toolId}, state=${toolResult.state}): ${JSON.stringify(toolResult.output)}`
           : "";
         const messages = [
-          { role: "system" as const, content: assembly.systemPrompt + toolContext },
+          { role: "system" as const, content: assembly.systemPrompt + toolContext + reasoningContext },
           { role: "user" as const, content: req.input.text ?? "" },
         ];
         const r = await callModel({

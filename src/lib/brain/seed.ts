@@ -7,6 +7,7 @@
 import { db } from "@/lib/db";
 import { buildTermVector, serializeVector } from "./vectors";
 import { seedGeneralKnowledge } from "./knowledge-base";
+import { seedGeneralKnowledgeV2 } from "./knowledge-base-v2";
 
 export async function seedBrain(): Promise<{ created: Record<string, number>; skipped: boolean }> {
   const created: Record<string, number> = {};
@@ -236,6 +237,15 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
   } catch (err) {
     // Failures here must not break the rest of the seed.
     console.warn("[seed] seedGeneralKnowledge failed:", err);
+  }
+
+  // ----- General knowledge V2 (massive expansion: science, medicine, law,
+  // engineering, programming, philosophy, arts, geography, history, etc.) -----
+  try {
+    const result = await seedGeneralKnowledgeV2(acme.id, mashahd.id);
+    created.generalKnowledgeV2Items = result.itemCount;
+  } catch (err) {
+    console.warn("[seed] seedGeneralKnowledgeV2 failed:", err);
   }
 
   // ----- Memory (semantic, active) -----
