@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network } from "lucide-react";
+import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { streamBrainResponse, apiGet, apiPost, type BrainStreamState, initialStreamState } from "@/lib/brain/client";
 import type { BrainMode, EvidenceStatus, ToolResult, TraceStep } from "@/lib/brain/types";
@@ -43,12 +44,20 @@ const SAMPLE_PROMPTS = [
 
 export function BrainWidget() {
   const [mode, setMode] = React.useState<BrainMode>("auto");
+  const [platformSlug, setPlatformSlug] = React.useState<string>("mashahd");
+  const [platforms, setPlatforms] = React.useState<Array<{ slug: string; displayName: string; domain: string; status: string }>>([]);
   const [input, setInput] = React.useState("");
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [activeMessageId, setActiveMessageId] = React.useState<string | null>(null);
   const [streaming, setStreaming] = React.useState(false);
   const abortRef = React.useRef<AbortController | null>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    apiGet<{ platforms: Array<{ slug: string; displayName: string; domain: string; status: string }> }>("/api/brain/platforms")
+      .then((d) => setPlatforms(d.platforms.filter((p) => p.status === "ACTIVE")))
+      .catch(() => {});
+  }, []);
 
   React.useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -66,7 +75,7 @@ export function BrainWidget() {
     abortRef.current = new AbortController();
     try {
       await streamBrainResponse(
-        { input: { text: content }, mode },
+        { input: { text: content }, mode, platformSlug },
         (state) => {
           setMessages((prev) => prev.map((m) => (m.id === assistantMsg.id ? { ...m, content: state.tokens || (state.error ? `⚠️ ${state.error.message}` : ""), state: { ...state } } : m)));
         },
@@ -104,7 +113,10 @@ export function BrainWidget() {
                 <CardDescription className="text-[11px] leading-tight">Cognitive operating layer · model-independent</CardDescription>
               </div>
             </div>
-            <ModeSelector value={mode} onChange={setMode} disabled={streaming} />
+            <div className="flex items-center gap-1.5">
+              <PlatformSelector value={platformSlug} onChange={setPlatformSlug} platforms={platforms} disabled={streaming} />
+              <ModeSelector value={mode} onChange={setMode} disabled={streaming} />
+            </div>
           </div>
         </CardHeader>
         <CardContent className="flex-1 overflow-hidden p-0">
@@ -162,6 +174,28 @@ export function BrainWidget() {
 // ---------------------------------------------------------------------------
 // Mode selector
 // ---------------------------------------------------------------------------
+function PlatformSelector({ value, onChange, platforms, disabled }: { value: string; onChange: (s: string) => void; platforms: Array<{ slug: string; displayName: string; domain: string; status: string }>; disabled: boolean }) {
+  const current = platforms.find((p) => p.slug === value);
+  return (
+    <Select value={value} onValueChange={onChange} disabled={disabled || platforms.length === 0}>
+      <SelectTrigger className="h-8 w-[150px] gap-1 border-[color:var(--color-wedjat-cyan)]/30 text-xs" size="sm">
+        <Globe className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
+        <SelectValue placeholder="Platform">
+          {current ? current.displayName : value}
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {platforms.map((p) => (
+          <SelectItem key={p.slug} value={p.slug} className="text-xs">
+            <span className="font-medium">{p.displayName}</span>
+            <span className="ml-1 text-[10px] text-muted-foreground">· {p.domain}</span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
 function ModeSelector({ value, onChange, disabled }: { value: BrainMode; onChange: (m: BrainMode) => void; disabled: boolean }) {
   return (
     <TooltipProvider>

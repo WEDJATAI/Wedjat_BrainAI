@@ -22,8 +22,9 @@ import { verifyAnswer } from "./verification";
 import { createLearningCandidate } from "./learning";
 import { recordEpisodic, createMemoryCandidate } from "./memory";
 import { estimateTokens } from "./vectors";
+import type { PolicyRules } from "./policy";
 import type {
-  BrainRequest, BrainResponse, IdentityContext, PolicyRules, PolicyMode,
+  BrainRequest, BrainResponse, IdentityContext, PolicyMode,
   TraceStep, TaskType, EvidenceRef, BrainStreamEvent, ToolResult,
   RetrievalCandidate, ModelDescriptor, EvidenceStatus,
 } from "./types";
@@ -206,15 +207,35 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
 
       // Context engine (§41-43) — assemble minimal sufficient context
       const assembly = await step("context", "Assemble minimal sufficient context (§41-43)", async () => {
+        // §157 — apply platform personality + governance boundaries.
+        const platformSlug = (req.metadata as any)?.platformSlug as string | undefined;
+        let platformSuffix = "";
+        let governanceBoundary = "";
+        if (platformSlug) {
+          const platformRow = await db.platform.findUnique({ where: { slug: platformSlug } }).catch(() => null);
+          if (platformRow?.personality) {
+            try {
+              const p = JSON.parse(platformRow.personality) as { tone?: string; vocabulary?: string[]; systemPromptSuffix?: string };
+              platformSuffix = p.systemPromptSuffix ?? "";
+              if (p.tone) platformSuffix += ` Tone: ${p.tone}.`;
+              if (p.vocabulary?.length) platformSuffix += ` Domain vocabulary: ${p.vocabulary.join(", ")}.`;
+            } catch { /* ignore malformed personality */ }
+          }
+          // §11/§45/§46/§47 — governance boundaries injected as hard policy text
+          const { getPlatformBySlug } = await import("./platform-registry");
+          const cat = getPlatformBySlug(platformSlug);
+          if (cat?.governanceBoundary) governanceBoundary = `\n\nGOVERNANCE BOUNDARY: ${cat.governanceBoundary}`;
+        }
         const { systemPrompt } = assembleSystemPrompt({
           identity, tools: plannedTools, candidates, evidenceStatus: "SUPPORTED", taskType,
         });
+        const fullSystemPrompt = systemPrompt + (platformSuffix ? `\n\nPLATFORM CONTEXT: ${platformSuffix}` : "") + governanceBoundary;
         const budget = selected.model.contextLimit;
-        const sysTokens = estimateTokens(systemPrompt);
+        const sysTokens = estimateTokens(fullSystemPrompt);
         const historyTokens = estimateTokens((req.input.text ?? "").slice(0, 2000));
         const memoryTokens = candidates.filter((c) => c.kind === "memory").reduce((s, c) => s + estimateTokens(c.content), 0);
         const knowledgeTokens = candidates.filter((c) => c.kind === "knowledge").reduce((s, c) => s + estimateTokens(c.content), 0);
-        return { systemPrompt, budget, sysTokens, historyTokens, memoryTokens, knowledgeTokens };
+        return { systemPrompt: fullSystemPrompt, budget, sysTokens, historyTokens, memoryTokens, knowledgeTokens };
       }, "token-budgeted");
 
       // Optionally execute a planned tool BEFORE generation (single-shot; not a full agent loop)
@@ -404,7 +425,7 @@ async function finalizeRun(runId: string, requestId: string, response: BrainResp
       verificationUsed: response.execution.verificationUsed,
       toolsUsed: JSON.stringify(response.execution.toolsUsed),
       evidenceCount: response.evidence?.length ?? 0,
-      memoryCount: response.trace.filter((s) => s.stepType === "memory").length,
+      memoryCount: (response.trace ?? []).filter((s) => s.stepType === "memory").length,
       tokensIn: response.cost?.tokensIn ?? 0,
       tokensOut: response.cost?.tokensOut ?? 0,
       costUsd: response.cost?.costUsd ?? 0,

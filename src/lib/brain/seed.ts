@@ -241,6 +241,90 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
   });
   created.memory = 2;
 
+  // ----- Cross-platform registry (§4-18, §27, §30): register all 14 platforms -----
+  const PLATFORM_CATALOG = (await import("./platform-registry")).PLATFORM_CATALOG;
+  for (const p of PLATFORM_CATALOG) {
+    await db.platform.upsert({
+      where: { slug: p.slug },
+      update: {
+        name: p.name, displayName: p.displayName, domain: p.domain, description: p.description,
+        repoUrl: p.repoUrl ?? null, productionUrl: p.productionUrl ?? null,
+        knowledgeScope: p.knowledgeScope, memoryScope: p.memoryScope, toolScope: p.toolScope,
+        dataClassCeiling: p.dataClassCeiling, modelPolicy: p.modelPolicy,
+        allowedBrainScopes: p.allowedBrainScopes.join(","),
+        riskCeiling: p.riskCeiling,
+        capabilities: JSON.stringify(p.capabilities),
+        eventTypes: JSON.stringify(p.eventTypes),
+        domainTools: JSON.stringify(p.domainTools),
+        adapterStatus: p.slug === "mashahd" || p.slug === "verify" || p.slug === "judge_smart" ? "AUDITED" : "REGISTERED",
+        status: p.slug === "egycourt" ? "REGISTERED" : "ACTIVE",
+        personality: p.personality ? JSON.stringify(p.personality) : null,
+      },
+      create: {
+        slug: p.slug, name: p.name, displayName: p.displayName, domain: p.domain, description: p.description,
+        repoUrl: p.repoUrl, productionUrl: p.productionUrl,
+        knowledgeScope: p.knowledgeScope, memoryScope: p.memoryScope, toolScope: p.toolScope,
+        dataClassCeiling: p.dataClassCeiling, modelPolicy: p.modelPolicy,
+        allowedBrainScopes: p.allowedBrainScopes.join(","),
+        riskCeiling: p.riskCeiling,
+        capabilities: JSON.stringify(p.capabilities),
+        eventTypes: JSON.stringify(p.eventTypes),
+        domainTools: JSON.stringify(p.domainTools),
+        adapterStatus: p.slug === "mashahd" || p.slug === "verify" || p.slug === "judge_smart" ? "AUDITED" : "REGISTERED",
+        status: p.slug === "egycourt" ? "REGISTERED" : "ACTIVE",
+        personality: p.personality ? JSON.stringify(p.personality) : null,
+      },
+    });
+    // Register an adapter registration record (§27, §92) for each platform.
+    const platformRow = await db.platform.findUnique({ where: { slug: p.slug } });
+    if (platformRow) {
+      const existingAdapter = await db.adapterRegistration.findFirst({ where: { platformId: platformRow.id } });
+      if (!existingAdapter) {
+        await db.adapterRegistration.create({
+          data: {
+            platformId: platformRow.id,
+            adapterKind: "sdk:typescript",
+            sdkVersion: "0.1.0",
+            authMethod: "service_token",
+            serviceIdentity: `platform:${p.slug}:adapter`,
+            scopes: p.allowedBrainScopes.join(","),
+            lastHandshakeAt: new Date(),
+            status: "ACTIVE",
+          },
+        });
+      }
+    }
+    // Link the platform to the Acme/Mashahd application (demo mapping §16, §29).
+    const linkedApp = mashahd.id;
+    if (platformRow) {
+      const existingLink = await db.platformApplication.findUnique({ where: { platformId_applicationId: { platformId: platformRow.id, applicationId: linkedApp } } });
+      if (!existingLink) {
+        await db.platformApplication.create({ data: { platformId: platformRow.id, applicationId: linkedApp, tenantId: acme.id } });
+      }
+    }
+  }
+  created.platforms = PLATFORM_CATALOG.length;
+
+  // ----- Per-platform evaluation suites (§149) -----
+  for (const p of PLATFORM_CATALOG) {
+    const platformRow = await db.platform.findUnique({ where: { slug: p.slug } });
+    if (!platformRow) continue;
+    const existingSet = await db.platformEvaluationSet.findFirst({ where: { platformId: platformRow.id } });
+    if (existingSet) continue;
+    const set = await db.platformEvaluationSet.create({
+      data: { platformId: platformRow.id, name: `${p.name} Golden Set`, description: `Domain golden dataset for ${p.displayName} (§149)`, status: "ACTIVE" },
+    });
+    // Seed 2 representative cases per platform derived from its capabilities.
+    const cases = p.capabilities.slice(0, 2).map((cap) => ({
+      input: `(${p.slug}/${cap}) — sample domain task for ${p.displayName}`,
+      expected: cap,
+      tags: `${p.domain},${cap}`,
+    }));
+    for (const c of cases) {
+      await db.platformEvaluationCase.create({ data: { setId: set.id, input: c.input, expected: c.expected, tags: c.tags } });
+    }
+  }
+
   // ----- Evaluation set (§86 golden dataset) -----
   const evalSet = await db.evaluationSet.upsert({
     where: { id: "golden-baseline" },

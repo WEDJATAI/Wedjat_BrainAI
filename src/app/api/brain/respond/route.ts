@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     mode: body.mode ?? "auto",
     permissions: { scopes: user?.scopes?.split(",") ?? ["brain:respond"] },
     constraints: body.constraints,
-    metadata: body.metadata,
+    metadata: { ...body.metadata, platformSlug: (body as any).platformSlug ?? "mashahd" },
   };
 
   const stream = new ReadableStream<Uint8Array>({

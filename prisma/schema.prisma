@@ -8,7 +8,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -648,4 +648,194 @@ model EvaluationRun {
   set         EvaluationSet @relation(fields: [setId], references: [id], onDelete: Cascade)
 
   @@index([setId])
+}
+
+// ============================================================
+// CROSS-PLATFORM ARCHITECTURE (spec §4-18, §27-34, §89-90, §160-167)
+// 14 platforms register as Brain consumers + contributors. Each retains
+// its own source of truth (§2); the Brain owns cognition only.
+// ============================================================
+
+// §4-18, §30 — Platform / application registry. Each connected platform
+// (Cirkle, Mail, Mashahd, SGTX, etc.) gets one Platform row defining its
+// domain, capabilities, scopes, tools, risk ceiling, and adapter status.
+model Platform {
+  id              String   @id @default(cuid())
+  slug            String   @unique // cirkle | mail | mashahd | sgtx | wasl | ...
+  name            String
+  displayName     String
+  domain          String   // social | mail | media | verification | agreements | business | trade | finance | justice | restaurant | dental | compliance
+  description     String?
+  repoUrl         String?
+  productionUrl   String?
+  // §27 adapter contract
+  adapterStatus   String   @default("PENDING") // PENDING | REGISTERED | AUTHENTICATED | ACTIVE | DEGRADED | DISABLED | UNAUTHORIZED | CONFIG_ERROR | AUDITED
+  adapterVersion  String?  // §67 — Brain SDK version the adapter targets
+  // §22-23, §49 knowledge/memory scope rules
+  knowledgeScope  String   @default("APPLICATION") // PRIVATE | APPLICATION | TENANT | GLOBAL_VERIFIED
+  memoryScope     String   @default("APPLICATION")
+  toolScope       String   @default("APPLICATION")
+  // §24 data classification ceiling for this platform's contributions
+  dataClassCeiling String @default("INTERNAL") // PUBLIC | INTERNAL | CONFIDENTIAL | RESTRICTED
+  // §41-42 model routing policy for this platform
+  modelPolicy     String   @default("BALANCED") // LOW_COST | BALANCED | HIGH_QUALITY | CRITICAL
+  // §93 least-privilege: which Brain scopes this platform may exercise
+  allowedBrainScopes String @default("brain:respond,brain:retrieve,brain:memory.read")
+  // §94-96 risk ceiling — platform may not auto-execute above this risk
+  riskCeiling     String   @default("MEDIUM") // LOW | MEDIUM | HIGH | CRITICAL
+  // §160-161 capability registry (JSON): tools, event types, knowledge types
+  capabilities    String   @default("[]") // JSON array of capability strings
+  eventTypes      String   @default("[]") // JSON: [brain.application.request, ...]
+  domainTools     String   @default("[]") // JSON: toolIds this platform registers
+  // §166 health reporting
+  lastHeartbeatAt DateTime?
+  lastEventAt    DateTime?
+  requestCount   Int      @default(0)
+  errorCount     Int      @default(0)
+  costUsdTotal  Float    @default(0)
+  // §157 application personality (tone, workflow, vocab) without a separate AI stack
+  personality    String?  // JSON: { tone, vocabulary, systemPromptSuffix }
+  status         String   @default("REGISTERED") // REGISTERED | ACTIVE | DEGRADED | DISABLED
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  events         PlatformEvent[]
+  adapters       AdapterRegistration[]
+  platformApps   PlatformApplication[]
+
+  @@index([domain, status])
+}
+
+// §16, §29 — a Platform may have multiple application instances per tenant
+// (e.g. Acme Corp's Mashahd, Globex's Mashahd). This maps Platform → Application.
+model PlatformApplication {
+  id           String   @id @default(cuid())
+  platformId   String
+  applicationId String
+  tenantId     String
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+
+  platform     Platform    @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@unique([platformId, applicationId])
+  @@index([tenantId, platformId])
+}
+
+// §27 — adapter registration record. Proves the adapter authenticated as a
+// service identity (§92) with least-privilege credentials (§174).
+model AdapterRegistration {
+  id              String   @id @default(cuid())
+  platformId      String
+  adapterKind     String   // sdk:typescript | sdk:python | webhook | service
+  sdkVersion      String?  // §67
+  authMethod      String   // service_token | oauth | mTLS | signed_jwt
+  serviceIdentity String   // e.g. platform:sgtx:adapter
+  scopes          String   @default("") // comma-separated
+  lastHandshakeAt DateTime?
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+
+  platform        Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@index([platformId, status])
+}
+
+// §20, §68-70 — cross-platform event bus. Every event is versioned (§68),
+// idempotent by eventId (§69), carries provenance + classification (§20),
+// and is processed through the learning pipeline (§21, §94).
+model PlatformEvent {
+  id              String   @id @default(cuid())
+  eventId         String   @unique // §69 idempotency — Brain ignores duplicate eventId
+  eventType       String   // §20, §70: brain.application.request | learning.observation | ...
+  eventVersion    Int      @default(1) // §68
+  platformId      String
+  tenantId        String
+  applicationId   String?
+  userId          String?
+  requestId       String?
+  actorType       String?  // user | agent | service | system | adapter
+  actorId         String?
+  // §20 payload + provenance + classification
+  data            String   // JSON
+  provenance      String?  // JSON: { sourceApp, sourceRecord, sourceUri, retrievedAt, extractionMethod }
+  classification  String   @default("INTERNAL") // §24 PUBLIC | INTERNAL | CONFIDENTIAL | RESTRICTED
+  scope           String   @default("APPLICATION") // §22 GLOBAL | APPLICATION | TENANT | ORGANIZATION | USER | SESSION
+  // §21 pipeline state
+  pipelineState   String   @default("RECEIVED") // RECEIVED | CLASSIFIED | SCOPE_CHECKED | SECURITY_CHECKED | PROVENANCE_ATTACHED | DUPLICATE_CHECKED | NOVELTY_SCORED | CONTRADICTION_CHECKED | QUALITY_CHECKED | PROMOTION_DECIDED | INDEXED | REJECTED
+  pipelineError   String?
+  processedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  platform        Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+
+  @@index([platformId, eventType])
+  @@index([tenantId, scope, classification])
+  @@index([pipelineState])
+}
+
+// §89, §166 — per-platform health snapshot (rolled up periodically).
+model PlatformHealth {
+  id              String   @id @default(cuid())
+  platformId      String
+  state           String   // HEALTHY | DEGRADED | PARTIALLY_AVAILABLE | READ_ONLY | SAFE_MODE | OFFLINE | UNAUTHORIZED | CONFIG_ERROR
+  adapterStatus   String
+  requestsLast1h  Int      @default(0)
+  errorsLast1h    Int      @default(0)
+  latencyP95Ms    Int      @default(0)
+  fallbackRate    Float    @default(0)
+  costUsdLast1h   Float    @default(0)
+  learningEvents  Int      @default(0)
+  knowledgeContributed Int @default(0)
+  knowledgeConsumed   Int @default(0)
+  retrievalQuality Float?  // §88 hit rate
+  securityEvents  Int      @default(0)
+  detail          String?
+  capturedAt      DateTime @default(now())
+
+  @@index([platformId, capturedAt])
+}
+
+// §149 — per-platform golden evaluation set (each platform has its own
+// regression suite + the shared global golden set).
+model PlatformEvaluationSet {
+  id          String   @id @default(cuid())
+  platformId  String
+  name        String
+  description String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+
+  cases PlatformEvaluationCase[]
+
+  @@index([platformId, status])
+}
+
+model PlatformEvaluationCase {
+  id          String   @id @default(cuid())
+  setId       String
+  input       String
+  expected    String?
+  tags        String?
+  createdAt   DateTime @default(now())
+
+  set         PlatformEvaluationSet @relation(fields: [setId], references: [id], onDelete: Cascade)
+
+  @@index([setId])
+}
+
+// §176-181 — cross-platform acceptance test runs. Records the outcome of
+// running the privacy / knowledge / learning / failure / governance scenarios.
+model AcceptanceTestRun {
+  id            String   @id @default(cuid())
+  scenario      String   // privacy_isolation | knowledge_promotion | learning_loop | failure_disconnect | governance_sgtx | governance_justice | governance_finance
+  platformAId   String?
+  platformBId   String?
+  status        String   @default("PENDING") // PENDING | RUNNING | PASSED | FAILED | BLOCKED
+  detail        String?  // JSON: { steps, assertions, evidence }
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([scenario, status])
 }

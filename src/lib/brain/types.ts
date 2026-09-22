@@ -315,6 +315,43 @@ export interface BrainRunSummary {
   steps: TraceStep[];
 }
 
+// §20, §68-70 — Cross-platform event bus payload.
+// Every application may publish approved Brain events (§20). Events are
+// versioned (§68 eventVersion), idempotent by eventId (§69 — Brain safely
+// ignores duplicates), and carry provenance + classification (§20, §24).
+// The pipeline (§21): classify → scope → security → provenance → duplicate
+// → novelty → contradiction → quality → promotion decision → index.
+export interface BrainPlatformEvent {
+  eventId: string;
+  eventType: string;
+  eventVersion: number;
+  timestamp: string;
+  platformId?: string;
+  platformSlug?: string;
+  applicationId?: string;
+  tenantId?: string;
+  userId?: string;
+  requestId?: string;
+  actor?: { type: "user" | "agent" | "service" | "system" | "adapter"; id: string };
+  data: Record<string, unknown>;
+  provenance?: {
+    sourceApp?: string;
+    sourceRecord?: string;
+    sourceUri?: string;
+    retrievedAt?: string;
+    extractionMethod?: string;
+  };
+  classification?: "PUBLIC" | "INTERNAL" | "CONFIDENTIAL" | "RESTRICTED";
+  scope?: "GLOBAL" | "APPLICATION" | "TENANT" | "ORGANIZATION" | "USER" | "SESSION";
+}
+
+// Pipeline states for a BrainPlatformEvent (§21).
+export type PlatformEventPipelineState =
+  | "RECEIVED" | "CLASSIFIED" | "SCOPE_CHECKED" | "SECURITY_CHECKED"
+  | "PROVENANCE_ATTACHED" | "DUPLICATE_CHECKED" | "NOVELTY_SCORED"
+  | "CONTRADICTION_CHECKED" | "QUALITY_CHECKED" | "PROMOTION_DECIDED"
+  | "INDEXED" | "REJECTED";
+
 // Streaming protocol over the /api/brain/respond SSE-like channel.
 export type BrainStreamEvent =
   | { type: "trace"; step: TraceStep }

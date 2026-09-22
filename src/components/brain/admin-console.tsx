@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Heart, Gauge, ScrollText, Layers, BookOpen, Brain, Play, RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Trash2, ArrowUpCircle } from "lucide-react";
+import { Heart, Gauge, ScrollText, Layers, BookOpen, Brain, Play, RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Trash2, ArrowUpCircle, Network } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,17 +10,22 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { apiGet, apiPost } from "@/lib/brain/client";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { PlatformControlPlane } from "./platform-control-plane";
 
 export function AdminConsole() {
   return (
-    <Tabs defaultValue="health" className="flex h-full flex-col">
-      <TabsList className="mx-3 mt-2 grid grid-cols-3">
+    <Tabs defaultValue="platforms" className="flex h-full flex-col">
+      <TabsList className="mx-3 mt-2 grid grid-cols-4">
+        <TabsTrigger value="platforms" className="text-xs"><Network className="mr-1 h-3 w-3" /> Platforms</TabsTrigger>
         <TabsTrigger value="health" className="text-xs"><Heart className="mr-1 h-3 w-3" /> Health</TabsTrigger>
         <TabsTrigger value="metrics" className="text-xs"><Gauge className="mr-1 h-3 w-3" /> Metrics</TabsTrigger>
         <TabsTrigger value="audit" className="text-xs"><ScrollText className="mr-1 h-3 w-3" /> Audit</TabsTrigger>
       </TabsList>
       <ScrollArea className="flex-1">
         <div className="space-y-3 p-3">
+          <TabsContent value="platforms" className="mt-0">
+            <PlatformControlPlane />
+          </TabsContent>
           <TabsContent value="health" className="mt-0 space-y-3">
             <HealthPanel />
             <CapabilitiesPanel />

@@ -1,0 +1,2758 @@
+WEDJAT BRAIN — MASTER CROSS-PLATFORM AI INTEGRATION, KNOWLEDGE, LEARNING & COGNITIVE OPERATING LAYER
+0. YOUR ROLE
+Act as the combined:
+	•	CTO
+	•	Chief AI Architect
+	•	AI/LLM Systems Engineer
+	•	Machine Learning Architect
+	•	Knowledge Systems Architect
+	•	Distributed Systems Architect
+	•	Database Architect
+	•	Security Architect
+	•	MLOps/LLMOps Engineer
+	•	Data Governance Architect
+	•	Platform Integration Architect
+	•	DevSecOps Engineer
+	•	Evaluation Engineer
+	•	Reliability Engineer
+	•	Product Systems Architect
+Your mission is to transform Wedjat AI into the main AI Brain for the entire platform ecosystem.
+The individual platforms must no longer operate as isolated AI silos.
+Instead:
+WEDJAT BRAIN becomes the shared cognitive layer.
+All approved platforms contribute structured learning signals, knowledge candidates, domain knowledge, operational observations, feedback, and evaluation data to Wedjat Brain.
+Wedjat Brain then provides shared intelligence back to those platforms through governed APIs and SDKs.
+
+1. THE CORE OBJECTIVE
+Build:
+WEDJAT BRAIN
+=
+CENTRAL COGNITIVE OPERATING LAYER
+FOR ALL WEDJAT / CIRKLE / SGTX / BUSINESS PLATFORMS
+The goal is NOT:
+merge every database
+The goal is:
+connect all platforms to one governed intelligence layer
+The model remains replaceable.
+Wedjat Brain owns:
+identity
+memory
+knowledge
+provenance
+retrieval
+context
+task routing
+model routing
+tools
+policies
+verification
+evaluation
+feedback
+learning
+audit
+observability
+cost control
+domain intelligence
+
+2. THE MOST IMPORTANT DISTINCTION
+Every platform remains responsible for its own operational truth.
+For example:
+SGTX
+→ SGTX remains authoritative for trade/transaction workflow data
+
+CIRKLE-MAIL
+→ CIRKLE-MAIL remains authoritative for email state
+
+MASHAHD
+→ MASHAHD remains authoritative for media/content state
+
+WASL
+→ WASL remains authoritative for commitments/agreements
+
+RMS
+→ RMS remains authoritative for restaurant operations
+
+AURIENTA
+→ AURIENTA remains authoritative for company/partner workflows
+
+JUSTICE SYSTEMS
+→ their case systems remain authoritative for case records
+Wedjat Brain must NOT replace those systems.
+Instead:
+APPLICATION SYSTEM OF RECORD
+        ↓
+authorized intelligence events/data
+        ↓
+WEDJAT BRAIN
+        ↓
+cognitive services
+        ↓
+APPLICATION
+Never make the Brain the source of truth for operational data that already has a domain owner.
+
+3. THE WEDJAT BRAIN PRINCIPLE
+The most important architectural rule remains:
+THE MODEL IS NOT THE BRAIN.
+Models are replaceable reasoning engines.
+The Brain is:
+Identity
++
+Memory
++
+Knowledge
++
+Evidence
++
+Retrieval
++
+Context
++
+Task Router
++
+Model Router
++
+Tools
++
+Policies
++
+Authorization
++
+Verification
++
+Learning
++
+Evaluation
++
+Feedback
++
+Provenance
++
+Audit
++
+Observability
+
+4. COMPLETE PLATFORM ECOSYSTEM
+Integrate the following platforms into the Wedjat Brain architecture.
+4.1 CIRKLE-SUPERAPP
+GitHub:
+https://github.com/cirkle-superapp/CIRKLE("https://github.com/cirkle-superapp/CIRKLE")
+Production:
+https://cirkle-superapp.vercel.app/("https://cirkle-superapp.vercel.app/")
+Cirkle-Superapp should become one of the major Brain consumers and contributors.
+Potential Brain domains:
+users
+social graph
+content
+recommendations
+user interactions
+notifications
+superapp behavior
+application discovery
+cross-mini-app intelligence
+Do not allow arbitrary private user activity to become global Brain knowledge.
+Respect scope and privacy.
+
+5. CIRKLE-MAIL
+GitHub:
+https://github.com/cirkle-superapp/MAIL("https://github.com/cirkle-superapp/MAIL")
+Production:
+https://cirkle-mail.vercel.app/("https://cirkle-mail.vercel.app/")
+Cirkle-Mail should integrate Brain capabilities for:
+email intelligence
+classification
+summarization
+search
+thread understanding
+draft assistance
+document understanding
+task extraction
+follow-up detection
+commitment detection
+priority detection
+Potential learning signals:
+anonymized/authorized interaction outcomes
+user corrections
+classification outcomes
+successful searches
+document patterns
+workflow patterns
+CRITICAL:
+Private email contents must NOT automatically become global Brain knowledge.
+Use:
+personal scope
+tenant scope
+application scope
+global verified scope
+separately.
+User-controlled memory and appropriate privacy controls are mandatory.
+
+6. OLYMPEX
+GitHub:
+https://github.com/fortleem/olympex_export("https://github.com/fortleem/olympex_export")
+First inspect its complete architecture and determine:
+	•	actual business purpose
+	•	current AI capabilities
+	•	current database
+	•	APIs
+	•	workflows
+	•	data types
+	•	suitable Brain integration points
+Do not assume its internal architecture.
+Create a domain adapter after the audit.
+
+7. MASHAHD
+GitHub:
+https://github.com/cirkle-superapp/mashahd("https://github.com/cirkle-superapp/mashahd")
+Production:
+https://mashahd.vercel.app/("https://mashahd.vercel.app/")
+Mashahd should become a major Brain learning and intelligence domain.
+Integrate:
+media discovery
+recommendation intelligence
+content understanding
+video metadata
+creator behavior
+content classification
+moderation assistance
+search
+summarization
+transcription-derived knowledge
+user feedback
+engagement signals
+Respect privacy and platform-specific authorization.
+Do not automatically convert user behavior into permanent global knowledge.
+The Brain should learn generalized patterns only through governed learning mechanisms.
+
+8. VERIFY
+GitHub:
+https://github.com/cirkle-superapp/verify("https://github.com/cirkle-superapp/verify")
+Production:
+https://cirkle-verify.vercel.app/("https://cirkle-verify.vercel.app/")
+Verify should integrate with Brain as a:
+verification intelligence domain
+Potential functions:
+document verification
+entity verification
+evidence comparison
+verification workflows
+anomaly detection
+provenance
+confidence/evidence states
+Important:
+Wedjat Brain may assist verification.
+It must not fabricate verification.
+The verification system must remain evidence-driven.
+
+9. WASL
+GitHub:
+https://github.com/cirkle-superapp/wasl("https://github.com/cirkle-superapp/wasl")
+Production:
+https://cirkle-wasl.vercel.app/("https://cirkle-wasl.vercel.app/")
+Wasl should integrate Brain capabilities for:
+agreement understanding
+commitment extraction
+document intelligence
+entity relationship understanding
+obligation detection
+deadline extraction
+communication intelligence
+commitment history
+Wasl's commitment/authorization semantics remain authoritative in Wasl.
+Wedjat can reason over them through governed APIs.
+
+10. AURIENTA
+GitHub:
+https://github.com/Aurienta/Aurienta("https://github.com/Aurienta/Aurienta")
+Production:
+https://aurienta.vercel.app/("https://aurienta.vercel.app/")
+Aurienta should contribute domain intelligence around:
+business formation
+company structures
+partners
+opportunities
+company matching
+organization relationships
+business documents
+consulting workflows
+Brain should support:
+entity intelligence
+relationship understanding
+business research
+document understanding
+partner matching assistance
+workflow intelligence
+Do not permit the Brain to make consequential business decisions without appropriate application authorization.
+
+11. SGTX
+GitHub:
+https://github.com/SGTX-PILOT/SGTX("https://github.com/SGTX-PILOT/SGTX")
+Production:
+https://sgtx.vercel.app/("https://sgtx.vercel.app/")
+SGTX is a special integration because its existing governance architecture is authoritative.
+DO NOT replace or bypass:
+SGTX API Gateway
+Business Service
+Governor
+OPA
+WasmEdge Constitutional Engine
+Human Authorization
+Cryptographic Signature
+Loom
+NATS
+Authorized Execution
+The Brain may provide:
+trade intelligence
+research
+compliance consultation
+document intelligence
+classification
+risk signals
+knowledge retrieval
+workflow recommendations
+But:
+AI advice
+≠
+authorization
+and:
+AI recommendation
+≠
+execution
+SGTX's existing governance pipeline remains mandatory.
+This is non-negotiable.
+
+12. MTQ / MITHQAL
+GitHub:
+https://github.com/MITHQALMTQ/MTQ("https://github.com/MITHQALMTQ/MTQ")
+Production:
+https://mithqal.vercel.app/("https://mithqal.vercel.app/")
+MTQ should integrate with Brain as a specialized financial/crypto intelligence domain.
+Potential areas:
+market intelligence
+structured financial data
+research
+classification
+analytics
+risk signals
+institutional workflows
+Because financial systems can have significant consequences:
+analysis
+≠
+authorization
+and:
+recommendation
+≠
+transaction execution
+Any external financial action must remain governed by application controls.
+
+13. JUDGE-SMART
+GitHub:
+https://github.com/fortleem/judge_synapse("https://github.com/fortleem/judge_synapse")
+Production:
+https://judge-smart.vercel.app/("https://judge-smart.vercel.app/")
+Integrate Judge-Smart as a specialized legal/justice intelligence domain.
+Potential Brain capabilities:
+document analysis
+case retrieval
+legal knowledge retrieval
+precedent retrieval
+timeline construction
+evidence organization
+summarization
+structured reasoning assistance
+Do NOT allow Wedjat Brain to autonomously make final legal judgments.
+Do not represent model output as judicial authority.
+Use:
+AI assistance
++
+evidence
++
+human/legal authority
+where required.
+
+14. EGYCOURT
+GitHub:
+https://github.com/egycourt/egycourt("https://github.com/egycourt/egycourt")
+This is a new integration.
+First inspect it comprehensively.
+Determine:
+case model
+court workflow
+documents
+users
+roles
+permissions
+legal data
+APIs
+AI functionality
+current database
+Then integrate through a domain adapter.
+Treat legal/court data as high-sensitivity.
+Do not allow unrestricted global Brain access.
+
+15. SGTX FABLE
+GitHub:
+https://github.com/fortleem/SGTX_FABLE("https://github.com/fortleem/SGTX_FABLE")
+First audit its current function and relationship to SGTX.
+Then integrate its useful intelligence/data into the Brain using:
+application scope
+provenance
+source attribution
+permission controls
+Do not assume FABLE data is globally shareable.
+
+16. PPE
+GitHub:
+https://github.com/fortleem/PPE("https://github.com/fortleem/PPE")
+Production:
+https://ppe-smart.vercel.app("https://ppe-smart.vercel.app/")
+First determine the domain and architecture from the repository.
+Then establish:
+PPE Brain Adapter
+PPE knowledge namespace
+PPE tool namespace
+PPE learning event types
+PPE evaluation suite
+Do not infer domain behavior before auditing the code.
+
+17. MTQΣ / MTQ SIGMA
+GitHub:
+https://github.com/MITHQALMTQ/MTQ_SIGMA("https://github.com/MITHQALMTQ/MTQ_SIGMA")
+Production:
+https://mtq-sigma.vercel.app("https://mtq-sigma.vercel.app/")
+Integrate MTQ Sigma as a separate application/domain.
+Do not assume the MTQ and MTQ Sigma data/authorization models are identical.
+Create separate:
+application_id
+policy
+knowledge scope
+tool scope
+memory scope
+model policy
+
+18. RMS / OTHER EXISTING WEDJAT PLATFORMS
+The Brain architecture must also remain ready for:
+Wedjat RMS
+Wedjat Justice OS
+Wedjat Dental OS
+future Wedjat platforms
+future Cirkle mini-apps
+future SGTX modules
+Where repositories are not listed in this specification:
+DO NOT invent credentials, repositories, database endpoints, or project IDs.
+Locate the existing authorized integration through the connected development environment or request secure configuration through the approved secret-management process.
+
+19. CENTRAL WEDJAT BRAIN ARCHITECTURE
+Build this logical architecture:
+                         WEDJAT BRAIN
+                              │
+                         BRAIN API
+                              │
+                       BRAIN RUNTIME
+                              │
+        ┌─────────────────────┼──────────────────────┐
+        ▼                     ▼                      ▼
+     Identity              Policy                Task Router
+        │                     │                      │
+        └─────────────────────┼──────────────────────┘
+                              ▼
+                       Context Engine
+                              │
+               ┌──────────────┼───────────────┐
+               ▼              ▼               ▼
+            Memory         Knowledge       Application Data
+               │              │               │
+               └──────────────┼───────────────┘
+                              ▼
+                       Retrieval Engine
+                              │
+                   ┌──────────┼──────────┐
+                   ▼          ▼          ▼
+                Semantic   Keyword      SQL
+                   │          │          │
+                   └──────────┼──────────┘
+                              ▼
+                           Reranker
+                              │
+                              ▼
+                        Model Router
+                              │
+                ┌─────────────┼─────────────┐
+                ▼             ▼             ▼
+              Fast        Reasoning      Specialist
+              Model          Model          Model
+                │             │             │
+                └─────────────┼─────────────┘
+                              ▼
+                         Tool Engine
+                              │
+                            Policy
+                              │
+                       Human Approval
+                              │
+                           Execute
+                              │
+                          Verify
+                              │
+                           Respond
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+              User                       Events
+                                            │
+                                          Inngest
+                                            │
+                ┌───────────────────────────┼────────────────────────┐
+                ▼                           ▼                        ▼
+             Learning                   Evaluation                Refresh
+                │                           │                        │
+                └───────────────────────────┼────────────────────────┘
+                                            ▼
+                                           Neon
+
+20. CROSS-PLATFORM LEARNING PLANE
+Create a unified learning event architecture.
+Every application can publish approved Brain events.
+Examples:
+brain.application.request
+brain.application.response
+brain.user.feedback
+brain.memory.candidate
+brain.knowledge.candidate
+brain.document.ingested
+brain.tool.outcome
+brain.workflow.completed
+brain.workflow.failed
+brain.evaluation.case
+brain.correction
+brain.research.completed
+Events must include:
+eventId
+eventType
+eventVersion
+timestamp
+applicationId
+tenantId
+actor
+requestId
+data
+provenance
+classification
+
+21. CROSS-PLATFORM LEARNING PIPELINE
+All applications feed into:
+APPLICATION
+ ↓
+EVENT / KNOWLEDGE / FEEDBACK
+ ↓
+WEDJAT INGESTION
+ ↓
+CLASSIFY
+ ↓
+SCOPE
+ ↓
+SECURITY CHECK
+ ↓
+PROVENANCE
+ ↓
+DUPLICATE CHECK
+ ↓
+NOVELTY CHECK
+ ↓
+CONTRADICTION CHECK
+ ↓
+QUALITY CHECK
+ ↓
+PROMOTION DECISION
+ ↓
+MEMORY / KNOWLEDGE / EVALUATION
+ ↓
+INDEX
+Do NOT:
+application
+→ raw database dump
+→ global knowledge
+
+22. CROSS-PLATFORM KNOWLEDGE MODEL
+Every item must have a scope.
+At minimum:
+GLOBAL
+APPLICATION
+TENANT
+ORGANIZATION
+USER
+SESSION
+A piece of knowledge should never become global merely because it originated in one application.
+
+23. KNOWLEDGE SHARING RULE
+Use four possible states:
+PRIVATE
+APPLICATION-SHARED
+TENANT-SHARED
+GLOBAL-VERIFIED
+Promotion must be controlled.
+Example:
+CIRKLE-MAIL private user email
+→ PRIVATE
+
+CIRKLE-MAIL organization policy
+→ ORGANIZATION/TENANT
+
+Verified public document
+→ potentially GLOBAL-VERIFIED
+This prevents cross-platform privacy leakage.
+
+24. PLATFORM DATA CLASSIFICATION
+Every application integration must classify data:
+PUBLIC
+INTERNAL
+CONFIDENTIAL
+RESTRICTED
+Classification must control:
+storage
+retrieval
+model routing
+cross-platform sharing
+logging
+learning
+exports
+tool access
+
+25. NO RAW GLOBAL DATABASE MERGE
+Do NOT create:
+all application tables
+→ one giant Brain database
+Instead:
+Application DB
+     │
+     ├── domain truth
+     │
+     └── authorized Brain interface
+                  │
+                  ▼
+             Brain knowledge
+The Brain stores what it needs for cognition, not a duplicate of every application database.
+
+26. BRAIN KNOWLEDGE VS APPLICATION DATA
+Application database:
+SOURCE OF TRUTH
+Brain knowledge:
+COGNITIVE REPRESENTATION
+Memory:
+EXPERIENCE / CONTEXT
+Do not merge these concepts.
+
+27. PLATFORM ADAPTER ARCHITECTURE
+Every platform must have an adapter.
+Conceptually:
+CirkleAdapter
+MailAdapter
+OlympExAdapter
+MashahdAdapter
+VerifyAdapter
+WaslAdapter
+AurientaAdapter
+SGTXAdapter
+MTQAdapter
+JudgeSmartAdapter
+EgyCourtAdapter
+SGTXFableAdapter
+PPEAdapter
+MTQSigmaAdapter
+Each adapter should expose:
+interface BrainPlatformAdapter {
+  getCapabilities()
+  publishEvents()
+  retrieveAuthorizedData()
+  receiveBrainResponses()
+  receiveKnowledgeUpdates()
+  receiveModelCapabilities()
+}
+Do not let application code directly manipulate the Brain database.
+
+28. PLATFORM SDK
+Build a reusable Wedjat Brain SDK.
+Conceptually:
+@wedjat/brain-sdk
+It should support:
+brain.respond()
+brain.stream()
+brain.retrieve()
+brain.remember()
+brain.evaluate()
+brain.publishEvent()
+brain.executeTool()
+and platform identity should automatically be included.
+
+29. APPLICATION IDENTITY
+Each application receives a unique:
+application_id
+The Brain must always know:
+which application
+which tenant
+which user/service
+which scope
+which permissions
+
+30. APPLICATION CAPABILITY REGISTRY
+Every application should register:
+application_id
+domain
+capabilities
+tools
+knowledge scopes
+memory scopes
+allowed models
+allowed data classes
+event types
+Example:
+Mashahd
+→ media tools
+
+SGTX
+→ trade tools
+
+Wasl
+→ agreement tools
+
+31. DOMAIN INTELLIGENCE MODULES
+Use:
+CORE WEDJAT BRAIN
++
+DOMAIN INTELLIGENCE
+Examples:
+Trade Intelligence
+Media Intelligence
+Mail Intelligence
+Verification Intelligence
+Business Intelligence
+Justice Intelligence
+Restaurant Intelligence
+Dental Intelligence
+Finance Intelligence
+Do not duplicate the entire Brain per domain.
+
+32. SHARED + DOMAIN KNOWLEDGE
+Architecture:
+GLOBAL BRAIN KNOWLEDGE
+        │
+        ├── Trade Domain
+        ├── Media Domain
+        ├── Mail Domain
+        ├── Business Domain
+        ├── Justice Domain
+        ├── Finance Domain
+        └── Other Domains
+Cross-domain learning must be permission-controlled.
+
+33. CROSS-DOMAIN LEARNING
+A lesson learned in one application can be generalized only when:
+privacy permits
++
+scope permits
++
+evidence supports it
++
+domain adaptation is safe
+Example:
+A generic document-classification improvement may transfer across applications.
+A private person's email content must not.
+
+34. COLLECTIVE LEARNING
+The ecosystem should create a controlled collective learning loop:
+CIRKLE
+  \
+MAIL
+   \
+MASHAHD
+    \
+VERIFY
+     \
+WASL
+      \
+AURIENTA
+       \
+SGTX
+        \
+MTQ
+         \
+JUSTICE
+          \
+OTHER PLATFORMS
+              ↓
+        WEDJAT LEARNING
+              ↓
+       VALIDATION / EVALUATION
+              ↓
+        GLOBAL KNOWLEDGE
+              ↓
+         WEDJAT BRAIN
+              ↓
+         ALL PLATFORMS
+But collective learning must be:
+governed
+scoped
+provenance-aware
+privacy-aware
+evidence-based
+versioned
+reversible
+
+35. NO SELF-REINFORCING HALLUCINATION
+Never use:
+platform AI answer
+ ↓
+Brain memory
+ ↓
+Brain knowledge
+ ↓
+future retrieval
+ ↓
+same AI answer
+as a truth mechanism.
+Instead:
+platform observation
+ ↓
+candidate
+ ↓
+evidence
+ ↓
+validation
+ ↓
+promotion
+
+36. SYSTEM LEARNING VS MODEL TRAINING
+The Brain may continuously improve through:
+memory
+knowledge
+retrieval
+context
+routing
+tools
+prompts
+policies
+evaluation
+domain modules
+This is system-level learning.
+It is NOT automatically:
+model training
+Actual fine-tuning/model training must remain a separate controlled pipeline.
+
+37. TRAINING DATA PIPELINE
+When enough high-quality data exists:
+RAW DATA
+ ↓
+ELIGIBILITY
+ ↓
+PRIVACY FILTER
+ ↓
+REDACTION
+ ↓
+CURATION
+ ↓
+QUALITY CHECK
+ ↓
+TRAINING SET
+Keep:
+training
+validation
+test
+held-out evaluation
+separate.
+Do not automatically train on everything produced by users.
+
+38. CROSS-PLATFORM FEEDBACK
+Each application should publish outcome signals.
+Examples:
+accepted
+rejected
+corrected
+edited
+retried
+failed
+completed
+abandoned
+approved
+disapproved
+These become learning/evaluation signals.
+They are not automatically truth.
+
+39. BRAIN EVALUATION
+Create a global evaluation framework.
+Evaluate:
+cross-platform retrieval
+memory
+knowledge
+tool usage
+model routing
+security
+tenant isolation
+prompt injection
+answer correctness
+citation/evidence
+domain behavior
+Maintain both:
+GLOBAL GOLDEN SET
+and:
+DOMAIN GOLDEN SET
+for each application.
+
+40. DOMAIN REGRESSION TESTS
+Every change to shared Brain infrastructure must run:
+Cirkle tests
+Mail tests
+Mashahd tests
+Verify tests
+Wasl tests
+Aurienta tests
+SGTX tests
+MTQ tests
+Judge-Smart tests
+EgyCourt tests
+PPE tests
+MTQ Sigma tests
+where applicable.
+A Brain improvement that breaks another platform is not an improvement.
+
+41. BRAIN MODEL ROUTER
+The central Brain should choose models based on:
+application
+domain
+task
+data classification
+complexity
+latency
+cost
+modality
+quality requirement
+historical evaluation
+provider availability
+Example:
+Mail classification
+→ efficient model
+
+Complex legal analysis
+→ approved reasoning model + verification
+
+SGTX structured data lookup
+→ SQL/API
+
+Simple calculation
+→ deterministic calculator
+
+Media understanding
+→ multimodal model
+
+42. DATA-AWARE MODEL ROUTING
+The router must know which models are allowed to receive which classes of data.
+For example:
+PUBLIC
+→ broad provider availability
+
+CONFIDENTIAL
+→ approved providers only
+
+RESTRICTED
+→ explicitly approved providers or local processing
+Never route sensitive application data to arbitrary providers.
+
+43. BRAIN TOOL REGISTRY
+Create a global tool registry.
+Each application registers domain tools.
+Example:
+Cirkle tools
+Mail tools
+Mashahd tools
+SGTX tools
+Wasl tools
+Aurienta tools
+MTQ tools
+Justice tools
+Every tool has:
+schema
+permissions
+risk
+tenant
+application
+approval requirements
+idempotency
+audit
+
+44. TOOL EXECUTION
+The Brain may recommend tool usage.
+The application remains the final authorization layer where domain-specific controls are required.
+Flow:
+Brain
+ ↓
+tool request
+ ↓
+policy
+ ↓
+application authorization
+ ↓
+approval if required
+ ↓
+execution
+ ↓
+verification
+ ↓
+audit
+
+45. SPECIAL GOVERNANCE FOR SGTX
+Do not shortcut SGTX.
+The Brain must integrate into the existing SGTX architecture exactly where authorized.
+AI consultation must remain inside the existing governance chain.
+Never allow:
+Brain
+→ directly execute trade/customs action
+outside SGTX authorization.
+
+46. SPECIAL GOVERNANCE FOR JUSTICE
+For Judge-Smart / EgyCourt:
+The Brain can provide:
+research assistance
+retrieval
+summarization
+document structuring
+evidence organization
+drafting assistance
+Do not allow:
+LLM
+→ autonomous judicial decision
+without the necessary human/legal authority.
+
+47. SPECIAL GOVERNANCE FOR FINANCE
+For MTQ / MTQ Sigma:
+The Brain may provide:
+research
+analytics
+classification
+structured information
+risk indicators
+External financial actions require application authorization and appropriate controls.
+
+48. SPECIAL GOVERNANCE FOR MAIL
+For Cirkle-Mail:
+Do not use the contents of private mail as global learning by default.
+Support:
+private memory
+personal knowledge
+organization knowledge
+application knowledge
+with explicit policies.
+
+49. BRAIN MEMORY
+Maintain:
+episodic
+semantic
+procedural
+memory separately.
+Memory scope:
+session
+user
+organization
+tenant
+application
+global where legitimately applicable
+
+50. GLOBAL KNOWLEDGE PROMOTION
+A candidate can become global only when:
+source is suitable
++
+data is permitted
++
+evidence exists
++
+validation succeeds
++
+no unresolved contradiction exists
++
+scope allows promotion
+Otherwise remain:
+private
+application
+tenant
+candidate
+
+51. KNOWLEDGE VERSIONING
+Every important knowledge item should support:
+version
+createdAt
+updatedAt
+validFrom
+validUntil
+source
+evidence
+status
+supersedes
+supersededBy
+Never silently overwrite historical knowledge.
+
+52. KNOWLEDGE TYPES
+Use explicit categories such as:
+FACT
+RULE
+POLICY
+PROCEDURE
+OBSERVATION
+OPINION
+INFERENCE
+PREFERENCE
+EVENT
+Do not treat them identically.
+
+53. PROVENANCE
+Every promoted knowledge item must retain provenance.
+Track:
+source application
+source record
+source document
+source URL when applicable
+retrieved time
+published time when available
+version
+extraction method
+validation method
+
+54. RETRIEVAL
+The central Brain retrieval system should support:
+semantic
+keyword
+structured SQL/API
+metadata filtering
+entity retrieval
+temporal filtering
+reranking
+evidence filtering
+
+55. APPLICATION-SPECIFIC RETRIEVAL
+The Brain must never search everything blindly.
+Example:
+SGTX request
+→ SGTX knowledge
+→ permitted global knowledge
+→ permitted tenant knowledge
+
+Cirkle-Mail request
+→ Mail memory
+→ Mail knowledge
+→ permitted global knowledge
+
+56. CONTEXT ENGINE
+Before sending information to a model, assemble:
+identity
+policy
+current task
+relevant memory
+relevant knowledge
+relevant application data
+tool results
+evidence
+Never dump all cross-platform knowledge into every model request.
+
+57. ENTITY RESOLUTION
+The Brain should eventually understand that the same entity may appear in multiple systems.
+Example:
+Company X in Aurienta
++
+Company X in Wasl
++
+Company X in SGTX
+may represent the same entity.
+But entity merging must use explicit confidence/evidence and never blindly combine records.
+
+58. CROSS-PLATFORM ENTITY GRAPH
+Build an abstraction:
+Entity
+Relation
+Evidence
+Source
+Validity
+Examples:
+Company
+→ owns
+→ subsidiary
+
+Person
+→ works_for
+→ Company
+
+Company
+→ party_to
+→ Agreement
+
+Company
+→ involved_in
+→ Trade
+Do not introduce a separate graph database until actual scale requires it.
+
+59. BRAIN API SECURITY
+Every Brain request must include or resolve:
+applicationId
+tenantId
+user/service identity
+permissions
+scope
+requestId
+Every request must be:
+authenticated
+authorized
+validated
+audited where required
+
+60. APPLICATION CREDENTIALS
+Never hard-code:
+	•	GitHub tokens
+	•	Vercel tokens
+	•	database credentials
+	•	Inngest keys
+	•	Turso tokens
+	•	API keys
+	•	Cloudflare secrets
+	•	Discord tokens
+	•	financial API credentials
+	•	email passwords
+	•	personal passwords
+Use environment variables / secret stores.
+Never print them.
+Never commit them.
+Never put them into prompts.
+Never store them in Brain memory or embeddings.
+
+61. SECURITY ROTATION REQUIREMENT
+Because credentials were provided in this conversation:
+Before production integration, rotate all exposed:
+GitHub tokens
+Vercel tokens
+database passwords/URLs containing credentials
+Turso tokens
+Cloudflare secrets
+AI API keys
+Discord credentials
+other private credentials
+Then configure the replacement values securely.
+The implementation must not reuse exposed credential strings.
+
+62. DATABASE CONNECTION POLICY
+Do not give every application direct write access to the Brain database.
+Prefer:
+Application
+ ↓
+Brain API / SDK
+ ↓
+Brain services
+ ↓
+Neon
+Use service credentials with least privilege.
+
+63. CANONICAL BRAIN DATABASE
+Neon should normally be the canonical Brain persistence layer.
+Store:
+identities
+tenants
+applications
+memory
+knowledge
+provenance
+evidence
+embeddings
+events
+tool definitions
+tool executions
+model registry
+routing
+evaluations
+feedback
+learning candidates
+audit
+Do not duplicate application operational databases unnecessarily.
+
+64. TURSO
+Turso remains optional for:
+local
+embedded
+offline
+edge
+device-local
+specialized cache
+Do not create separate canonical copies of Brain knowledge in every application database.
+
+65. INNGEST
+Use Inngest for:
+document ingestion
+knowledge extraction
+memory consolidation
+knowledge refresh
+learning
+evaluation
+model benchmarking
+long-running workflows
+human approval waits
+retries
+scheduled jobs
+Do not route every synchronous chat message through Inngest.
+
+66. GITHUB
+Each application remains independently version-controlled.
+Wedjat Brain should have its own authoritative codebase/repository if one does not already exist.
+Do not create a second competing Brain repository if an existing Wedjat Brain repository already exists.
+The Brain repository should own:
+Brain runtime
+SDK
+contracts
+adapters
+schema migrations
+events
+policies
+model abstraction
+evaluation
+documentation
+
+67. BRAIN SDK VERSIONING
+Every application should use a versioned Brain SDK/API.
+Example:
+@wedjat/brain-sdk
+Use backward compatibility where practical.
+
+68. BRAIN EVENT VERSIONING
+Events must include:
+eventType
+eventVersion
+so the Brain can evolve without immediately breaking all applications.
+
+69. CROSS-PLATFORM EVENT IDEMPOTENCY
+Every event should have:
+eventId
+The Brain must safely ignore duplicate processing.
+This is critical when using retries and durable workflows.
+
+70. LEARNING EVENT TYPES
+Create standardized learning events, for example:
+learning.observation
+learning.correction
+learning.preference
+learning.success
+learning.failure
+learning.feedback
+learning.knowledge_candidate
+learning.memory_candidate
+learning.evaluation_case
+learning.tool_outcome
+
+71. DATA LINEAGE
+The Brain must be able to answer:
+Where did this knowledge originate?
+Which application contributed it?
+Which record produced it?
+Which transformation produced it?
+Which evidence validated it?
+When was it promoted?
+Which model used it?
+
+72. CROSS-PLATFORM LEARNING SAFETY
+When multiple platforms contribute similar information:
+source A
++
+source B
++
+source C
+the Brain should compare them.
+Agreement may strengthen evidence.
+Disagreement should produce:
+conflict
+not silent merging.
+
+73. LEARNING CATEGORIES
+The Brain must separate:
+memory improvement
+knowledge improvement
+retrieval improvement
+routing improvement
+tool improvement
+prompt improvement
+policy improvement
+evaluation improvement
+model training
+
+74. GLOBAL BRAIN IMPROVEMENT LOOP
+The complete lifecycle should be:
+PLATFORM ACTIVITY
+ ↓
+OBSERVATION
+ ↓
+FEEDBACK / CORRECTION
+ ↓
+LEARNING CANDIDATE
+ ↓
+VALIDATION
+ ↓
+EVALUATION
+ ↓
+PROMOTION
+ ↓
+GLOBAL/DESIGNATED KNOWLEDGE
+ ↓
+BRAIN
+ ↓
+IMPROVED PLATFORM INTELLIGENCE
+
+75. NO AUTOMATIC CROSS-PLATFORM MEMORY LEAKAGE
+Example:
+A user tells Cirkle-Mail a private personal fact.
+It must NOT automatically become:
+global Wedjat knowledge
+SGTX knowledge
+Mashahd knowledge
+MTQ knowledge
+Only permitted scopes may receive it.
+
+76. CROSS-PLATFORM BENEFIT
+What SHOULD be shared when appropriate:
+generalized knowledge
+verified public facts
+approved domain concepts
+reusable procedures
+validated technical improvements
+general retrieval improvements
+non-sensitive evaluation knowledge
+What should generally NOT be shared automatically:
+private email
+private conversations
+private financial information
+private legal/court information
+private organization records
+secrets
+credentials
+tenant-specific confidential information
+
+77. GLOBAL KNOWLEDGE EXAMPLES
+A globally shareable improvement might be:
+better document chunking method
+better generic OCR cleanup
+generic date normalization
+generic language detection
+verified public technical documentation
+not:
+private customer X's confidential contract
+
+78. COGNITIVE TASK ROUTER
+Before calling a model, determine whether the task can be solved through:
+SQL
+API
+rules
+policy engine
+calculator
+retrieval
+LLM
+agent
+Use the simplest reliable mechanism.
+This reduces cost and improves accuracy.
+
+79. MODEL ROUTER
+Use application + task + data policy + quality requirements.
+The model router should be centrally managed.
+Applications should not independently choose random models unless explicitly allowed.
+
+80. SHARED BRAIN CAPABILITIES
+Expose reusable Brain functions:
+answer
+summarize
+classify
+extract
+translate
+retrieve
+research
+reason
+compare
+verify
+plan
+generate
+remember
+learn
+
+81. DOMAIN-SPECIFIC CAPABILITIES
+Expose domain extensions:
+trade
+media
+mail
+verification
+business
+justice
+finance
+restaurant
+dental
+The core Brain remains shared.
+
+82. USER EXPERIENCE
+Applications should feel like they contain intelligent features, but those features should be powered by the same Wedjat Brain infrastructure.
+The user should not experience:
+Cirkle AI
+Mail AI
+Mashahd AI
+SGTX AI
+MTQ AI
+as unrelated intelligence systems.
+Internally they should be:
+WEDJAT BRAIN
++
+APPLICATION DOMAIN
++
+APPLICATION POLICY
+
+83. BRAIN FEEDBACK BACK TO PLATFORMS
+The Brain can return:
+knowledge
+recommendations
+classifications
+summaries
+retrieved evidence
+domain intelligence
+workflow suggestions
+personalized context
+but each platform decides how to use them within its own rules.
+
+84. PLATFORM-SPECIFIC MEMORY
+Example:
+Cirkle-MAIL user memory
+→ available to Mail within permitted scope
+
+Mashahd creator memory
+→ available to Mashahd within permitted scope
+
+SGTX organization memory
+→ available to SGTX within organization scope
+
+85. SHARED USER IDENTITY
+Where legally and technically appropriate, the Brain can support a common identity abstraction.
+However:
+same person
+≠
+automatically share everything
+Identity resolution must not automatically grant cross-platform data access.
+
+86. SSO / IDENTITY INTEGRATION
+Investigate a unified identity layer where practical:
+Cirkle identity
+Wedjat identity
+application identity
+tenant identity
+with application-specific authorization.
+Do not rewrite existing authentication until the current systems are audited.
+
+87. CROSS-PLATFORM CONSENT
+Support policy/consent where required for:
+sharing
+personalization
+memory
+learning
+analytics
+cross-platform processing
+Do not assume platform-wide consent automatically exists.
+
+88. BRAIN EVALUATION BY PLATFORM
+Track:
+Brain quality globally
++
+Brain quality by application
++
+Brain quality by domain
++
+Brain quality by task
+A model/routing change may improve Mashahd and worsen SGTX.
+Detect this.
+
+89. PLATFORM HEALTH DASHBOARD
+Create a Brain administration view showing:
+platform
+health
+requests
+latency
+errors
+model usage
+cost
+learning events
+knowledge contributions
+knowledge consumed
+retrieval quality
+security events
+
+90. BRAIN CONTROL PLANE
+Provide authorized administrators with control over:
+applications
+models
+providers
+routes
+tools
+policies
+prompts
+knowledge sources
+memory policies
+learning policies
+evaluation sets
+feature flags
+cost policies
+
+91. BRAIN DATA PLANE
+Operational requests run through:
+Brain API
+→ Brain Runtime
+→ policies
+→ retrieval
+→ models/tools
+→ response
+Keep control-plane configuration separate from data-plane execution.
+
+92. APPLICATION ADAPTER SECURITY
+Every adapter must authenticate to the Brain as an application/service identity.
+Do not use a universal super-admin secret across every platform.
+Use least privilege.
+
+93. LEAST PRIVILEGE
+Cirkle should only have the Brain permissions it needs.
+Mail should only have its allowed Brain permissions.
+SGTX should only have its allowed Brain permissions.
+Justice applications should have their own restricted permissions.
+Do not create:
+EVERY PLATFORM = FULL BRAIN ACCESS
+
+94. HIGH-RISK DOMAINS
+Treat:
+justice
+finance
+trade execution
+identity verification
+legal evidence
+as higher-risk domains requiring stronger policy, audit, verification, and human authorization.
+
+95. LOW-RISK DOMAINS
+Examples:
+summarization
+formatting
+general classification
+basic search
+generic content suggestions
+may use lighter-weight controls where appropriate.
+
+96. BRAIN ACTION POLICY
+The Brain must distinguish:
+information
+recommendation
+draft
+simulation
+requested action
+authorized action
+executed action
+verified action
+
+97. SHARED KNOWLEDGE DOES NOT MEAN SHARED AUTHORITY
+A Brain knowledge item may be useful to multiple platforms.
+That does not mean every platform is authorized to act upon it.
+The platform's own policy remains authoritative.
+
+98. CROSS-PLATFORM TOOL EXECUTION
+If a Brain-driven action crosses application boundaries:
+Brain
+ ↓
+source application
+ ↓
+target application
+ ↓
+authorization
+ ↓
+policy
+ ↓
+execution
+ ↓
+audit
+Do not allow arbitrary application-to-application execution through the model.
+
+99. NO DIRECT DATABASE CROSS-WRITES
+Do not build:
+Mashahd writes directly to SGTX DB
+SGTX writes directly to Mail DB
+Mail writes directly to Wasl DB
+Use governed service contracts.
+
+100. APPLICATION APIs REMAIN INDIVIDUAL
+Each platform retains its own APIs.
+Wedjat Brain provides:
+common intelligence API
+not:
+one giant replacement API
+
+101. CROSS-PLATFORM API GATEWAY
+Consider a central Brain gateway:
+/api/brain/*
+and application-domain APIs:
+/api/sgtx/*
+/api/wasl/*
+/api/mashahd/*
+/api/mail/*
+Do not collapse them.
+
+102. OBSERVABILITY
+Every Brain request should record:
+requestId
+applicationId
+tenantId
+user/service
+task
+model
+provider
+retrieval
+tools
+fallbacks
+latency
+tokens
+estimated cost
+result state
+
+103. COST ALLOCATION
+Measure Brain cost by:
+platform
+tenant
+user where appropriate
+model
+workflow
+tool
+learning job
+This will allow you to know which platform is consuming the most intelligence resources.
+
+104. GLOBAL LEARNING COST CONTROL
+Do not let every platform generate unlimited background learning.
+Use:
+priority
+batching
+deduplication
+novelty filtering
+cost limits
+before expensive learning.
+
+105. LEARNING QUEUE PRIORITIZATION
+Prioritize learning candidates according to:
+impact
+frequency
+confidence
+novelty
+domain importance
+risk
+Do not process every event equally.
+
+106. KNOWLEDGE REFRESH
+Time-sensitive data should have refresh policies.
+Example:
+market data
+→ high freshness
+
+technical documentation
+→ periodic
+
+stable historical information
+→ low refresh frequency
+
+107. CROSS-PLATFORM EMBEDDING STRATEGY
+Centralize embedding strategy.
+Version embeddings.
+Do not allow each application to silently use incompatible models.
+
+108. RETRIEVAL FILTERS
+Every Brain retrieval should consider:
+tenant
+application
+scope
+permissions
+classification
+validity
+entity
+time
+knowledge state
+
+109. MEMORY CONFLICT
+If one application says:
+A
+and another says:
+B
+do not silently merge.
+Determine:
+different entity?
+different date?
+different tenant?
+different scope?
+different source?
+actual contradiction?
+
+110. KNOWLEDGE SOURCE PRIORITY
+The Brain should maintain source-quality rules.
+Examples:
+official source
+authoritative application database
+verified document
+trusted external source
+user-provided information
+model-generated inference
+These are not equivalent evidence classes.
+
+111. SOURCE-OF-TRUTH HIERARCHY
+Define source authority per domain.
+Do not assume one global hierarchy applies to every application.
+Example:
+SGTX operational transaction
+→ SGTX source of truth
+
+Cirkle-Mail email state
+→ Mail source of truth
+
+Justice case status
+→ case system source of truth
+
+112. KNOWLEDGE CORRECTION
+When a platform detects an error:
+application correction
+ ↓
+Brain correction event
+ ↓
+identify derived knowledge
+ ↓
+supersede/repair
+ ↓
+reindex
+ ↓
+invalidate affected cache
+
+113. BRAIN LEARNING FROM PLATFORM FAILURE
+Platform failures can be valuable learning signals.
+Example:
+tool failed
+ ↓
+failure classification
+ ↓
+root cause
+ ↓
+candidate procedural improvement
+ ↓
+evaluation
+ ↓
+approved update
+Never automatically rewrite production procedures from a single failure.
+
+114. BRAIN LEARNING FROM USER CORRECTION
+A user correction becomes:
+feedback
+→ candidate
+→ evaluated
+→ scoped
+→ promoted if appropriate
+not automatically:
+global truth
+
+115. BRAIN RESEARCH
+The Brain may perform:
+research
+search
+document retrieval
+cross-source comparison
+but must preserve provenance.
+External web content remains untrusted.
+
+116. TOOL + KNOWLEDGE DISTINCTION
+Tool outputs are observations.
+They are not automatically permanent knowledge.
+Example:
+API says inventory = 25
+This is a time-specific observation.
+Do not automatically convert it into:
+permanent fact: inventory is 25
+without temporal semantics.
+
+117. TEMPORAL KNOWLEDGE
+All cross-platform operational observations should support:
+observedAt
+validFrom
+validUntil
+where appropriate.
+
+118. GLOBAL BRAIN MEMORY
+Do not create one giant undifferentiated memory.
+Use:
+GLOBAL
+APPLICATION
+TENANT
+ORGANIZATION
+USER
+SESSION
+
+119. MEMORY ACCESS RULE
+Before retrieving memory:
+WHO
++
+WHICH APPLICATION
++
+WHICH TENANT
++
+WHICH SCOPE
++
+WHICH PERMISSIONS
+must be resolved.
+
+120. BRAIN CONTEXT ASSEMBLY
+The Brain should construct context from:
+current application
+current task
+appropriate memory
+appropriate knowledge
+appropriate application data
+policy
+tool results
+evidence
+
+121. NO “ALL PLATFORM CONTEXT” PROMPT
+Never send:
+all Cirkle data
++
+all Mail data
++
+all SGTX data
++
+all MTQ data
+to the model simply because it is technically accessible.
+Only send what is relevant and authorized.
+
+122. BRAIN API FALLBACK
+If Brain is unavailable:
+Each application must have an appropriate degraded mode.
+Example:
+application continues core deterministic functions
+AI enhancement temporarily unavailable
+The Brain must not become a catastrophic single point of failure for basic business operations.
+
+123. APPLICATION AVAILABILITY
+Core platform functionality should not depend entirely on Brain availability unless the feature is inherently AI-native.
+
+124. BRAIN AVAILABILITY
+Use graceful degradation:
+model unavailable
+→ fallback
+
+retrieval unavailable
+→ constrained response
+
+tool unavailable
+→ no false execution
+
+Brain unavailable
+→ application safe mode
+
+125. MODEL-INDEPENDENCE TEST
+Change the underlying model.
+Verify:
+applications still work
+Brain APIs remain stable
+memory remains intact
+knowledge remains intact
+retrieval remains intact
+
+126. PLATFORM-INDEPENDENCE TEST
+Disconnect one platform.
+Verify:
+other platforms continue operating
+Brain continues operating
+unless an explicit shared dependency exists.
+
+127. BRAIN-PLATFORM CONTRACT
+Every platform integration must document:
+What the Brain can read
+What the Brain can write
+What the Brain can learn
+What the Brain can return
+What the Brain cannot access
+What requires approval
+
+128. CROSS-PLATFORM CONTRACT TESTS
+For every adapter:
+authentication
+authorization
+data scope
+event delivery
+event replay
+duplicate handling
+failure
+timeout
+version compatibility
+
+129. SECURITY TEST MATRIX
+Test:
+Cirkle → Mail unauthorized access
+Mail → SGTX unauthorized access
+Mashahd → private Mail access
+SGTX → private unrelated data
+MTQ → unrelated tenant
+Justice → unauthorized commercial data
+Every unauthorized path must fail.
+
+130. PROMPT INJECTION TESTING
+Place malicious instructions inside:
+emails
+documents
+media metadata
+web pages
+contracts
+trade documents
+tool results
+legal documents
+Verify the Brain does not treat those instructions as system authority.
+
+131. CROSS-PLATFORM DATA EXFILTRATION TEST
+Attempt:
+User asks Brain to reveal another platform's private information.
+The system must:
+deny
+or
+provide only information the user is authorized to access
+
+132. ADMIN VS USER ACCESS
+Administrative Brain functions must never automatically be available to normal application users.
+
+133. DOMAIN POLICY INHERITANCE
+Use:
+GLOBAL POLICY
+ ↓
+APPLICATION POLICY
+ ↓
+TENANT POLICY
+ ↓
+USER POLICY
+ ↓
+SESSION CONSTRAINT
+with explicit precedence.
+
+134. BRAIN SDK TELEMETRY
+SDK requests should provide:
+requestId
+applicationId
+sdkVersion
+for observability.
+
+135. VERSIONING
+Version:
+Brain API
+Brain SDK
+events
+knowledge schemas
+memory schemas
+prompts
+policies
+models
+routing
+embeddings
+
+136. MIGRATION STRATEGY
+Do not simultaneously rewrite every application.
+Use:
+audit
+ ↓
+adapter
+ ↓
+read integration
+ ↓
+Brain inference
+ ↓
+feedback
+ ↓
+learning
+ ↓
+controlled write integration where required
+
+137. PHASE 0 — COMPLETE ECOSYSTEM AUDIT
+Audit every listed repository.
+Produce:
+repository
+framework
+database
+AI implementation
+APIs
+authentication
+deployment
+current AI
+existing events
+existing memory
+existing knowledge
+existing tools
+security
+dependencies
+
+138. PHASE 1 — CREATE THE CENTRAL BRAIN CONTRACT
+Establish:
+Brain API
+Brain SDK
+application identity
+tenant context
+event schema
+authentication
+authorization
+Do not yet rewrite every platform.
+
+139. PHASE 2 — CONNECT PLATFORMS AS DATA/LEARNING CONTRIBUTORS
+Each platform should be able to publish:
+approved events
+feedback
+candidate knowledge
+domain metadata
+evaluation cases
+
+140. PHASE 3 — CONNECT PLATFORMS AS BRAIN CONSUMERS
+Each platform should be able to request:
+answer
+retrieve
+classify
+summarize
+reason
+verify
+plan
+recommend
+from Wedjat Brain.
+
+141. PHASE 4 — CENTRALIZE MODEL ROUTING
+Move model selection into the Brain.
+Applications should not independently maintain incompatible model-routing logic.
+Keep provider-specific adapters centralized.
+
+142. PHASE 5 — CENTRALIZE MEMORY
+Create the shared Memory Engine.
+But preserve scope:
+global
+application
+tenant
+organization
+user
+session
+
+143. PHASE 6 — CENTRALIZE KNOWLEDGE
+Create the Brain Knowledge Engine.
+Move appropriate verified/common knowledge into it.
+Do not migrate private operational databases wholesale.
+
+144. PHASE 7 — CONNECT TOOLING
+Register application tools with Brain.
+Examples:
+SGTX tools
+Mail tools
+Mashahd tools
+Wasl tools
+Aurienta tools
+MTQ tools
+Justice tools
+
+145. PHASE 8 — COLLECTIVE LEARNING
+Activate:
+feedback
+corrections
+knowledge candidates
+memory candidates
+failure learning
+evaluation
+across platforms.
+
+146. PHASE 9 — CROSS-PLATFORM INTELLIGENCE
+Allow safe knowledge reuse between applications.
+Only where:
+scope
+privacy
+authorization
+evidence
+permit.
+
+147. PHASE 10 — ADVANCED OPTIMIZATION
+Only after real usage:
+advanced caching
+Turso edge/local use
+advanced reranking
+local models
+specialized models
+advanced graph capabilities
+
+148. PHASE 11 — MODEL TRAINING
+Only after:
+high-quality datasets
+evaluation
+data governance
+privacy controls
+measured failure patterns
+exist.
+
+149. PLATFORM-SPECIFIC EVALUATION SUITES
+Create dedicated golden datasets for:
+Cirkle
+Mail
+OlympEx
+Mashahd
+Verify
+Wasl
+Aurienta
+SGTX
+MTQ
+Judge-Smart
+EgyCourt
+SGTX FABLE
+PPE
+MTQ Sigma
+and future applications.
+
+150. GLOBAL GOLDEN DATASET
+Also create a cross-platform set covering:
+identity
+memory
+knowledge
+retrieval
+tool use
+cross-platform access
+security
+routing
+fallback
+temporal reasoning
+
+151. BRAIN QUALITY MEASUREMENT
+Track globally:
+accuracy
+groundedness
+retrieval quality
+memory usefulness
+tool correctness
+model routing quality
+security failures
+cross-tenant leakage
+latency
+cost
+
+152. PLATFORM QUALITY MEASUREMENT
+Track by application:
+Brain accuracy
+Brain latency
+Brain cost
+Brain failures
+Brain fallback rate
+Brain retrieval quality
+user corrections
+
+153. FEEDBACK LOOP
+Every platform should contribute to:
+ERROR TAXONOMY
+Examples:
+wrong answer
+wrong retrieval
+wrong memory
+wrong model
+wrong tool
+wrong authorization
+wrong source
+stale knowledge
+This lets the Brain determine what kind of improvement is required.
+
+154. ERROR → ENGINEERING LOOP
+For recurring errors:
+error
+ ↓
+classify
+ ↓
+measure frequency
+ ↓
+identify root cause
+ ↓
+experiment
+ ↓
+evaluate
+ ↓
+deploy
+ ↓
+monitor
+Do not immediately change the model.
+
+155. BRAINS WITHIN DOMAINS
+The architecture must support:
+Core Wedjat Brain
++
+Domain Intelligence Modules
+not:
+15 independent AIs
+
+156. THE ONE-BRAIN PRINCIPLE
+Applications should have specialized personalities/workflows if necessary, but they should share:
+central Brain runtime
+central model infrastructure
+central memory architecture
+central knowledge architecture
+central evaluation
+central observability
+central security
+
+157. APPLICATION PERSONALITY
+A platform may customize:
+tone
+workflow
+domain vocabulary
+UI
+tools
+policies
+without creating an unrelated intelligence stack.
+
+158. BRAIN PERSONALIZATION
+The Brain should support:
+global behavior
+application behavior
+tenant behavior
+user behavior
+without mixing them.
+
+159. NO GLOBAL PROMPT POLLUTION
+Do not create one giant system prompt containing all domain rules.
+Use:
+core policy
++
+application module
++
+domain module
++
+task context
+
+160. GLOBAL CAPABILITY REGISTRY
+Wedjat Brain should know:
+which application exists
+what it can do
+which tools it exposes
+what data it owns
+what data it may share
+what Brain functions it supports
+
+161. BRAIN SERVICE DISCOVERY
+Applications should discover Brain capabilities through a controlled registry rather than hard-coded assumptions.
+
+162. PLATFORM ONBOARDING STANDARD
+Every future application should be connected using the same process:
+audit
+ ↓
+register application
+ ↓
+define scopes
+ ↓
+register adapter
+ ↓
+register tools
+ ↓
+define event schema
+ ↓
+define learning policy
+ ↓
+define knowledge policy
+ ↓
+define evaluation suite
+ ↓
+run isolation tests
+ ↓
+activate
+This becomes the standard Wedjat Brain Platform Integration Protocol.
+
+163. NEW PLATFORM RULE
+Whenever a new platform is created in the future:
+DO NOT build a separate AI architecture from zero.
+Instead:
+NEW PLATFORM
+ ↓
+WEDJAT BRAIN SDK
+ ↓
+APPLICATION ADAPTER
+ ↓
+DOMAIN MODULE
+ ↓
+PLATFORM-SPECIFIC KNOWLEDGE
+
+164. BRAIN AS THE AI OS
+The long-term architecture should be:
+APPLICATIONS
+     ↓
+WEDJAT BRAIN
+     ↓
+MODELS
+not:
+APPLICATIONS
+ ↓
+separate AI
+ ↓
+different model
+ ↓
+different memory
+
+165. BRAIN CONTROL PLANE
+The Brain administrator should see every connected application and:
+enable
+disable
+audit
+configure
+monitor
+evaluate
+its Brain integration.
+
+166. PLATFORM HEALTH
+Every adapter should report:
+healthy
+degraded
+disabled
+unauthorized
+configuration_error
+
+167. SAFE DISCONNECTION
+A platform must be removable from the Brain without breaking the other platforms.
+
+168. DATA DELETION PROPAGATION
+If a source record is deleted, identify dependent:
+memory
+knowledge
+embedding
+cache
+derived claim
+evaluation artifact
+and process them according to policy.
+
+169. KNOWLEDGE REVOCATION
+If information is later proven incorrect:
+knowledge
+ ↓
+supersede/revoke
+ ↓
+reindex
+ ↓
+invalidate cache
+ ↓
+notify dependent systems where required
+
+170. BRAIN CHANGE GATES
+No shared Brain change is production-ready until:
+core Brain tests
++
+affected platform tests
++
+security tests
++
+tenant tests
++
+evaluation tests
+pass.
+
+171. DEFINITION OF DONE FOR EACH ADAPTER
+A platform adapter is complete only when:
+repository audited
+application registered
+authentication implemented
+authorization implemented
+events implemented
+knowledge flow implemented
+memory scope implemented
+Brain consumption implemented
+tool integration implemented where needed
+logging implemented
+tests implemented
+security tested
+deployment tested
+rollback documented
+
+172. NO SECRET EXPOSURE
+The source repositories must not contain:
+tokens
+passwords
+API keys
+private URLs containing credentials
+Replace any currently exposed secrets with rotated credentials.
+Search Git history where appropriate for accidental secret commits.
+
+173. SECRET SCANNING
+Enable secret scanning/pre-commit/CI checks where supported.
+Reject commits containing likely secrets.
+
+174. LEAST-PRIVILEGE CREDENTIALS
+Use separate credentials for:
+development
+preview
+production
+Brain
+each application
+where feasible.
+Do not reuse one universal credential for everything.
+
+175. BRAIN PRODUCTION READINESS
+The Brain is not production-ready until:
+all P0 controls
++
+P1 Brain capabilities
++
+security
++
+tenant isolation
++
+evaluation
++
+observability
++
+failure recovery
+pass.
+
+176. FINAL ACCEPTANCE TEST — CROSS-PLATFORM
+Demonstrate:
+User interacts with Platform A
+ ↓
+Brain receives request
+ ↓
+Brain retrieves appropriate Platform A knowledge
+ ↓
+Brain uses global knowledge where authorized
+ ↓
+Brain selects appropriate model
+ ↓
+Brain optionally calls an authorized Platform A tool
+ ↓
+Brain responds
+ ↓
+Platform records outcome
+ ↓
+Learning event enters Brain
+ ↓
+Brain evaluates candidate
+ ↓
+Candidate becomes appropriate scoped knowledge
+ ↓
+Another platform can benefit only if policy permits
+
+177. FINAL ACCEPTANCE TEST — PRIVACY
+Demonstrate:
+private Mail information
+cannot appear in:
+SGTX
+Mashahd
+MTQ
+Justice
+other tenants
+unless explicitly authorized.
+
+178. FINAL ACCEPTANCE TEST — KNOWLEDGE
+Demonstrate:
+Platform A contributes verified reusable knowledge
+ ↓
+Brain validates it
+ ↓
+Brain promotes it to correct scope
+ ↓
+Platform B can retrieve it
+only when sharing is permitted.
+
+179. FINAL ACCEPTANCE TEST — LEARNING
+Demonstrate:
+platform correction
+ ↓
+learning candidate
+ ↓
+evaluation
+ ↓
+validated improvement
+ ↓
+future Brain behavior improves
+without pretending the underlying model was retrained.
+
+180. FINAL ACCEPTANCE TEST — FAILURE
+Disconnect one application.
+Verify:
+other platforms remain operational
+Disconnect primary model.
+Verify:
+fallback model operates
+Disable Brain retrieval.
+Verify:
+safe degraded response
+
+181. FINAL ACCEPTANCE TEST — GOVERNANCE
+For SGTX:
+Brain recommendation
+ ↓
+SGTX governance
+ ↓
+authorization
+ ↓
+execution
+Verify the Brain cannot bypass the governance pipeline.
+For Justice:
+Brain analysis
+ ↓
+human/legal authority
+Verify the Brain does not become final judicial authority.
+For Finance:
+Brain analysis
+ ↓
+application authorization
+Verify autonomous unauthorized financial actions are impossible.
+
+182. FINAL ARCHITECTURE PRINCIPLE
+The ecosystem should ultimately behave like:
+                    WEDJAT BRAIN
+                         │
+         ┌───────────────┼────────────────┐
+         │               │                │
+      MEMORY         KNOWLEDGE         REASONING
+         │               │                │
+         └───────────────┼────────────────┘
+                         │
+                  MODEL ROUTER
+                         │
+                    TOOL LAYER
+                         │
+                    POLICY LAYER
+                         │
+        ┌────────────────┼────────────────────┐
+        ▼                ▼                    ▼
+      CIRKLE          MASHAHD               SGTX
+        │                │                    │
+      MAIL             WASL                 MTQ
+        │                │                    │
+     VERIFY          AURIENTA          JUSTICE SYSTEMS
+        │                                     │
+     OLYMPEX                              EGYCOURT
+        │
+       PPE
+        │
+   MTQ SIGMA / OTHER APPLICATIONS
+All platforms remain independent products.
+All share one controlled cognitive infrastructure.
+
+183. FINAL CTO DIRECTIVE
+Do not build:
+15 separate AI assistants
+Build:
+ONE WEDJAT BRAIN
++
+MULTIPLE DOMAIN/APPLICATION ADAPTERS
+The applications become the Brain's:
+eyes
+ears
+tools
+domain environments
+feedback sources
+while Wedjat Brain becomes the common:
+memory
+knowledge
+reasoning
+retrieval
+learning
+evaluation
+orchestration
+layer.
+
+184. MOST IMPORTANT LEARNING PRINCIPLE
+The Brain should become better because the ecosystem produces better:
+data
+feedback
+knowledge
+evidence
+procedures
+evaluations
+tool outcomes
+failure analysis
+It should NOT become “smarter” merely by accumulating more raw conversations.
+
+185. FINAL IMPLEMENTATION COMMAND
+FIRST:
+Audit every repository listed in this specification.
+SECOND:
+Find the existing Wedjat AI/Brain implementation and determine the current architecture.
+THIRD:
+Map every application to:
+application_id
+domain
+database
+APIs
+AI
+tools
+knowledge
+memory
+events
+permissions
+FOURTH:
+Create the central Wedjat Brain integration architecture.
+FIFTH:
+Create the shared Brain SDK and contract.
+SIXTH:
+Create one adapter per platform.
+SEVENTH:
+Connect approved learning/event flows into the Brain.
+EIGHTH:
+Connect the Brain inference APIs back into each platform.
+NINTH:
+Implement scoped memory and knowledge.
+TENTH:
+Implement centralized model routing.
+ELEVENTH:
+Implement unified evaluation.
+TWELFTH:
+Implement cross-platform learning only where privacy, authorization, provenance, and evidence allow it.
+THIRTEENTH:
+Run security, tenant-isolation, prompt-injection, failure, regression, and cross-platform tests.
+FOURTEENTH:
+Do not declare the ecosystem integrated until the complete acceptance suite passes.
+
+186. REQUIRED FINAL REPORT
+At the end of the implementation, report:
+1. Current architecture discovered
+2. Wedjat Brain architecture
+3. Every connected platform
+4. Every adapter
+5. Brain API
+6. Brain SDK
+7. Event architecture
+8. Memory architecture
+9. Knowledge architecture
+10. Cross-platform learning architecture
+11. Model routing
+12. Tool architecture
+13. Security architecture
+14. Tenant isolation
+15. Governance boundaries
+16. Database changes
+17. GitHub changes
+18. Vercel changes
+19. Inngest changes
+20. Neon changes
+21. Turso changes
+22. Tests
+23. Evaluation results
+24. Performance
+25. Cost
+26. Known limitations
+27. Deferred features
+28. Rollback plan
+29. Next phase
+Never claim a platform is integrated when only its repository has been inspected.
+Never claim the Brain learned something unless the relevant learning pipeline actually processed and promoted it.
+Never claim a model was trained unless the model was actually trained/fine-tuned.
+Never claim knowledge is global unless its scope explicitly says so.
+Never claim an action was executed unless the authorized application actually executed it.
+
+187. FINAL SUCCESS DEFINITION
+The desired end state is:
+                     WEDJAT BRAIN
+                           │
+            ┌──────────────┼──────────────┐
+            ▼              ▼              ▼
+         KNOWLEDGE       MEMORY        REASONING
+            │              │              │
+            └──────────────┼──────────────┘
+                           ▼
+                      APPLICATIONS
+                           │
+     ┌──────────┬──────────┼─────────┬──────────┐
+     ▼          ▼          ▼         ▼          ▼
+   CIRKLE      MAIL      MASHAHD    SGTX       WASL
+     ▼          ▼          ▼         ▼          ▼
+  VERIFY     AURIENTA    MTQ      JUSTICE   OTHERS
+                           │
+                           ▼
+                    LEARNING SIGNALS
+                           │
+                           ▼
+                      WEDJAT BRAIN
+This is the target:
+Every platform strengthens the Brain. The Brain strengthens every platform. But no platform loses ownership of its own truth, permissions, or governance.
+That is the architecture to implement.
+END OF MASTER CROSS-PLATFORM WEDJAT BRAIN SPECIFICATION.

@@ -22,16 +22,30 @@ export function initialStreamState(): BrainStreamState {
   return { trace: [], tokens: "", evidence: [], memory: [], tools: [], done: false };
 }
 
+/** Options for streamBrainResponse — allows the Brain SDK to target a remote Brain. */
+export interface StreamOptions {
+  /** Absolute URL or path. Defaults to same-origin "/api/brain/respond". */
+  url?: string;
+  /** Custom fetch implementation (Node 18+ has fetch native; this is for tests/proxies). */
+  fetchImpl?: typeof fetch;
+  /** Extra headers (e.g. X-Brain-Platform, X-Brain-SDK-Version). */
+  headers?: Record<string, string>;
+}
+
 /** Parse an NDJSON stream from /api/brain/respond and invoke the callback per event. */
 export async function streamBrainResponse(
   body: unknown,
   onState: (state: BrainStreamState) => void,
   signal?: AbortSignal,
+  options?: StreamOptions,
 ): Promise<BrainResponse | undefined> {
   const state = initialStreamState();
-  const res = await fetch("/api/brain/respond", {
+  const fetchImpl = options?.fetchImpl ?? fetch;
+  const url = options?.url ?? "/api/brain/respond";
+  const headers: Record<string, string> = { "Content-Type": "application/json", ...(options?.headers ?? {}) };
+  const res = await fetchImpl(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(body),
     signal,
   });
