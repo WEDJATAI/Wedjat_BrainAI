@@ -68,13 +68,13 @@ export async function hybridRetrieve(req: RetrievalRequest): Promise<{
       applicationId: req.identity.application.id,
       userId: req.identity.user?.id,
       text: req.text,
-      limit: 8,
+      limit: 12,
     }),
     req.includeKnowledge === false ? Promise.resolve([]) : retrieveKnowledge({
       tenantId: req.identity.tenant.id,
       applicationId: req.identity.application.id,
       text: req.text,
-      limit: 6,
+      limit: 10,
     }),
     attemptStructuredLookup(req.text, req.identity),
   ]);
@@ -86,7 +86,7 @@ export async function hybridRetrieve(req: RetrievalRequest): Promise<{
     candidates.push({
       kind: "memory",
       id: m.record.id,
-      score: 0.7 * m.score + 0.3 * keyword,
+      score: 0.6 * m.score + 0.4 * keyword,
       semanticScore: m.score,
       keywordScore: keyword,
       content: m.record.content,
@@ -100,11 +100,13 @@ export async function hybridRetrieve(req: RetrievalRequest): Promise<{
   }
 
   for (const k of knowledge) {
-    const keyword = jaccardSimilarity(req.text, k.record.claim + " " + k.record.content);
+    // Use both claim + content for keyword matching (broader coverage)
+    const fullText = k.record.claim + " " + k.record.content;
+    const keyword = jaccardSimilarity(req.text, fullText);
     candidates.push({
       kind: "knowledge",
       id: k.record.id,
-      score: 0.6 * k.score + 0.4 * keyword,
+      score: 0.5 * k.score + 0.5 * keyword,
       semanticScore: k.semanticScore,
       keywordScore: keyword,
       content: k.record.claim,
@@ -118,7 +120,7 @@ export async function hybridRetrieve(req: RetrievalRequest): Promise<{
     });
   }
 
-  // §39 reranking already done via score formula; dedup by content hash.
+  // Reranking already done via score formula; dedup by content hash.
   const seen = new Set<string>();
   const deduped = candidates.filter((c) => {
     const key = c.content.slice(0, 80).toLowerCase();
@@ -128,5 +130,5 @@ export async function hybridRetrieve(req: RetrievalRequest): Promise<{
   });
 
   deduped.sort((a, b) => b.score - a.score);
-  return { candidates: deduped.slice(0, req.topK ?? 10), structured };
+  return { candidates: deduped.slice(0, req.topK ?? 12), structured };
 }

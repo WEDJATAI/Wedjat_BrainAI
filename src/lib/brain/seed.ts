@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { buildTermVector, serializeVector } from "./vectors";
 import { seedGeneralKnowledge } from "./knowledge-base";
 import { seedGeneralKnowledgeV2 } from "./knowledge-base-v2";
+import { seedGeneralKnowledgeV3 } from "./knowledge-base-v3";
 
 export async function seedBrain(): Promise<{ created: Record<string, number>; skipped: boolean }> {
   const created: Record<string, number> = {};
@@ -164,7 +165,72 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
     requiredScopes: "brain:tools.execute", riskLevel: "HIGH", timeout: 10000,
     idempotencyPolicy: "IDEMPOTENCY_KEY", auditRequirement: true, approvalRequirement: true, costProfile: 0.001,
   });
-  created.tools = 6;
+
+  // ----- New tools: converter, calculator, translator, date, currency, etc. -----
+  await ensureTool(acme.id, {
+    toolId: "math.evaluate", name: "Evaluate math expression", description: "Safely evaluate a math expression (digits, +, -, *, /, %, ^, sqrt, sin, cos, tan, log, ln, pi, e).",
+    inputSchema: JSON.stringify({ type: "object", required: ["expression"], properties: { expression: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { result: { type: "number" }, expression: { type: "string" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "unit.convert", name: "Convert units", description: "Convert between length, weight, temperature, volume, and time units.",
+    inputSchema: JSON.stringify({ type: "object", required: ["value", "from", "to"], properties: { value: { type: "number" }, from: { type: "string" }, to: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { result: { type: "number" }, from: { type: "string" }, to: { type: "string" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "date.calculate", name: "Date arithmetic", description: "Add/subtract/diff/dayofweek on ISO dates using native Date.",
+    inputSchema: JSON.stringify({ type: "object", required: ["operation"], properties: { date: { type: "string" }, operation: { type: "string", enum: ["add", "subtract", "diff", "dayofweek"] }, value: { type: "number" }, unit: { type: "string", enum: ["days", "months", "years"] }, date2: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { result: { type: "string" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "currency.convert", name: "Convert currency (stub)", description: "Stubbed currency conversion — real rates need an exchange rate API.",
+    inputSchema: JSON.stringify({ type: "object", required: ["amount", "from", "to"], properties: { amount: { type: "number" }, from: { type: "string" }, to: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { amount: { type: "number" }, from: { type: "string" }, to: { type: "string" }, note: { type: "string" }, estimatedRate: { type: "number" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "language.translate", name: "Translate text (stub)", description: "Stubbed translation — production would route through LLM translation.",
+    inputSchema: JSON.stringify({ type: "object", required: ["text", "to"], properties: { text: { type: "string" }, from: { type: "string" }, to: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { translated: { type: "string" }, note: { type: "string" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "define.lookup", name: "Look up word definition", description: "Look up a word/term in the knowledge base (local DB search).",
+    inputSchema: JSON.stringify({ type: "object", required: ["word"], properties: { word: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { word: { type: "string" }, definitions: { type: "array" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "time.now", name: "Current date/time", description: "Return current ISO/UTC/local time with optional timezone.",
+    inputSchema: JSON.stringify({ type: "object", properties: { timezone: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { iso: { type: "string" }, utc: { type: "string" }, local: { type: "string" }, timezone: { type: "string" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "text.count", name: "Count text stats", description: "Count words, characters (with/without spaces), sentences, paragraphs in text.",
+    inputSchema: JSON.stringify({ type: "object", required: ["text"], properties: { text: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { words: { type: "number" }, characters: { type: "number" }, charactersNoSpaces: { type: "number" }, sentences: { type: "number" }, paragraphs: { type: "number" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  await ensureTool(acme.id, {
+    toolId: "text.code.format", name: "Detect code language", description: "Detect programming language of a code snippet and report line/char counts.",
+    inputSchema: JSON.stringify({ type: "object", required: ["code"], properties: { code: { type: "string" } } }),
+    outputSchema: JSON.stringify({ type: "object", properties: { language: { type: "string" }, lineCount: { type: "number" }, charCount: { type: "number" } } }),
+    requiredScopes: "brain:tools.execute", riskLevel: "LOW", timeout: 5000,
+    idempotencyPolicy: "IDEMPOTENT", auditRequirement: true, approvalRequirement: false, costProfile: 0,
+  });
+  created.tools = 15;
 
   // ----- Knowledge sources + items + evidence (§26-29) -----
   await ensureKnowledge(acme.id, {
@@ -246,6 +312,15 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
     created.generalKnowledgeV2Items = result.itemCount;
   } catch (err) {
     console.warn("[seed] seedGeneralKnowledgeV2 failed:", err);
+  }
+
+  // ----- General knowledge V3 (more countries, advanced programming,
+  // more practical, more medicine, languages, current events) -----
+  try {
+    const result = await seedGeneralKnowledgeV3(acme.id, mashahd.id);
+    created.generalKnowledgeV3Items = result.itemCount;
+  } catch (err) {
+    console.warn("[seed] seedGeneralKnowledgeV3 failed:", err);
   }
 
   // ----- Memory (semantic, active) -----

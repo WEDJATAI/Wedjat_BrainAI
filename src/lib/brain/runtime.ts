@@ -265,6 +265,15 @@ export async function runBrain(req: BrainRequest, cb: RuntimeCallbacks = {}): Pr
         if (t.toolId === "weather.current") return /weather|temperature|forecast/.test(txt);
         if (t.toolId === "memory.recall") return /remember|recall|previous/.test(txt);
         if (t.toolId === "email.send") return /send.*email|email.*send/.test(txt);
+        if (t.toolId === "math.evaluate") return /(calculate|compute|evaluate|solve).*expression|math.*expression|\d+\s*[\+\-\*\/]\s*\d+/.test(txt);
+        if (t.toolId === "unit.convert") return /(convert|conversion).*(unit|length|weight|temperature|volume|km|mile|kg|lb|celsius|fahrenheit)/.test(txt);
+        if (t.toolId === "date.calculate") return /(date|days|weeks|months|years).*(from now|ago|difference|between|add|subtract)/.test(txt);
+        if (t.toolId === "currency.convert") return /(convert|exchange).*(currency|usd|eur|gbp|jpy|egp|sar|aed)/.test(txt);
+        if (t.toolId === "language.translate") return /(translate|translation).*(to|from|into|language)/.test(txt);
+        if (t.toolId === "define.lookup") return /(define|definition|meaning of|what does).*(word|term)/.test(txt);
+        if (t.toolId === "time.now") return /(what time|current time|what date|today|now)/.test(txt);
+        if (t.toolId === "text.count") return /(count|number of).*(words|characters|sentences|paragraphs)/.test(txt);
+        if (t.toolId === "text.code.format") return /(detect|identify).*(language|code)/.test(txt);
         return false;
       }).slice(0, 3);
 
