@@ -726,3 +726,60 @@ Stage Summary:
 - Turso: ✓ accessible, empty (optional edge/local — Neon is canonical)
 - Neon: ✓ schema in sync, 721 knowledge items + 15 tools + 14 platforms seeded
 - SECURITY: all credentials remain in .env (gitignored, NOT committed). Per SECURITY.md §61: rotate all exposed credentials before production use.
+
+---
+Task ID: BD-1
+Agent: orchestrator (main)
+Task: Integrate Bright Data enhanced web research
+
+Work Log:
+- Analyzed Bright Data snapshot `sd_muekxkd22g0pfuwdnd` — returns 32,282 chars of full page markdown content (Nowlun shipping company). This is ~160x richer than the 200-char snippets from z-ai web_search.
+- Added Bright Data credentials to `.env` (gitignored, never committed):
+  - BRIGHTDATA_API_TOKEN
+  - BRIGHTDATA_SCRAPER_WSS (Puppeteer/Selenium proxy)
+  - BRIGHTDATA_DATASETS_BASE
+  - BRIGHTDATA_ENABLED=false (disabled by default — paid service)
+- Created `src/lib/brain/bright-data.ts` — Bright Data data acquisition provider:
+  - `isBrightDataEnabled()`: checks env var (disabled by default)
+  - `fetchSnapshot(snapshotId)`: fetch existing scraping results (full page markdown)
+  - `triggerScrape(url)`: trigger new scraping job via datasets API
+  - `waitForSnapshot(snapshotId, maxWaitMs)`: poll for results
+  - `scrapeUrl(url)`: full pipeline (trigger → wait → clean → return)
+  - `cleanMarkdown(md, maxLength)`: removes images, links, navigation, truncates
+  - `brightDataResearch(query, maxResults)`: search → scrape each URL → full content
+  - All behind ZeroCostGovernor (tracks as web_request)
+  - Falls back to z-ai web_search when not enabled
+- Updated `src/lib/brain/web-search.ts` `researchAndLearn()`:
+  - Tries Bright Data first (enhanced — 32KB page content vs 200-char snippets)
+  - Falls back to z-ai web_search when Bright Data is disabled or fails
+  - Both paths go through the SAME CANDIDATE pipeline (never directly to ACTIVE)
+  - Returns `source: "bright_data" | "z_ai" | "none"` for observability
+- Created `src/app/api/brain/bright-data/route.ts` — admin endpoint:
+  - GET: check Bright Data status / fetch snapshot by ID
+  - POST: scrape a URL or fetch snapshot by ID
+- Updated `.env.example` with placeholder values
+- Updated `SECURITY.md` with Bright Data rotation checklist
+- Set Bright Data env vars on Vercel (all 4 vars, encrypted)
+- Enabled `BRIGHTDATA_ENABLED=true` on Vercel (user explicitly provided credentials + snapshot)
+- Pushed to GitHub: commit 9f45b56
+- Vercel deployment: READY at wedjatbrain-prtwr9uk2-tonsy.vercel.app
+- Verified Bright Data snapshot fetch on Vercel:
+  - Snapshot `sd_muekxkd22g0pfuwdnd` → url: nowlun.com, contentLength: 32282 chars
+  - Returns full page content as markdown (shipping/logistics data)
+- Re-synced Inngest: 18 functions, sync=success
+- All platforms verified:
+  - GitHub: commit 9f45b56 ✅
+  - Vercel: HEALTHY, Bright Data enabled ✅
+  - Neon: 721 knowledge, 15 tools ✅
+  - Inngest: 18 functions, sync=success ✅
+  - Turso: 722 knowledge items ✅
+
+Stage Summary:
+- Bright Data integration complete and verified on Vercel
+- The Brain now has TWO web research sources:
+  1. Bright Data (enhanced, paid, disabled by default): 32KB full page markdown
+  2. z-ai web_search (free, always available): 200-char snippets
+- Both paths go through the CANDIDATE pipeline (never directly to ACTIVE)
+- ZeroCostGovernor tracks Bright Data usage as web_request
+- When Bright Data quota is exhausted, the Brain automatically falls back to z-ai web_search
+- SECURITY: credentials in .env (gitignored), rotation note in SECURITY.md
