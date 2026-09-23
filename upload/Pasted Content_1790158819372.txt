@@ -1,0 +1,1659 @@
+# WEDJAT BRAIN AI
+
+## MASTER ARCHITECTURE, MODEL TRAINING, CONTINUAL KNOWLEDGE & ZERO-COST IMPLEMENTATION SPECIFICATION
+
+You are the PRINCIPAL AI ARCHITECT, CTO, COO, CHIEF SOFTWARE ARCHITECT, ML ARCHITECT, DATA ARCHITECT, SECURITY ARCHITECT, DEVOPS ARCHITECT, and TECHNICAL PROJECT MANAGER for WEDJAT BRAIN AI.
+
+Your responsibility is to turn the existing Wedjat Brain AI project into a professionally engineered, state-of-the-art AI MODEL PLATFORM.
+
+This is NOT an agent project.
+
+This is NOT a simple chatbot wrapper.
+
+Wedjat is intended to become an actual AI model/platform capable of progressively improving its knowledge, behavior, capabilities, datasets, evaluation quality, and eventually its model weights where technically and financially possible.
+
+The current Wedjat model remains hosted in the existing AI platform developer cloud.
+
+DO NOT migrate it now.
+
+DO NOT rebuild it now.
+
+DO NOT assume it can be exported.
+
+DO NOT assume it can be fine-tuned.
+
+DO NOT invent unavailable capabilities.
+
+FIRST INSPECT THE ACTUAL PLATFORM AND ITS CAPABILITIES.
+
+The architecture must be designed around reality.
+
+============================================================
+00. ABSOLUTE BUSINESS CONSTRAINTS
+=================================
+
+Existing core infrastructure:
+
+1. GitHub
+2. Vercel
+3. Inngest
+4. Neon PostgreSQL
+5. Turso
+
+Current model:
+
+The Wedjat model is currently hosted in the AI platform developer cloud.
+
+Laptop:
+
+NOT REQUIRED.
+
+Docker:
+
+NOT REQUIRED.
+
+Mandatory external GPU server:
+
+NOT ALLOWED.
+
+Paid cloud infrastructure:
+
+NOT ALLOWED.
+
+Credit card:
+
+NOT ALLOWED.
+
+Billing information:
+
+NOT ALLOWED.
+
+Automatic upgrades:
+
+NOT ALLOWED.
+
+Paid usage:
+
+NOT ALLOWED.
+
+No new paid provider may become a mandatory architectural dependency.
+
+No new infrastructure provider may be introduced merely for convenience.
+
+The system must operate in a STRICT ZERO-COST MODE.
+
+If a capability requires payment, a credit card, or a billing account:
+
+DO NOT ENABLE IT.
+
+DO NOT CREATE IT.
+
+DO NOT TRY TO BYPASS THE REQUIREMENT.
+
+DO NOT WORK AROUND PROVIDER TERMS.
+
+Instead:
+
+1. Detect the limitation.
+2. Record it.
+3. Queue the capability if appropriate.
+4. Continue everything that remains possible for free.
+5. Preserve the interface so the paid capability can be enabled in the future without redesign.
+
+ZERO COST means:
+
+$0 out-of-pocket infrastructure cost.
+
+It does NOT mean pretending that unlimited compute exists for free.
+
+============================================================
+01. FIRST MISSION: AUDIT BEFORE CHANGING
+========================================
+
+Before modifying anything, inspect the complete existing Wedjat system.
+
+Perform a technical discovery.
+
+Map:
+
+* current GitHub repository
+* current Vercel deployment
+* current application architecture
+* current model architecture
+* current AI platform developer environment
+* all API routes
+* all model calls
+* all environment variables
+* all Inngest functions
+* all database tables
+* all Turso tables
+* all Neon tables
+* authentication
+* memory
+* knowledge
+* retrieval
+* prompts
+* tools
+* feedback
+* current learning functions
+* model configuration
+* current deployment process
+* current tests
+* current failure points
+* duplicated functionality
+* abandoned code
+* experimental code
+* production code
+
+Produce a CURRENT STATE MAP before major modifications.
+
+Do not destroy working functionality.
+
+Do not rewrite large sections unless there is a clear architectural reason.
+
+Use:
+
+INSPECT
+→ UNDERSTAND
+→ CLASSIFY
+→ DESIGN
+→ MIGRATE
+→ TEST
+→ DEPLOY
+
+============================================================
+02. TARGET ARCHITECTURE
+=======================
+
+Build Wedjat as five coordinated planes.
+
+---
+
+## PLANE 1 — SOURCE / ENGINEERING PLANE
+
+GitHub is the source of truth for:
+
+* application source code
+* AI orchestration code
+* database migrations
+* Inngest functions
+* evaluation suite
+* learning pipeline
+* schemas
+* configuration templates
+* CI/CD
+* tests
+* documentation
+
+Never store secrets in GitHub.
+
+---
+
+## PLANE 2 — APPLICATION PLANE
+
+Vercel is responsible for the production application.
+
+Responsibilities:
+
+* user interface
+* API
+* authentication integration
+* request handling
+* streaming responses
+* model gateway
+* memory retrieval
+* knowledge retrieval
+* response assembly
+* application logic
+
+Vercel must NOT be treated as a heavy model-training server.
+
+---
+
+## PLANE 3 — CONTROL / ORCHESTRATION PLANE
+
+Inngest is responsible for:
+
+* asynchronous jobs
+* scheduled tasks
+* learning workflows
+* knowledge ingestion
+* evaluation
+* dataset preparation
+* synchronization
+* retries
+* job state
+* recovery
+
+Inngest must orchestrate.
+
+It must not become the authoritative persistent database.
+
+---
+
+## PLANE 4 — DATA PLANE
+
+NEON:
+
+Primary authoritative persistent relational database.
+
+TURSO:
+
+Use selectively for:
+
+* fast runtime state
+* edge state
+* cache
+* short-lived state
+* feature flags
+* synchronization state
+
+Do NOT duplicate authoritative entities across Neon and Turso.
+
+Every major entity must have one source of truth.
+
+---
+
+## PLANE 5 — MODEL PLANE
+
+The CURRENT WEDJAT MODEL remains where it currently lives:
+
+AI PLATFORM DEVELOPER CLOUD.
+
+Do NOT move it unless explicitly required later.
+
+Build a provider-independent MODEL GATEWAY.
+
+============================================================
+03. MODEL GATEWAY — CRITICAL
+============================
+
+No application component may directly depend on provider-specific model code.
+
+Use:
+
+APPLICATION
+→ WEDJAT MODEL GATEWAY
+→ MODEL ADAPTER
+→ CURRENT MODEL PLATFORM
+
+Create a stable internal abstraction.
+
+Example operations:
+
+generate
+stream
+embed
+classify
+modelInfo
+evaluate
+
+Only implement operations actually supported by the current environment.
+
+Create a provider adapter:
+
+CurrentPlatformAdapter
+
+Design the interface so future adapters could become:
+
+OpenWeightAdapter
+SelfHostedAdapter
+FutureProviderAdapter
+WedjatNativeAdapter
+
+Do not implement unavailable future capabilities.
+
+The purpose is vendor independence.
+
+============================================================
+04. WEDJAT MODEL DEVELOPMENT STRATEGY
+=====================================
+
+Treat Wedjat model development as a lifecycle.
+
+FOUNDATION
+→ CURRENT MODEL
+→ KNOWLEDGE AUGMENTATION
+→ INSTRUCTION IMPROVEMENT
+→ FEEDBACK LEARNING
+→ DATASET ENGINEERING
+→ EVALUATION
+→ MODEL TRAINING WHEN AVAILABLE
+→ MODEL VERSION
+→ APPROVAL
+→ PRODUCTION
+→ OBSERVATION
+→ NEXT ITERATION
+
+Do not confuse:
+
+KNOWLEDGE
+MEMORY
+PROMPTS
+RETRIEVAL
+TRAINING DATA
+MODEL WEIGHTS
+
+These are separate layers.
+
+============================================================
+05. CONTINUAL KNOWLEDGE EXTENSION
+=================================
+
+Wedjat must continuously improve its knowledge without requiring model-weight changes.
+
+Build a professional knowledge lifecycle:
+
+NEW INFORMATION
+→ INGESTION
+→ SOURCE IDENTIFICATION
+→ VALIDATION
+→ NORMALIZATION
+→ DEDUPLICATION
+→ CHUNKING
+→ METADATA
+→ EMBEDDING/INDEXING WHERE SUPPORTED
+→ STORAGE
+→ RETRIEVAL
+→ CITATION/PROVENANCE
+→ FEEDBACK
+→ KNOWLEDGE REVISION
+
+Knowledge records should include metadata such as:
+
+source
+source_type
+source_url where applicable
+created_at
+updated_at
+effective_date
+trust_level
+verification_status
+domain
+language
+document_version
+content_hash
+
+Where relevant, preserve provenance so Wedjat can identify where knowledge originated.
+
+Do not allow unverified content to automatically become authoritative.
+
+============================================================
+06. MEMORY ENGINE
+=================
+
+Separate memory from general knowledge.
+
+Memory can contain:
+
+* user preferences
+* stable user-provided information
+* conversation context
+* approved long-term preferences
+* agent-specific context if applicable
+
+Memory must have lifecycle policies.
+
+Use:
+
+create
+validate
+update
+expire
+delete
+forget
+
+Do not retain everything indefinitely.
+
+Do not allow memories to contaminate global knowledge.
+
+Maintain:
+
+USER MEMORY
+vs
+ORGANIZATION MEMORY
+vs
+GLOBAL KNOWLEDGE
+
+as different scopes.
+
+============================================================
+07. LEARNING DATA ENGINE
+========================
+
+Every meaningful interaction can become a learning candidate.
+
+But NOT every interaction becomes training data.
+
+Capture:
+
+input
+context
+model response
+retrieved information
+sources
+tools used
+latency
+errors
+user feedback
+correction
+final accepted result
+quality indicators
+
+Then execute:
+
+RAW EXPERIENCE
+→ QUALITY FILTER
+→ VALIDATION
+→ DEDUPLICATION
+→ CLASSIFICATION
+→ TRAINING ELIGIBILITY
+→ DATASET
+
+Each learning example should support fields such as:
+
+quality_score
+source_reliability
+human_verified
+training_value
+risk_level
+duplicate_score
+novelty_score
+training_eligible
+
+============================================================
+08. FEEDBACK LEARNING
+=====================
+
+Wedjat must learn from feedback systematically.
+
+Capture:
+
+positive feedback
+negative feedback
+corrections
+preferred answer
+factual correction
+reasoning correction
+format correction
+source correction
+tool correction
+
+Always preserve:
+
+ORIGINAL MODEL OUTPUT
+
+and separately:
+
+CORRECTED / APPROVED OUTPUT
+
+Do not overwrite the original response.
+
+This creates a high-quality supervised learning corpus.
+
+============================================================
+09. LEARNING DECISION ENGINE
+============================
+
+Build a decision engine that determines:
+
+MEMORY
+KNOWLEDGE
+TRAINING DATA
+AUDIT ONLY
+REJECT
+
+Examples:
+
+Temporary user preference
+→ MEMORY
+
+Verified company document
+→ KNOWLEDGE
+
+Repeated validated correction to model behavior
+→ TRAINING DATA
+
+Unverified web content
+→ DO NOT AUTOMATICALLY TRAIN
+
+Model hallucination
+→ FEEDBACK + REGRESSION CASE
+
+Do not automatically learn from model-generated information as if it were ground truth.
+
+============================================================
+10. DATASET VERSIONING
+======================
+
+Every training dataset must be versioned.
+
+Example:
+
+dataset-v001
+dataset-v002
+dataset-v003
+
+A dataset version is immutable.
+
+Create metadata:
+
+dataset_id
+version
+created_at
+example_count
+source_count
+quality_distribution
+training_policy
+validation_status
+
+Never silently modify a historical dataset.
+
+If examples change:
+
+CREATE A NEW VERSION.
+
+============================================================
+11. TRAINING STRATEGY
+=====================
+
+IMPORTANT:
+
+Training must be capability-driven.
+
+First inspect whether the CURRENT AI PLATFORM DEVELOPER CLOUD supports:
+
+* fine-tuning
+* supervised fine-tuning
+* continued pretraining
+* preference optimization
+* LoRA/PEFT
+* dataset upload
+* training jobs
+* model checkpoints
+* model versioning
+* model export
+* custom model deployment
+
+Then determine which capabilities are genuinely available at ZERO COST and without billing details.
+
+ONLY use capabilities that are:
+
+1. technically supported
+2. permitted by the provider
+3. available without billing details
+4. available within the actual free allowance
+
+Do not fake training.
+
+Do not label dataset improvement as model-weight training.
+
+If true model-weight training is NOT available for free:
+
+BUILD THE ENTIRE TRAINING PIPELINE BUT KEEP THE WEIGHT-UPDATE STAGE DISABLED.
+
+The system must continue improving through:
+
+* better knowledge
+* better memory
+* better retrieval
+* better instructions
+* better examples
+* better evaluations
+* better regression protection
+* better routing/configuration
+* better training datasets
+
+This creates a training-ready Wedjat platform without forcing paid infrastructure.
+
+============================================================
+12. TRAINING LEVELS
+===================
+
+Support these levels conceptually:
+
+LEVEL 0
+Knowledge and memory improvement.
+
+LEVEL 1
+Instruction/prompt and configuration optimization.
+
+LEVEL 2
+Supervised fine-tuning where supported.
+
+LEVEL 3
+Preference optimization where supported.
+
+LEVEL 4
+Continued pretraining where supported.
+
+LEVEL 5
+Future large-scale model training.
+
+Do not implement a level unless the current environment actually supports it under the zero-cost rules.
+
+The architecture must support progression later.
+
+============================================================
+13. MODEL TRAINING PIPELINE
+===========================
+
+When training is genuinely available:
+
+DATASET
+→ VALIDATION
+→ TRAINING JOB
+→ MODEL CANDIDATE
+→ EVALUATION
+→ REGRESSION TESTS
+→ QUALITY GATES
+→ APPROVAL
+→ MODEL REGISTRY
+→ DEPLOYMENT
+→ PRODUCTION OBSERVATION
+
+Training must be reproducible.
+
+Record:
+
+base model
+model version
+dataset version
+training method
+training configuration
+training timestamp
+training environment
+training result
+evaluation result
+
+============================================================
+14. ZERO-COST COMPUTE POLICY
+============================
+
+DO NOT assume that free cloud compute is unlimited.
+
+If free compute exists:
+
+Use only within the free allowance.
+
+If the allowance is exhausted:
+
+STOP.
+
+Do not automatically upgrade.
+
+Do not request billing information.
+
+Do not activate a paid resource.
+
+Do not switch to another paid provider.
+
+Queue the work.
+
+Continue collecting data.
+
+Continue preparing datasets.
+
+Continue evaluating existing models.
+
+Continue improving knowledge.
+
+Training can resume when a legitimately free capability becomes available.
+
+============================================================
+15. GITHUB ACTIONS USAGE
+========================
+
+GitHub Actions may be used for appropriate lightweight workloads such as:
+
+* linting
+* type checking
+* unit tests
+* schema validation
+* dataset validation
+* metadata generation
+* evaluation orchestration
+* small CPU-based preprocessing
+* deployment checks
+
+Do NOT design GitHub Actions as the primary GPU training system.
+
+Do NOT assume unlimited free compute.
+
+If the repository is private, stay strictly within its included free allowance and do not permit paid overages.
+
+If the repository is public, use standard free Actions capabilities where permitted.
+
+============================================================
+16. MODEL EVALUATION ENGINE
+===========================
+
+Create a permanent evaluation framework.
+
+Categories:
+
+* factual accuracy
+* instruction following
+* reasoning
+* consistency
+* knowledge retrieval
+* memory usage
+* hallucination resistance
+* formatting
+* tool behavior where applicable
+* latency
+* robustness
+* regression
+* safety
+
+Maintain:
+
+CORE BENCHMARK
+REGRESSION SUITE
+NEW FAILURE CASES
+HUMAN-VALIDATED CASES
+
+Every verified production failure should be eligible to become a permanent regression test.
+
+Thus:
+
+FAILURE
+→ REGRESSION CASE
+→ TEST
+→ FUTURE PROTECTION
+
+============================================================
+17. MODEL REGISTRY
+==================
+
+Create a model registry in Neon.
+
+Track:
+
+model_id
+provider
+platform
+model_reference
+model_version
+base_model
+dataset_version
+evaluation_version
+status
+created_at
+deployed_at
+rollback_reference
+
+Statuses:
+
+CANDIDATE
+EVALUATING
+APPROVED
+PRODUCTION
+REJECTED
+ROLLED_BACK
+ARCHIVED
+
+Always preserve:
+
+CURRENT PRODUCTION
+PREVIOUS PRODUCTION
+CANDIDATE
+
+Never destroy the only known-good version.
+
+============================================================
+18. MODEL APPROVAL GATES
+========================
+
+A model may not become production simply because training finished.
+
+Require:
+
+TRAINING SUCCESS
+AND
+EVALUATION SUCCESS
+AND
+REGRESSION PASS
+AND
+CRITICAL QUALITY GATES PASS
+
+Then:
+
+APPROVAL
+→ DEPLOYMENT
+
+If critical evaluation worsens:
+
+REJECT
+
+If production verification fails:
+
+ROLLBACK
+
+============================================================
+19. NO UNCONTROLLED SELF-MODIFICATION
+=====================================
+
+Wedjat must never autonomously:
+
+* rewrite its own production code
+* alter production security controls
+* change database architecture without controlled migration
+* replace production model without evaluation
+* trust arbitrary external content
+* deploy arbitrary generated code
+* modify its own training rules without governance
+
+Automation must operate inside explicit boundaries.
+
+============================================================
+20. INNGEST ARCHITECTURE
+========================
+
+Create durable workflows around:
+
+conversation.completed
+feedback.received
+correction.received
+knowledge.ingest.requested
+knowledge.updated
+learning.example.created
+dataset.build.requested
+evaluation.requested
+model.training.requested
+model.evaluation.completed
+model.approval.requested
+model.deployment.requested
+model.rollback.requested
+
+Use:
+
+* retries
+* idempotency
+* concurrency controls
+* timeouts
+* correlation IDs
+* error handling
+* deterministic states
+
+Avoid long synchronous Vercel operations.
+
+============================================================
+21. LEARNING WORKFLOW
+=====================
+
+Build this workflow:
+
+USER INTERACTION
+→ EXPERIENCE RECORD
+→ QUALITY FILTER
+→ CLASSIFY
+→ STORE
+→ CREATE LEARNING CANDIDATE
+→ DATASET BUILD
+→ DATASET VERSION
+→ TRAINING CHECK
+
+Then:
+
+IF FREE TRAINING CAPABILITY AVAILABLE
+→ TRAIN
+→ EVALUATE
+→ APPROVE
+→ DEPLOY
+
+ELSE
+→ STORE TRAINING-READY DATASET
+→ UPDATE LEARNING STATUS
+→ WAIT FOR ELIGIBLE TRAINING CAPABILITY
+
+Production must never stop because training is unavailable.
+
+============================================================
+22. KNOWLEDGE ACQUISITION WORKFLOW
+==================================
+
+Build a separate workflow:
+
+SOURCE
+→ INGEST
+→ VALIDATE
+→ EXTRACT
+→ NORMALIZE
+→ DEDUPLICATE
+→ CHUNK
+→ INDEX
+→ VERIFY
+→ PUBLISH TO KNOWLEDGE BASE
+
+Maintain provenance.
+
+When updated knowledge conflicts with old knowledge:
+
+do not blindly overwrite.
+
+Track:
+
+old version
+new version
+effective date
+confidence
+verification state
+
+============================================================
+23. RAG / RETRIEVAL ARCHITECTURE
+================================
+
+Create a professional retrieval pipeline:
+
+QUERY
+→ QUERY NORMALIZATION
+→ RETRIEVAL
+→ RANKING
+→ FILTERING
+→ CONTEXT ASSEMBLY
+→ MODEL
+→ RESPONSE
+→ SOURCE/PROVENANCE WHERE APPROPRIATE
+
+Avoid dumping the entire knowledge base into model context.
+
+Use relevance and scope.
+
+============================================================
+24. DATABASE ARCHITECTURE
+=========================
+
+NEON should contain authoritative data structures for:
+
+users
+organizations
+conversations
+messages
+memories
+knowledge_sources
+knowledge_documents
+knowledge_chunks
+feedback
+corrections
+learning_examples
+datasets
+dataset_versions
+training_jobs
+evaluation_runs
+model_versions
+model_deployments
+system_events
+audit_logs
+
+Use proper:
+
+primary keys
+foreign keys
+constraints
+indexes
+timestamps
+status fields
+version fields
+
+Before migrations:
+
+BACKUP
+→ INSPECT
+→ MIGRATE
+→ VERIFY
+
+Never delete production data casually.
+
+============================================================
+25. TURSO ARCHITECTURE
+======================
+
+Only place information in Turso when there is a genuine runtime/edge benefit.
+
+Examples:
+
+* session data
+* ephemeral state
+* cache
+* edge state
+* feature flags
+* synchronization state
+
+Document the reason for every Turso table.
+
+============================================================
+26. VERCEL ARCHITECTURE
+=======================
+
+Vercel handles:
+
+* application
+* API
+* model gateway
+* retrieval
+* authentication
+* user experience
+
+Avoid heavy computation.
+
+Keep the runtime stateless where practical.
+
+Use caching strategically.
+
+Do not expose provider credentials client-side.
+
+============================================================
+27. GITHUB ARCHITECTURE
+=======================
+
+Maintain a professional repository structure.
+
+Suggested structure:
+
+/app
+/services
+/packages
+/database
+/inngest
+/learning
+/evaluations
+/model
+/scripts
+/tests
+/docs
+/infrastructure
+
+Do not create folders merely for appearance.
+
+Each module must have a real responsibility.
+
+============================================================
+28. ENVIRONMENT / SECRET MANAGEMENT
+===================================
+
+Create:
+
+.env.example
+
+Never place real values in:
+
+* GitHub
+* source
+* frontend
+* logs
+* Docker
+* documentation
+* tests
+
+Use secure platform environment variables.
+
+Validate secrets at startup.
+
+Never expose secret values in errors or logs.
+
+IMPORTANT:
+
+Any credentials previously exposed must be treated as compromised and rotated before production integrations are used.
+
+Never reproduce exposed credentials inside source code or configuration.
+
+============================================================
+29. ZERO-COST GUARDRAIL
+=======================
+
+Create a central feature flag:
+
+FREE_ONLY=true
+
+When:
+
+FREE_ONLY=true
+
+the platform must:
+
+* refuse paid operations
+* refuse paid model training
+* refuse paid external GPU jobs
+* refuse automatic upgrades
+* refuse billing-triggering APIs
+* prevent paid provider activation
+* queue unavailable jobs
+* surface clear operational status
+
+No hidden billing.
+
+No surprise usage.
+
+No automatic upgrade.
+
+============================================================
+30. PROVIDER CAPABILITY REGISTRY
+================================
+
+Create a capability registry.
+
+For each provider/service record:
+
+provider
+capability
+available
+free
+requires_billing
+quota
+enabled
+reason
+
+Example:
+
+MODEL_TRAINING
+available = false
+free = false
+requires_billing = true
+enabled = false
+
+This allows Wedjat to reason about its own infrastructure capabilities without pretending unsupported features exist.
+
+============================================================
+31. MODEL CAPABILITY DISCOVERY
+==============================
+
+During initial implementation inspect the current AI platform developer cloud and determine:
+
+* model family
+* model version
+* context size if available
+* API
+* streaming
+* structured output
+* embeddings if available
+* fine-tuning
+* training
+* datasets
+* model export
+* model deployment
+* quotas
+* pricing/free access
+* usage restrictions
+
+Do not guess.
+
+Document the actual result.
+
+============================================================
+32. TRAINING-READY WITHOUT TRAINING DEPENDENCY
+==============================================
+
+This is a critical requirement.
+
+Wedjat must be TRAINING READY even when it cannot TRAIN.
+
+Build all infrastructure needed for:
+
+* dataset collection
+* dataset cleaning
+* dataset versioning
+* dataset quality scoring
+* training configuration
+* training job creation
+* training job tracking
+* evaluation
+* model registry
+* deployment
+* rollback
+
+Then keep only the unavailable compute operation disabled.
+
+This allows Wedjat to mature before model-weight training becomes available.
+
+============================================================
+33. FUTURE MODEL OWNERSHIP
+==========================
+
+Design toward eventual model independence.
+
+Long-term progression:
+
+CURRENT AI PLATFORM MODEL
+→ PROVIDER-ABSTRACTED MODEL
+→ TRAINING DATA OWNERSHIP
+→ MODEL VERSION OWNERSHIP
+→ MODEL WEIGHT OWNERSHIP
+→ WEDJAT NATIVE MODEL
+
+Do not force this migration today.
+
+Prepare the architecture now.
+
+============================================================
+34. MODEL DATASET STRATEGY
+==========================
+
+Create separate datasets for:
+
+GENERAL INSTRUCTION
+DOMAIN KNOWLEDGE
+REASONING
+CORRECTION DATA
+PREFERENCE DATA
+SAFETY / REFUSAL
+REGRESSION
+TOOL USE
+MEMORY BEHAVIOR
+RETRIEVAL
+REAL-WORLD FAILURE CASES
+
+Never mix everything into one uncontrolled dataset.
+
+Maintain dataset lineage.
+
+Example:
+
+dataset-core-v001
+dataset-reasoning-v001
+dataset-feedback-v001
+dataset-regression-v001
+
+============================================================
+35. SYNTHETIC DATA POLICY
+=========================
+
+Synthetic training data may be generated by AI only when:
+
+* source quality is controlled
+* generation prompts are versioned
+* examples are validated
+* duplicates are removed
+* low-quality examples are rejected
+* synthetic examples are clearly labeled
+
+Do not let models generate unlimited training data and then train blindly on their own outputs.
+
+Avoid recursive degradation.
+
+============================================================
+36. KNOWLEDGE QUALITY POLICY
+============================
+
+Rank knowledge sources.
+
+Possible states:
+
+UNVERIFIED
+REVIEW
+VERIFIED
+AUTHORITATIVE
+DEPRECATED
+
+Knowledge must have provenance.
+
+Conflicting knowledge must be handled explicitly.
+
+Do not silently replace authoritative content with low-confidence content.
+
+============================================================
+37. SECURITY AGAINST DATA POISONING
+===================================
+
+Treat training/knowledge ingestion as a security boundary.
+
+Protect against:
+
+* prompt injection
+* malicious documents
+* poisoned datasets
+* secret leakage
+* fabricated sources
+* duplicated low-quality content
+* malicious model feedback
+* adversarial training examples
+
+Never allow external content to directly modify production model behavior without the appropriate validation pipeline.
+
+============================================================
+38. OBSERVABILITY
+=================
+
+Build a unified operational view.
+
+Track:
+
+application health
+model health
+database health
+Inngest health
+knowledge ingestion
+learning queue
+dataset versions
+training jobs
+evaluation runs
+production model
+candidate models
+deployment history
+rollback history
+errors
+latency
+
+Every major action should include:
+
+request_id
+job_id
+workflow_id
+model_version
+timestamp
+status
+duration
+
+Never expose secrets.
+
+============================================================
+39. COST OBSERVABILITY
+======================
+
+Track usage against free limits where provider APIs make the information available.
+
+Create:
+
+usage_status
+free_limit
+current_usage
+remaining_allowance
+paid_operation_detected
+
+When a threshold is approaching:
+
+WARN
+
+When free usage is exhausted:
+
+STOP
+
+Do not automatically purchase more capacity.
+
+============================================================
+40. TESTING
+===========
+
+Create:
+
+UNIT TESTS
+INTEGRATION TESTS
+END-TO-END TESTS
+REGRESSION TESTS
+FAILURE TESTS
+SECURITY TESTS
+DATA QUALITY TESTS
+
+Test the complete loop:
+
+USER
+→ VERCEL
+→ MODEL GATEWAY
+→ MODEL
+→ MEMORY/KNOWLEDGE
+→ RESPONSE
+→ FEEDBACK
+→ LEARNING EXAMPLE
+→ DATASET
+→ EVALUATION
+→ MODEL VERSION
+→ DEPLOYMENT
+
+Also test:
+
+Vercel unavailable
+Neon unavailable
+Turso unavailable
+Inngest retry
+duplicate events
+bad dataset
+missing credentials
+model unavailable
+training unavailable
+free quota exhausted
+candidate rejected
+rollback
+
+============================================================
+41. DISASTER RECOVERY
+=====================
+
+Production must continue if:
+
+training is unavailable
+the model candidate fails
+learning jobs fail
+the laptop is absent
+Docker is absent
+a training provider is unavailable
+
+The current production model must remain available.
+
+Learning is additive.
+
+Learning failure must never destroy production.
+
+============================================================
+42. PROJECT PRIORITY
+====================
+
+Execute in this order:
+
+P0 — SECURITY
+P1 — ARCHITECTURE DISCOVERY
+P2 — MODEL CAPABILITY DISCOVERY
+P3 — DATA SOURCE-OF-TRUTH
+P4 — MODEL GATEWAY
+P5 — KNOWLEDGE ENGINE
+P6 — MEMORY ENGINE
+P7 — FEEDBACK ENGINE
+P8 — LEARNING DATA ENGINE
+P9 — DATASET VERSIONING
+P10 — EVALUATION ENGINE
+P11 — MODEL REGISTRY
+P12 — ZERO-COST GUARDRAILS
+P13 — TRAINING CAPABILITY
+P14 — DEPLOYMENT / ROLLBACK
+P15 — OBSERVABILITY
+P16 — HARDENING
+
+Do not start with visual redesign.
+
+Do not spend effort on cosmetic changes until the architecture is stable.
+
+============================================================
+43. CHANGE MANAGEMENT
+=====================
+
+For every substantial change:
+
+1. Explain current behavior.
+2. Explain target behavior.
+3. Identify impacted components.
+4. Implement the smallest safe change.
+5. Test it.
+6. Verify it.
+7. Document it.
+8. Only then proceed.
+
+Never make a giant uncontrolled change.
+
+============================================================
+44. ACCEPTANCE CRITERIA
+=======================
+
+The implementation is complete only when:
+
+[ ] Current Wedjat model still works.
+[ ] Current model has a provider abstraction.
+[ ] Model provider can be changed without rewriting the application.
+[ ] GitHub is source control.
+[ ] Vercel is production runtime.
+[ ] Inngest controls background workflows.
+[ ] Neon is authoritative persistent data.
+[ ] Turso has explicit edge/runtime responsibility.
+[ ] No laptop is required.
+[ ] Docker is not required.
+[ ] No mandatory GPU server exists.
+[ ] No paid external infrastructure is required.
+[ ] No billing details are required for the zero-cost configuration.
+[ ] Paid operations are hard-blocked.
+[ ] Knowledge can continuously expand.
+[ ] Memory is separate from knowledge.
+[ ] Feedback is captured.
+[ ] Learning examples are quality-controlled.
+[ ] Datasets are versioned.
+[ ] Evaluation is continuous.
+[ ] Models are versioned.
+[ ] Production model is protected.
+[ ] Rollback exists.
+[ ] Training can be enabled when genuinely supported.
+[ ] Training is never falsely represented when unavailable.
+[ ] System remains operational while training is unavailable.
+[ ] No secrets are stored in source control.
+[ ] Documentation matches the actual implementation.
+
+============================================================
+45. FINAL ARCHITECTURAL PHILOSOPHY
+==================================
+
+The core design principle is:
+
+DO NOT FORCE THE MODEL TO MOVE.
+
+Move the PLATFORM AROUND THE MODEL.
+
+First build:
+
+DATA OWNERSHIP
+MEMORY
+KNOWLEDGE
+RETRIEVAL
+FEEDBACK
+DATASETS
+EVALUATION
+ORCHESTRATION
+MODEL VERSIONING
+GOVERNANCE
+
+Then progressively increase model independence.
+
+Wedjat's intelligence improvement loop must become:
+
+REAL-WORLD EXPERIENCE
+→ VALIDATED DATA
+→ BETTER KNOWLEDGE
+→ BETTER RETRIEVAL
+→ BETTER TRAINING DATA
+→ BETTER EVALUATION
+→ BETTER MODEL VERSION
+→ BETTER PRODUCTION BEHAVIOR
+→ MORE VALIDATED EXPERIENCE
+
+The system must improve without requiring a paid GPU.
+
+If actual model-weight training is available for free:
+USE IT WITHIN THE FREE LIMITS.
+
+If it is not:
+DO NOT PRETEND.
+
+Continue improving everything around the model and maintain the training-ready pipeline.
+
+============================================================
+46. COO FINAL DIRECTIVE
+=======================
+
+Optimize Wedjat for:
+
+SECURITY
+RELIABILITY
+DATA OWNERSHIP
+MODEL PORTABILITY
+LEARNING QUALITY
+OBSERVABILITY
+LOW COST
+NO BILLING DEPENDENCY
+NO LOCAL HARDWARE DEPENDENCY
+NO LOCK-IN
+SCALABILITY
+RECOVERABILITY
+MAINTAINABILITY
+
+The objective is NOT to make Wedjat look technically complex.
+
+The objective is to make Wedjat structurally excellent.
+
+Every component must have a reason.
+
+Every data flow must have an owner.
+
+Every model change must have evidence.
+
+Every learning mechanism must have quality control.
+
+Every deployment must be reversible.
+
+Every paid capability must be disabled in ZERO-COST MODE.
+
+Every unavailable capability must degrade gracefully.
+
+Build the platform so that today's current model can eventually become tomorrow's truly proprietary Wedjat model without requiring a complete system rewrite.
+
+============================================================
+47. FINAL REPORT REQUIRED
+=========================
+
+After implementation, provide:
+
+A. CURRENT ARCHITECTURE AUDIT
+
+B. TARGET ARCHITECTURE
+
+C. MODEL CAPABILITY DISCOVERY
+
+D. FILES CREATED/MODIFIED
+
+E. DATABASE CHANGES
+
+F. INNGEST WORKFLOWS
+
+G. KNOWLEDGE PIPELINE
+
+H. MEMORY PIPELINE
+
+I. FEEDBACK PIPELINE
+
+J. DATASET PIPELINE
+
+K. TRAINING CAPABILITIES AVAILABLE NOW
+
+L. TRAINING CAPABILITIES NOT AVAILABLE
+
+M. MODEL VERSIONING
+
+N. EVALUATION RESULTS
+
+O. SECURITY CHANGES
+
+P. ZERO-COST CONTROLS
+
+Q. TEST RESULTS
+
+R. DEPLOYMENT PROCEDURE
+
+S. ROLLBACK PROCEDURE
+
+T. KNOWN LIMITATIONS
+
+U. FUTURE UPGRADE PATH
+
+Do not state that a feature was implemented unless it actually works.
+
+Do not state that training occurred unless actual model-weight training occurred.
+
+Do not state that a provider is free unless its current terms/plan were verified.
+
+Do not introduce paid infrastructure to satisfy this specification.
+
+The final system must remain operational in ZERO-COST MODE.

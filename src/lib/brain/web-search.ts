@@ -194,6 +194,11 @@ export async function ingestWebResultsAsKnowledge(opts: {
     },
   }).catch(() => {});
 
+  // Invalidate the knowledge index cache so the newly ingested items are
+  // discoverable on the next retrieval.
+  const { invalidateIndex } = await import("./inverted-index");
+  invalidateIndex(opts.tenantId, "knowledge");
+
   return ingested;
 }
 

@@ -29,51 +29,62 @@ export interface KnowledgeHit {
 
 const RANK: EvidenceStatus[] = ["VERIFIED", "SUPPORTED", "INFERRED", "UNCERTAIN", "CONFLICTED", "UNSUPPORTED", "UNKNOWN"];
 
-/** Hybrid retrieval of knowledge: semantic similarity + trust-level boost (§34, §39). */
+/** Hybrid retrieval of knowledge: semantic similarity + trust-level boost (§34, §39).
+ * Uses the inverted index for fast candidate filtering (O(k) instead of O(n)). */
 export async function retrieveKnowledge(q: KnowledgeQuery): Promise<KnowledgeHit[]> {
-  const items = await db.knowledgeItem.findMany({
-    where: {
-      tenantId: q.tenantId,
-      applicationId: q.applicationId,
-      status: { in: ["ACTIVE", "VALIDATED"] as KnowledgeStatus[] },
-      ...(q.types?.length ? { type: { in: q.types } } : {}),
-    },
-    include: { source: true, evidence: true },
-    take: 500,
+  const { searchIndex } = await import("./inverted-index");
+  const results = await searchIndex({
+    tenantId: q.tenantId,
+    applicationId: q.applicationId,
+    kind: "knowledge",
+    query: q.text,
+    limit: (q.limit ?? 6) * 2, // fetch extra so we can filter by type/conflict
+    minScore: q.minScore ?? 0.01,
   });
 
-  const qv = buildTermVector(q.text);
+  if (results.length === 0) return [];
+
+  // Batch-load conflicts for ALL candidate items at once (avoids N+1 queries)
+  const candidateIds = results.map((r) => r.id);
+  const conflictRows = await db.knowledgeConflict.findMany({
+    where: {
+      OR: [
+        { itemAId: { in: candidateIds } },
+        { itemBId: { in: candidateIds } },
+      ],
+      resolution: { in: ["UNRESOLVED", "HUMAN_REVIEW"] },
+    },
+    select: { itemAId: true, itemBId: true },
+  }).catch(() => []);
+  const conflictedIds = new Set<string>();
+  for (const c of conflictRows) {
+    conflictedIds.add(c.itemAId);
+    conflictedIds.add(c.itemBId);
+  }
+
+  const RANK_LOCAL = RANK; // capture for closure
   const scored: KnowledgeHit[] = [];
-  for (const k of items) {
-    const kv = deserializeVector(k.contentVector);
-    const sem = cosineSimilarity(qv, kv);
-    if (sem < (q.minScore ?? 0.04)) continue;
-
-    // §39 reranking: trust level, freshness, source quality
-    const trustBoost = k.source ? Math.max(0, 0.15 * (1 - RANK.indexOf((k.source.trustLevel as EvidenceStatus) ?? "SUPPORTED") / RANK.length)) : 0;
-    const freshnessBoost = k.lastRefreshedAt ? Math.max(0, 0.1 * (1 - daysSince(k.lastRefreshedAt) / 180)) : 0;
-    const typeBoost = (k.type === "FACT" || k.type === "RULE" || k.type === "POLICY") ? 0.05 : 0;
-
-    // §31 conflict detection
-    const conflicts = await db.knowledgeConflict.findMany({
-      where: {
-        OR: [{ itemAId: k.id }, { itemBId: k.id }],
-        resolution: { in: ["UNRESOLVED", "HUMAN_REVIEW"] },
-      },
-      take: 1,
-    });
-    const conflict = conflicts.length > 0;
+  for (const r of results) {
+    const k = r.record as any;
+    const trustLevel = (k.source?.trustLevel as EvidenceStatus) ?? "SUPPORTED";
+    const trustBoost = Math.max(0, 0.15 * (1 - RANK_LOCAL.indexOf(trustLevel) / RANK_LOCAL.length));
+    const freshnessBoost = r.metadata.lastRefreshedAt ? Math.max(0, 0.1 * (1 - daysSince(r.metadata.lastRefreshedAt) / 180)) : 0;
+    const typeBoost = (r.metadata.type === "FACT" || r.metadata.type === "RULE" || r.metadata.type === "POLICY") ? 0.05 : 0;
+    const conflict = conflictedIds.has(r.id);
     const conflictPenalty = conflict ? 0.1 : 0;
 
     scored.push({
       record: toRecord(k),
-      score: sem + trustBoost + freshnessBoost + typeBoost - conflictPenalty,
-      semanticScore: sem,
+      score: r.semanticScore + trustBoost + freshnessBoost + typeBoost - conflictPenalty,
+      semanticScore: r.semanticScore,
       conflict,
     });
   }
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, q.limit ?? 6);
+
+  // Filter by type if requested
+  const filtered = q.types?.length ? scored.filter((h) => q.types!.includes(h.record.type)) : scored;
+  return filtered.slice(0, q.limit ?? 6);
 }
 
 /** Create a knowledge candidate from a model-generated statement (§32 — never auto-ACTIVE). */

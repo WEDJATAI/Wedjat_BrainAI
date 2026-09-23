@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network, Globe } from "lucide-react";
+import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network, Globe, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,7 @@ interface ChatMessage {
   role: "user" | "assistant";
   content: string;
   state?: BrainStreamState;
+  question?: string; // the user's question that prompted this assistant message
   createdAt: number;
 }
 
@@ -68,7 +69,7 @@ export function BrainWidget() {
     if (!content || streaming) return;
     setInput("");
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: "user", content, createdAt: Date.now() };
-    const assistantMsg: ChatMessage = { id: crypto.randomUUID(), role: "assistant", content: "", state: initialStreamState(), createdAt: Date.now() };
+    const assistantMsg: ChatMessage = { id: crypto.randomUUID(), role: "assistant", content: "", state: initialStreamState(), question: content, createdAt: Date.now() };
     setMessages((m) => [...m, userMsg, assistantMsg]);
     setActiveMessageId(assistantMsg.id);
     setStreaming(true);
@@ -283,8 +284,72 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
             </div>
           ) : null}
           {state && !streaming && <ResponseChips state={state} />}
+          {state && !streaming && state.response && (
+            <FeedbackButtons
+              requestId={state.response.requestId}
+              answer={message.content}
+              question={message.question}
+            />
+          )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function FeedbackButtons({ requestId, answer, question }: { requestId: string; answer: string; question?: string }) {
+  const [given, setGiven] = React.useState<"thumbs_up" | "thumbs_down" | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
+  async function sendFeedback(signal: "thumbs_up" | "thumbs_down") {
+    if (given || loading) return;
+    setLoading(true);
+    setGiven(signal);
+    try {
+      await apiPost("/api/brain/feedback", {
+        requestId, signal, answer: answer.slice(0, 500), question: question?.slice(0, 500),
+      });
+    } catch {
+      // revert on failure
+      setGiven(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-1">
+      <button
+        onClick={() => sendFeedback("thumbs_up")}
+        disabled={!!given || loading}
+        className={cn(
+          "flex h-6 w-6 items-center justify-center rounded-md border text-[10px] transition-colors",
+          given === "thumbs_up"
+            ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-600"
+            : "border-border text-muted-foreground hover:bg-accent hover:text-foreground",
+        )}
+        title="Good answer"
+      >
+        <ThumbsUp className="h-3 w-3" />
+      </button>
+      <button
+        onClick={() => sendFeedback("thumbs_down")}
+        disabled={!!given || loading}
+        className={cn(
+          "flex h-6 w-6 items-center justify-center rounded-md border text-[10px] transition-colors",
+          given === "thumbs_down"
+            ? "border-rose-500/40 bg-rose-500/15 text-rose-600"
+            : "border-border text-muted-foreground hover:bg-accent hover:text-foreground",
+        )}
+        title="Bad answer"
+      >
+        <ThumbsDown className="h-3 w-3" />
+      </button>
+      {given && (
+        <span className="text-[10px] text-muted-foreground">
+          {given === "thumbs_up" ? "Thanks — helps the Brain learn" : "Thanks — Brain will investigate"}
+        </span>
+      )}
     </div>
   );
 }

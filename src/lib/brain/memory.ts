@@ -29,37 +29,36 @@ export interface MemoryHit {
   vector: ReturnType<typeof deserializeVector>;
 }
 
-/** Retrieve relevant memory via semantic similarity on stored term vectors. */
+/** Retrieve relevant memory via semantic similarity on stored term vectors.
+ * Uses the inverted index for fast candidate filtering. */
 export async function retrieveMemory(q: MemoryQuery): Promise<MemoryHit[]> {
-  const where = {
+  const { searchIndex } = await import("./inverted-index");
+  const results = await searchIndex({
     tenantId: q.tenantId,
     applicationId: q.applicationId,
-    status: "ACTIVE" as MemoryStatus,
-    ...(q.domains?.length ? { domain: { in: q.domains } } : {}),
-  };
-  // Pull candidate memories within scope. §40 security filtering occurs here
-  // (tenant + application + active status). User-scoped memories only returned
-  // if the requesting user matches.
-  const items = await db.memoryItem.findMany({ where, take: 500 });
+    kind: "memory",
+    query: q.text,
+    limit: (q.limit ?? 8) * 2,
+    minScore: q.minScore ?? 0.01,
+    userId: q.userId,
+  });
 
   const queryVec = buildTermVector(q.text);
   const scored: MemoryHit[] = [];
-  for (const m of items) {
+  for (const r of results) {
+    const m = r.record as any;
     // §40: USER-scoped memories only visible to that user.
     if (m.scope === "USER" && q.userId && m.userId !== q.userId) continue;
     if (m.scope === "SESSION" && q.conversationId && m.conversationId !== q.conversationId) continue;
-
-    const mv = deserializeVector(m.contentVector);
-    const sim = cosineSimilarity(queryVec, mv);
-    // Temporal decay: validUntil in past → skip; closer validFrom boosts slightly.
-    if (m.validUntil && m.validUntil < new Date()) continue;
-    const recencyBoost = m.validFrom ? Math.max(0, 0.1 * (1 - daysSince(m.validFrom) / 365)) : 0;
-    const score = sim + recencyBoost;
+    // Temporal decay: validUntil in past → skip
+    if (m.validUntil && new Date(m.validUntil) < new Date()) continue;
+    const recencyBoost = m.validFrom ? Math.max(0, 0.1 * (1 - daysSince(new Date(m.validFrom)) / 365)) : 0;
+    const score = r.semanticScore + recencyBoost;
     if (score < (q.minScore ?? 0.05)) continue;
     scored.push({
       record: toRecord(m),
       score,
-      vector: mv,
+      vector: deserializeVector(m.contentVector),
     });
   }
   scored.sort((a, b) => b.score - a.score);
