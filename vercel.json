@@ -1,0 +1,26 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "public": true,
+  "github": {
+    "silent": true
+  },
+  "buildCommand": "bun run db:generate && next build",
+  "framework": "nextjs",
+  "regions": ["sfo1", "iad1"],
+  "functions": {
+    "src/app/api/brain/respond/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/brain/evaluate/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/brain/acceptance/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/inngest/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "crons": []
+}

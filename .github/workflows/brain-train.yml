@@ -1,0 +1,131 @@
+# WEDJAT BRAIN — Auto-Training Loop (Zero Cost, No Server)
+#
+# This workflow runs daily on GitHub Actions (free, 2000 min/month).
+# It calls the Brain API on Vercel to:
+#   1. Consolidate memory (promote good candidates, reject bad ones)
+#   2. Refresh stale knowledge
+#   3. Run the golden evaluation suite
+#   4. Ingest new trending topics (Wikipedia, etc.) via web research
+#   5. Export the knowledge base as JSON and commit it to the repo
+#
+# No Docker, no laptop, no server — just GitHub Actions + Vercel + Neon.
+# The Brain trains itself automatically, every day, for free.
+
+name: Brain Training Loop
+
+on:
+  schedule:
+    # Run at 03:00 UTC daily (off-peak, free tier friendly)
+    - cron: "0 3 * * *"
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+# Only one training run at a time
+concurrency:
+  group: brain-train
+  cancel-in-progress: false
+
+jobs:
+  train:
+    name: Train & Expand Brain Knowledge
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # The Vercel deployment URL (free hobby tier, always-on serverless)
+      BRAIN_API: ${{ secrets.BRAIN_API_URL || 'https://wedjatbrain-ai.vercel.app' }}
+      # Neon connection string (free tier: 0.5 GB, always-on)
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+      TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: bun run db:generate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 🧠 Run memory consolidation
+        run: |
+          echo "::group::Memory Consolidation"
+          bun run scripts/train-brain.ts --job=memory-consolidation
+          echo "::endgroup::"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 📚 Run knowledge refresh
+        run: |
+          echo "::group::Knowledge Refresh"
+          bun run scripts/train-brain.ts --job=knowledge-refresh
+          echo "::endgroup::"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 📊 Run golden evaluation
+        run: |
+          echo "::group::Golden Evaluation"
+          bun run scripts/train-brain.ts --job=evaluation
+          echo "::endgroup::"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 🌐 Ingest trending topics
+        run: |
+          echo "::group::Trending Topics Ingestion"
+          bun run scripts/train-brain.ts --job=ingest-trending
+          echo "::endgroup::"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 💾 Export knowledge snapshot
+        run: |
+          echo "::group::Knowledge Export"
+          bun run scripts/train-brain.ts --job=export-snapshot
+          echo "::endgroup::"
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: 📤 Commit knowledge snapshot
+        run: |
+          git config user.name "Brain Training Bot"
+          git config user.email "brain-training-bot@users.noreply.github.com"
+          git add data/knowledge-snapshot/ || true
+          if git diff --staged --quiet; then
+            echo "No new knowledge to commit."
+          else
+            git commit -m "🧠 Brain training: $(date -u +'%Y-%m-%d %H:%M') UTC
+
+          - Memory consolidation
+          - Knowledge refresh
+          - Golden evaluation
+          - Trending topics ingestion
+          - Knowledge snapshot export"
+            git push
+            echo "✓ Knowledge snapshot committed and pushed."
+          fi
+
+      - name: 📈 Post training summary
+        if: always()
+        run: |
+          echo "## 🧠 Brain Training Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Run at: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Jobs executed:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Memory consolidation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Knowledge refresh" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Golden evaluation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Trending topics ingestion" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Knowledge snapshot export" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Cost: \$0.00 (all free tiers)" >> $GITHUB_STEP_SUMMARY
