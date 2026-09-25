@@ -44,7 +44,7 @@ import {
  * stable application identifier used by the Inngest dashboard.
  */
 export const inngest = new Inngest({
-  id: "wedjat-brain",
+  id: "cirkle-brain-ai",
   eventKey: process.env.INNGEST_EVENT_KEY ?? "dev-key",
 });
 

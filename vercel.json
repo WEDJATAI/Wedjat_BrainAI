@@ -3,7 +3,7 @@
   "github": {
     "silent": true
   },
-  "buildCommand": "bun run db:generate && next build",
+  "buildCommand": "bash scripts/vercel-build.sh",
   "framework": "nextjs",
   "functions": {
     "src/app/api/brain/respond/route.ts": {
