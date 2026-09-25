@@ -1,4 +1,4 @@
-// WEDJAT BRAIN — Web Research module (spec §115: BRAIN RESEARCH)
+// Cirkle Brain AI — Web Research module (spec §115: BRAIN RESEARCH)
 //
 // When local knowledge is insufficient (verification status UNKNOWN, §163), the
 // Brain may perform web research: search the internet, ingest results as new
@@ -12,8 +12,10 @@
 // Per user request: the Brain should "search the internet and learn and
 // expand its knowledge" — so web-sourced facts are auto-promoted to ACTIVE
 // with clear provenance=web so future questions are answered instantly.
+//
+// CONSENSUS: z-ai web_search has been removed. The Brain now uses the free
+// DuckDuckGo Instant Answer API + lite HTML fallback for web search results.
 
-import ZAI from "z-ai-web-dev-sdk";
 import { db } from "@/lib/db";
 import { buildTermVector, serializeVector } from "./vectors";
 import type { EvidenceRef, EvidenceStatus } from "./types";
@@ -41,24 +43,143 @@ export interface IngestedKnowledge {
 const searchCache = new Map<string, { results: WebSearchResult[]; ts: number }>();
 const CACHE_TTL_MS = 10 * 60 * 1000;
 
-/** Search the web via z-ai-web-dev-sdk. Returns up to `num` results. */
+/**
+ * Search the web using DuckDuckGo Instant Answer API.
+ * Returns up to `num` results. Falls back to DuckDuckGo HTML scraping if the
+ * Instant Answer API returns nothing (common for non-headline queries).
+ */
 export async function searchWeb(query: string, num = 6): Promise<WebSearchResult[]> {
   if (!query?.trim()) return [];
   try {
-    const zai = await ZAI.create();
-    const raw = await zai.functions.invoke("web_search", { query, num });
-    if (!Array.isArray(raw)) return [];
-    return raw.slice(0, num).map((r: any) => ({
-      url: r.url ?? "",
-      title: r.name ?? r.title ?? "",
-      snippet: r.snippet ?? "",
-      hostName: r.host_name ?? "",
-      date: r.date ?? undefined,
-    }));
+    const results: WebSearchResult[] = [];
+
+    // 1. DuckDuckGo Instant Answer API — structured JSON.
+    try {
+      const ddgUrl = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1&no_redirect=1&skip_disambig=1`;
+      const resp = await fetch(ddgUrl, {
+        headers: { "User-Agent": "CirkleBrainAI/1.0 (+https://cirkle-brain-ai.vercel.app)" },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (resp.ok) {
+        const data = await resp.json() as any;
+        const pushItem = (it: any) => {
+          if (!it) return;
+          const url = it.FirstURL ?? it.URL ?? "";
+          const title = it.Text ?? it.Heading ?? "";
+          const snippet = it.AbstractText ?? it.Abstract ?? "";
+          if (!url && !title) return;
+          results.push({
+            url: url || "https://duckduckgo.com",
+            title: title || "(untitled)",
+            snippet: snippet || title,
+            hostName: hostFromUrl(url),
+          });
+        };
+        pushItem({ FirstURL: data.AbstractURL, Text: data.Heading, AbstractText: data.AbstractText, Abstract: data.Abstract });
+        if (Array.isArray(data.RelatedTopics)) {
+          for (const t of data.RelatedTopics) {
+            if (results.length >= num) break;
+            if (t && t.FirstURL) pushItem(t);
+            if (t && Array.isArray(t.Topics)) {
+              for (const sub of t.Topics) {
+                if (results.length >= num) break;
+                pushItem(sub);
+              }
+            }
+          }
+        }
+        if (Array.isArray(data.Results)) {
+          for (const r of data.Results) {
+            if (results.length >= num) break;
+            pushItem(r);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("[web-search] duckduckgo instant answer failed:", (err as Error).message);
+    }
+
+    // 2. If Instant Answer returned nothing, fall back to DuckDuckGo HTML lite
+    //    endpoint and parse visible result anchors + snippets. This is the same
+    //    approach used by most open-source search aggregators.
+    if (results.length === 0) {
+      try {
+        const htmlUrl = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+        const resp = await fetch(htmlUrl, {
+          headers: {
+            "User-Agent": "Mozilla/5.0 (compatible; CirkleBrainAI/1.0; +https://cirkle-brain-ai.vercel.app)",
+          },
+          signal: AbortSignal.timeout(15000),
+        });
+        if (resp.ok) {
+          const html = await resp.text();
+          const parsed = parseDuckDuckGoHtml(html, num);
+          results.push(...parsed);
+        }
+      } catch (err) {
+        console.error("[web-search] duckduckgo html fallback failed:", (err as Error).message);
+      }
+    }
+
+    return results.slice(0, num);
   } catch (err) {
     console.error("[web-search] search failed:", err);
     return [];
   }
+}
+
+function hostFromUrl(url: string): string {
+  if (!url) return "";
+  try { return new URL(url).hostname; } catch { return url; }
+}
+
+// Simple HTML result parser for DuckDuckGo's lite/html endpoint.
+// Looks for result links: <a class="result__a" href="...">title</a>
+// And snippets: <a class="result__snippet" ...>snippet</a>
+function parseDuckDuckGoHtml(html: string, max: number): WebSearchResult[] {
+  const results: WebSearchResult[] = [];
+  const linkRe = /<a[^>]*class="[^"]*result__a[^"]*"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g;
+  const snippetRe = /<a[^>]*class="[^"]*result__snippet[^"]*"[^>]*>([\s\S]*?)<\/a>/g;
+
+  const snippets: string[] = [];
+  let sm: RegExpExecArray | null;
+  while ((sm = snippetRe.exec(html)) !== null) {
+    snippets.push(stripTags(sm[1]).trim());
+  }
+
+  let lm: RegExpExecArray | null;
+  let i = 0;
+  while ((lm = linkRe.exec(html)) !== null && results.length < max) {
+    let rawUrl = lm[1];
+    // DuckDuckGo wraps external URLs in a redirect like //duckduckgo.com/l/?uddg=ENC...
+    const uddg = rawUrl.match(/[?&]uddg=([^&]+)/);
+    if (uddg) {
+      try { rawUrl = decodeURIComponent(uddg[1]); } catch { /* keep raw */ }
+    }
+    if (rawUrl.startsWith("//")) rawUrl = "https:" + rawUrl;
+    const title = stripTags(lm[2]).trim();
+    if (!title) continue;
+    results.push({
+      url: rawUrl,
+      title,
+      snippet: snippets[i] ?? "",
+      hostName: hostFromUrl(rawUrl),
+    });
+    i++;
+  }
+  return results;
+}
+
+function stripTags(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 /** Cached search wrapper — avoids duplicate API calls for identical queries. */
@@ -106,7 +227,7 @@ export async function ingestWebResultsAsKnowledge(opts: {
         tenantId,
         sourceType: "web",
         title: "Web Research (auto-ingested)",
-        author: "Wedjat Brain Web Research",
+        author: "Cirkle Brain Web Research",
         trustLevel: "SUPPORTED", // web content is supported but not VERIFIED (§110)
         verificationStatus: "UNVERIFIED", // §115: external content is untrusted until cross-validated
         dataClassification: "PUBLIC",

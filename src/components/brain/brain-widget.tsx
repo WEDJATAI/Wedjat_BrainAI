@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { streamBrainResponse, apiGet, apiPost, type BrainStreamState, initialStreamState } from "@/lib/brain/client";
 import type { BrainMode, EvidenceStatus, ToolResult, TraceStep } from "@/lib/brain/types";
 import { AdminConsole } from "./admin-console";
+import { CirkleMark } from "@/components/brand/cirkle-mark";
 import { toast } from "sonner";
 
 interface ChatMessage {
@@ -35,7 +36,7 @@ const MODES: { value: BrainMode; label: string; hint: string }[] = [
 ];
 
 const SAMPLE_PROMPTS = [
-  "What does the Wedjat Brain spec say about authorization?",
+  "What does the Cirkle Brain spec say about authorization?",
   "What is invoice 1827?",
   "Add 23 and 19",
   "Why is the model not the Brain?",
@@ -103,14 +104,14 @@ export function BrainWidget() {
         <CardHeader className="border-b pb-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg wedjat-gradient text-white shadow-sm wedjat-glow">
-                <Image src="/wedjat-logo.png" alt="WEDJAT" width={28} height={28} priority className="h-7 w-7 object-contain drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]" />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[color:var(--color-wedjat-cyan)] ring-2 ring-background">
-                  <span className="h-1.5 w-1.5 wedjat-pulse rounded-full bg-[color:var(--color-wedjat-cyan-deep)]" />
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-lg cirkle-gradient text-white shadow-sm cirkle-glow">
+                <CirkleMark size={28} className="drop-shadow-[0_0_4px_rgba(194,160,96,0.4)]" />
+                <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[color:var(--color-cirkle-cyan)] ring-2 ring-background">
+                  <span className="h-1.5 w-1.5 cirkle-pulse rounded-full bg-[color:var(--color-cirkle-cyan-deep)]" />
                 </span>
               </div>
               <div>
-                <CardTitle className="text-base leading-tight">WEDJAT BRAIN</CardTitle>
+                <CardTitle className="text-base leading-tight">Cirkle Brain AI</CardTitle>
                 <CardDescription className="text-[11px] leading-tight">Cognitive operating layer · model-independent</CardDescription>
               </div>
             </div>
@@ -148,7 +149,7 @@ export function BrainWidget() {
                 <XCircle className="h-4 w-4" />
               </Button>
             ) : (
-              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 wedjat-gradient hover:opacity-90 wedjat-glow" title="Send">
+              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 cirkle-gradient hover:opacity-90 cirkle-glow" title="Send">
                 <Send className="h-4 w-4" />
               </Button>
             )}
@@ -179,8 +180,8 @@ function PlatformSelector({ value, onChange, platforms, disabled }: { value: str
   const current = platforms.find((p) => p.slug === value);
   return (
     <Select value={value} onValueChange={onChange} disabled={disabled || platforms.length === 0}>
-      <SelectTrigger className="h-8 w-[150px] gap-1 border-[color:var(--color-wedjat-cyan)]/30 text-xs" size="sm">
-        <Globe className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
+      <SelectTrigger className="h-8 w-[150px] gap-1 border-[color:var(--color-cirkle-cyan)]/30 text-xs" size="sm">
+        <Globe className="h-3 w-3 text-[color:var(--color-cirkle-cyan)]" />
         <SelectValue placeholder="Platform">
           {current ? current.displayName : value}
         </SelectValue>
@@ -229,11 +230,11 @@ function ModeSelector({ value, onChange, disabled }: { value: BrainMode; onChang
 function EmptyState({ onPick }: { onPick: (p: string) => void }) {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl wedjat-gradient-soft ring-1 ring-[color:var(--color-wedjat-cyan)]/30">
-        <Image src="/wedjat-logo.png" alt="WEDJAT Eye of Horus" width={56} height={56} priority className="h-14 w-14 object-contain drop-shadow-[0_0_10px_rgba(0,217,255,0.5)]" />
+      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl cirkle-gradient-soft ring-1 ring-[color:var(--color-cirkle-cyan)]/30">
+        <CirkleMark size={56} className="drop-shadow-[0_0_10px_rgba(194,160,96,0.5)]" />
       </div>
       <div className="space-y-1">
-        <h3 className="text-base font-semibold">Wedjat Brain</h3>
+        <h3 className="text-base font-semibold">Cirkle Brain</h3>
         <p className="mx-auto max-w-sm text-xs text-muted-foreground">
           A model-independent cognitive layer. Identity, memory, knowledge, evidence, retrieval, tools, policy, verification, learning, observability — all owned by the Brain, not the model.
         </p>
@@ -241,7 +242,7 @@ function EmptyState({ onPick }: { onPick: (p: string) => void }) {
       <div className="grid w-full max-w-md grid-cols-1 gap-1.5">
         {SAMPLE_PROMPTS.map((p) => (
           <button key={p} onClick={() => onPick(p)} className="group flex items-center gap-2 rounded-md border bg-card px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-            <ChevronRight className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
+            <ChevronRight className="h-3 w-3 text-[color:var(--color-cirkle-cyan)]" />
             <span className="flex-1">{p}</span>
           </button>
         ))}
@@ -257,7 +258,7 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
   if (message.role === "user") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-sm wedjat-gradient px-3 py-2 text-sm text-white shadow-sm">
+        <div className="max-w-[85%] rounded-2xl rounded-br-sm cirkle-gradient px-3 py-2 text-sm text-white shadow-sm">
           {message.content}
         </div>
       </div>
@@ -268,18 +269,18 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-start gap-2">
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg wedjat-gradient-soft ring-1 ring-[color:var(--color-wedjat-cyan)]/30">
-          <Image src="/wedjat-logo.png" alt="" width={20} height={20} aria-hidden className="h-5 w-5 object-contain" />
+        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg cirkle-gradient-soft ring-1 ring-[color:var(--color-cirkle-cyan)]/30">
+          <CirkleMark size={20} aria-hidden className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1 space-y-2">
           {message.content ? (
             <div className="whitespace-pre-wrap rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-sm leading-relaxed">
               {message.content}
-              {streaming && <span className="ml-0.5 inline-block h-3.5 w-1 wedjat-pulse bg-[color:var(--color-wedjat-cyan)] align-middle" />}
+              {streaming && <span className="ml-0.5 inline-block h-3.5 w-1 cirkle-pulse bg-[color:var(--color-cirkle-cyan)] align-middle" />}
             </div>
           ) : streaming ? (
             <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-[color:var(--color-wedjat-cyan)]" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-[color:var(--color-cirkle-cyan)]" />
               <span>Brain is thinking…</span>
             </div>
           ) : null}
@@ -383,8 +384,8 @@ function ResponseChips({ state }: { state: BrainStreamState }) {
 
 function Chip({ icon, label, tone }: { icon: React.ReactNode; label: string; tone: "ok" | "warn" | "err" | "muted" | "info" }) {
   const cls = {
-    ok: "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]",
-    info: "border-[color:var(--color-wedjat-cyan)]/40 bg-[color:var(--color-wedjat-cyan)]/15 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]",
+    ok: "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]",
+    info: "border-[color:var(--color-cirkle-cyan)]/40 bg-[color:var(--color-cirkle-cyan)]/15 text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]",
     warn: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
     err: "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
     muted: "border-border bg-muted text-muted-foreground",
@@ -417,7 +418,7 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
   return (
     <Card className="hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden lg:flex">
       <CardHeader className="border-b pb-3">
-        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-wedjat-cyan)]" /> Cognitive Trace</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Cognitive Trace</CardTitle>
         <CardDescription className="text-[11px]">Real-time execution path — no private hidden reasoning exposed</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
@@ -469,7 +470,7 @@ function TraceList({ steps }: { steps: TraceStep[] }) {
       {steps.map((s, i) => (
         <li key={i} className="relative">
           <span className={cn("absolute -left-[1.4rem] top-1 flex h-3 w-3 items-center justify-center rounded-full ring-2 ring-background",
-            s.status === "COMPLETED" ? "bg-[color:var(--color-wedjat-cyan)]" : s.status === "FAILED" ? "bg-rose-500" : s.status === "SKIPPED" ? "bg-muted-foreground" : "bg-amber-500 animate-pulse")}>
+            s.status === "COMPLETED" ? "bg-[color:var(--color-cirkle-cyan)]" : s.status === "FAILED" ? "bg-rose-500" : s.status === "SKIPPED" ? "bg-muted-foreground" : "bg-amber-500 animate-pulse")}>
             {s.status === "COMPLETED" ? <CheckCircle2 className="h-2.5 w-2.5 text-white" /> : s.status === "FAILED" ? <XCircle className="h-2.5 w-2.5 text-white" /> : <CircleDot className="h-2 w-2 text-white" />}
           </span>
           <div className="flex items-baseline justify-between gap-2">
@@ -487,7 +488,7 @@ function TraceList({ steps }: { steps: TraceStep[] }) {
 }
 
 function EvidenceList({ state }: { state: BrainStreamState }) {
-  if (state.evidence.length === 0) return <EmptyHint icon={<FileText className="h-4 w-4" />} text="No evidence retrieved. Try asking about the Wedjat Brain spec or invoice 1827." />;
+  if (state.evidence.length === 0) return <EmptyHint icon={<FileText className="h-4 w-4" />} text="No evidence retrieved. Try asking about the Cirkle Brain spec or invoice 1827." />;
   return (
     <div className="space-y-2">
       {state.evidence.map((e) => (
@@ -546,7 +547,7 @@ function ToolCard({ tool }: { tool: ToolResult }) {
     <div className="rounded-lg border bg-card p-2.5">
       <div className="mb-1 flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5">
-          <Wrench className="h-3 w-3 text-[color:var(--color-wedjat-cyan)]" />
+          <Wrench className="h-3 w-3 text-[color:var(--color-cirkle-cyan)]" />
           <span className="text-xs font-medium">{current.toolId}</span>
         </div>
         <Badge variant="outline" className={cn("text-[9px]", actionStateClass(current.state))}>{current.state}</Badge>
@@ -575,8 +576,8 @@ function ResearchList({ state }: { state: BrainStreamState }) {
   }
   return (
     <div className="space-y-2">
-      <div className="rounded-lg border border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/5 p-2.5">
-        <p className="text-xs font-medium text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]">Web research triggered</p>
+      <div className="rounded-lg border border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/5 p-2.5">
+        <p className="text-xs font-medium text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]">Web research triggered</p>
         <p className="mt-0.5 text-[10px] text-muted-foreground">Query: "{state.research.query}"</p>
         <p className="text-[10px] text-muted-foreground">{state.research.resultsCount} results · {state.research.ingestedCount} new facts ingested as knowledge</p>
       </div>
@@ -584,7 +585,7 @@ function ResearchList({ state }: { state: BrainStreamState }) {
         {state.research.sources.map((s, i) => (
           <a key={i} href={s.url} target="_blank" rel="noreferrer" className="block rounded-lg border bg-card p-2 hover:bg-accent/50 transition-colors">
             <div className="flex items-center gap-1.5">
-              <Globe className="h-3 w-3 shrink-0 text-[color:var(--color-wedjat-cyan)]" />
+              <Globe className="h-3 w-3 shrink-0 text-[color:var(--color-cirkle-cyan)]" />
               <span className="truncate text-xs font-medium">{s.title}</span>
             </div>
             <p className="mt-0.5 truncate text-[9px] text-muted-foreground">{s.url}</p>
@@ -623,13 +624,13 @@ function EmptyHint({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 function verificationToneClass(s: EvidenceStatus) {
-  if (s === "VERIFIED" || s === "SUPPORTED") return "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]";
+  if (s === "VERIFIED" || s === "SUPPORTED") return "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]";
   if (s === "INFERRED" || s === "UNCERTAIN" || s === "CONFLICTED") return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300";
   return "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300";
 }
 
 function actionStateClass(s: string) {
-  if (s === "VERIFIED" || s === "EXECUTED") return "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan-deep)] dark:text-[color:var(--color-wedjat-glow)]";
+  if (s === "VERIFIED" || s === "EXECUTED") return "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]";
   if (s === "AUTHORIZED") return "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300";
   if (s === "FAILED" || s === "TIMED_OUT" || s === "REJECTED") return "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300";
   return "border-border bg-muted text-muted-foreground";

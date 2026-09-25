@@ -9,8 +9,8 @@
 // retrieval architecture (§34) without over-engineering infrastructure.
 //
 // The interface mirrors what a real embedding model would expose so the
-// retrieval engine can later swap to z-ai-web-dev-sdk embeddings or pgvector
-// without changing call sites.
+// retrieval engine can later swap to a multi-provider embeddings API or
+// pgvector without changing call sites.
 
 const STOPWORDS = new Set([
   "a","an","the","and","or","but","if","then","else","for","of","to","in","on","at","by","with",

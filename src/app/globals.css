@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ════════════════════════════════════════════════════════════════════════════
+   Cirkle Brain AI — Premium Design System
+   Pulled from github.com/fortleem/cirkle-ac8fabe4 (src/index.css).
+   All colors HSL. No ad-hoc colors in components.
+   Brand: gold (#C2A060), teal (#1A4A5A), rose (#C06070), steel (#4A6A8A),
+          charcoal (#1A1A14), cream (#FDFCF9).
+   ════════════════════════════════════════════════════════════════════════════ */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -42,168 +50,476 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* WEDJAT brand tokens — neon cyan/electric-blue cyber-tech palette
-     derived from the WEDJAT AI logo (Eye of Horus, #00D9FF). */
-  --color-wedjat-cyan: #00d9ff;
-  --color-wedjat-cyan-soft: #38e1ff;
-  --color-wedjat-cyan-deep: #00a8cc;
-  --color-wedjat-electric: #1ab8e6;
-  --color-wedjat-glow: #66e8ff;
-  --color-wedjat-ink: #050b14;
-  --color-wedjat-surface: #0a1422;
-  --color-wedjat-surface-2: #0f1c30;
-  --color-wedjat-edge: #1a2f4a;
+  /* Cirkle brand tokens (mirrors --gold/--teal/--rose/... for Tailwind utilities) */
+  --color-brand-gold: hsl(var(--gold));
+  --color-brand-teal: hsl(var(--teal));
+  --color-brand-rose: hsl(var(--rose));
+  --color-brand-steel: hsl(var(--steel));
+  --color-brand-charcoal: hsl(var(--charcoal));
+  --color-brand-cream: hsl(var(--cream));
+
+  /* Backward-compat aliases used by existing brain-widget/admin-console/platform-control-plane */
+  --color-cirkle-cyan: hsl(var(--teal));
+  --color-cirkle-cyan-deep: hsl(var(--gold));
+  --color-cirkle-glow: hsl(var(--gold));
 }
 
 :root {
-  --radius: 0.625rem;
+  /* Cirkle brand */
+  --gold: 39 45% 57%;          /* #C2A060 */
+  --teal: 195 56% 23%;          /* #1A4A5A */
+  --rose: 351 41% 56%;          /* #C06070 */
+  --steel: 211 30% 42%;         /* #4A6A8A */
+  --charcoal: 60 8% 9%;         /* #1A1A14 */
+  --cream: 40 50% 98%;          /* #FDFCF9 */
 
-  /* Light theme — clean white with cyan accents (logo blends in). */
-  --background: oklch(0.99 0.002 220);
-  --foreground: oklch(0.18 0.03 230);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.03 230);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.03 230);
+  --radius: 1.25rem;
 
-  /* Primary = WEDJAT cyan (#00D9FF → oklch approximation) */
-  --primary: oklch(0.78 0.16 220);
-  --primary-foreground: oklch(0.12 0.04 230);
+  /* Semantic — Light */
+  --background: 40 50% 98%;
+  --foreground: 60 8% 9%;
+  --surface: 40 35% 96%;
+  --surface-elevated: 0 0% 100%;
+  --card: 0 0% 100%;
+  --card-foreground: 60 8% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 60 8% 9%;
 
-  --secondary: oklch(0.96 0.01 220);
-  --secondary-foreground: oklch(0.22 0.04 230);
-  --muted: oklch(0.96 0.008 220);
-  --muted-foreground: oklch(0.52 0.02 225);
-  --accent: oklch(0.94 0.03 215);
-  --accent-foreground: oklch(0.22 0.06 225);
+  --primary: 195 56% 23%;
+  --primary-foreground: 40 50% 98%;
+  --secondary: 39 45% 57%;
+  --secondary-foreground: 60 8% 9%;
+  --accent: 351 41% 56%;
+  --accent-foreground: 40 50% 98%;
+  --muted: 40 25% 92%;
+  --muted-foreground: 60 6% 35%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 40 50% 98%;
+  --border: 40 20% 88%;
+  --input: 40 20% 88%;
+  --ring: 195 56% 23%;
 
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.015 220);
-  --input: oklch(0.92 0.015 220);
-  --ring: oklch(0.78 0.16 220);
+  --chart-1: 39 45% 57%;
+  --chart-2: 195 56% 33%;
+  --chart-3: 351 41% 56%;
+  --chart-4: 211 30% 42%;
+  --chart-5: 60 8% 45%;
 
-  --chart-1: oklch(0.78 0.16 220); /* cyan */
-  --chart-2: oklch(0.7 0.14 195); /* teal */
-  --chart-3: oklch(0.62 0.18 250); /* electric blue */
-  --chart-4: oklch(0.82 0.12 180); /* aqua */
-  --chart-5: oklch(0.55 0.2 240); /* deep blue */
+  /* Glass */
+  --glass-bg: 0 0% 100% / 0.55;
+  --glass-border: 40 30% 85% / 0.6;
 
-  --sidebar: oklch(0.985 0.005 220);
-  --sidebar-foreground: oklch(0.18 0.03 230);
-  --sidebar-primary: oklch(0.78 0.16 220);
-  --sidebar-primary-foreground: oklch(0.12 0.04 230);
-  --sidebar-accent: oklch(0.94 0.03 215);
-  --sidebar-accent-foreground: oklch(0.22 0.06 225);
-  --sidebar-border: oklch(0.9 0.015 220);
-  --sidebar-ring: oklch(0.78 0.16 220);
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, hsl(195 56% 23%) 0%, hsl(211 30% 42%) 50%, hsl(351 41% 56%) 100%);
+  --gradient-gold: linear-gradient(135deg, hsl(39 45% 67%) 0%, hsl(39 45% 47%) 100%);
+  --gradient-aurora:
+    radial-gradient(ellipse at top left, hsl(351 41% 56% / 0.35), transparent 50%),
+    radial-gradient(ellipse at bottom right, hsl(195 56% 33% / 0.4), transparent 55%),
+    radial-gradient(ellipse at center, hsl(39 45% 57% / 0.2), transparent 60%);
+  --gradient-mesh: conic-gradient(from 180deg at 50% 50%, hsl(195 56% 23%), hsl(351 41% 56%), hsl(39 45% 57%), hsl(211 30% 42%), hsl(195 56% 23%));
+  --gradient-card: linear-gradient(160deg, hsl(0 0% 100% / 0.8), hsl(40 35% 96% / 0.4));
+
+  /* Shadows */
+  --shadow-soft: 0 2px 10px -2px hsl(60 8% 9% / 0.06), 0 8px 30px -10px hsl(60 8% 9% / 0.08);
+  --shadow-glow: 0 0 40px hsl(39 45% 57% / 0.4);
+  --shadow-glass: 0 8px 32px hsl(195 56% 23% / 0.12);
+  --shadow-float: 0 20px 50px -15px hsl(60 8% 9% / 0.25);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --sidebar-background: 40 35% 96%;
+  --sidebar-foreground: 60 8% 9%;
+  --sidebar-primary: 195 56% 23%;
+  --sidebar-primary-foreground: 40 50% 98%;
+  --sidebar-accent: 40 25% 92%;
+  --sidebar-accent-foreground: 60 8% 9%;
+  --sidebar-border: 40 20% 88%;
+  --sidebar-ring: 195 56% 23%;
 }
 
 .dark {
-  /* Dark theme — deep ink surface with glowing cyan accents, matching the
-     WEDJAT logo's cyberpunk / tech-noir aesthetic. */
-  --background: oklch(0.16 0.02 230);
-  --foreground: oklch(0.97 0.01 220);
-  --card: oklch(0.21 0.025 230);
-  --card-foreground: oklch(0.97 0.01 220);
-  --popover: oklch(0.21 0.025 230);
-  --popover-foreground: oklch(0.97 0.01 220);
+  /* Cirkle brand vars stay the same in dark */
+  --gold: 39 45% 57%;
+  --teal: 195 56% 23%;
+  --rose: 351 41% 56%;
+  --steel: 211 30% 42%;
+  --charcoal: 60 8% 9%;
+  --cream: 40 50% 98%;
 
-  /* Primary = WEDJAT cyan glow */
-  --primary: oklch(0.82 0.16 220);
-  --primary-foreground: oklch(0.12 0.04 230);
+  /* Semantic — Dark */
+  --background: 60 8% 6%;
+  --foreground: 40 50% 98%;
+  --surface: 60 8% 9%;
+  --surface-elevated: 60 8% 12%;
+  --card: 60 8% 10%;
+  --card-foreground: 40 50% 98%;
+  --popover: 60 8% 10%;
+  --popover-foreground: 40 50% 98%;
 
-  --secondary: oklch(0.27 0.03 230);
-  --secondary-foreground: oklch(0.97 0.01 220);
-  --muted: oklch(0.25 0.025 230);
-  --muted-foreground: oklch(0.72 0.03 220);
-  --accent: oklch(0.3 0.06 220);
-  --accent-foreground: oklch(0.92 0.05 220);
+  --primary: 39 45% 57%;
+  --primary-foreground: 60 8% 9%;
+  --secondary: 195 56% 33%;
+  --secondary-foreground: 40 50% 98%;
+  --accent: 351 41% 56%;
+  --accent-foreground: 40 50% 98%;
+  --muted: 60 6% 16%;
+  --muted-foreground: 40 15% 65%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 40 50% 98%;
+  --border: 60 6% 18%;
+  --input: 60 6% 18%;
+  --ring: 39 45% 57%;
 
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.32 0.03 225 / 50%);
-  --input: oklch(0.28 0.03 225 / 60%);
-  --ring: oklch(0.82 0.16 220);
+  --chart-1: 39 45% 57%;
+  --chart-2: 195 56% 43%;
+  --chart-3: 351 41% 56%;
+  --chart-4: 211 30% 52%;
+  --chart-5: 60 8% 55%;
 
-  --chart-1: oklch(0.82 0.16 220); /* cyan */
-  --chart-2: oklch(0.75 0.15 195); /* teal */
-  --chart-3: oklch(0.7 0.18 250); /* electric blue */
-  --chart-4: oklch(0.78 0.13 180); /* aqua */
-  --chart-5: oklch(0.65 0.22 240); /* deep blue */
+  --glass-bg: 60 8% 10% / 0.55;
+  --glass-border: 39 45% 57% / 0.15;
 
-  --sidebar: oklch(0.18 0.025 230);
-  --sidebar-foreground: oklch(0.97 0.01 220);
-  --sidebar-primary: oklch(0.82 0.16 220);
-  --sidebar-primary-foreground: oklch(0.12 0.04 230);
-  --sidebar-accent: oklch(0.3 0.06 220);
-  --sidebar-accent-foreground: oklch(0.92 0.05 220);
-  --sidebar-border: oklch(0.32 0.03 225 / 50%);
-  --sidebar-ring: oklch(0.82 0.16 220);
+  --gradient-hero: linear-gradient(135deg, hsl(195 56% 18%) 0%, hsl(211 30% 25%) 50%, hsl(351 41% 36%) 100%);
+  --gradient-aurora:
+    radial-gradient(ellipse at top left, hsl(351 41% 56% / 0.25), transparent 50%),
+    radial-gradient(ellipse at bottom right, hsl(195 56% 43% / 0.3), transparent 55%),
+    radial-gradient(ellipse at center, hsl(39 45% 57% / 0.15), transparent 60%);
+  --gradient-card: linear-gradient(160deg, hsl(60 8% 14% / 0.8), hsl(60 8% 8% / 0.4));
+
+  --shadow-soft: 0 2px 10px -2px hsl(0 0% 0% / 0.4), 0 8px 30px -10px hsl(0 0% 0% / 0.5);
+  --shadow-glow: 0 0 50px hsl(39 45% 57% / 0.35);
+  --shadow-glass: 0 8px 32px hsl(0 0% 0% / 0.4);
+  --shadow-float: 0 20px 50px -15px hsl(0 0% 0% / 0.6);
+
+  --sidebar-background: 60 8% 9%;
+  --sidebar-foreground: 40 50% 98%;
+  --sidebar-primary: 39 45% 57%;
+  --sidebar-primary-foreground: 60 8% 9%;
+  --sidebar-accent: 60 6% 16%;
+  --sidebar-accent-foreground: 40 50% 98%;
+  --sidebar-border: 60 6% 18%;
+  --sidebar-ring: 39 45% 57%;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html { -webkit-font-smoothing: antialiased; }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3, .font-display {
+    font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: -0.02em;
   }
 }
 
-/* WEDJAT brand utilities — reusable gradients + glows that match the logo. */
-@utility wedjat-gradient {
-  background-image: linear-gradient(135deg, var(--color-wedjat-cyan) 0%, var(--color-wedjat-electric) 55%, var(--color-wedjat-cyan-deep) 100%);
+/* ════════════════════════════════════════════════════════════════════════════
+   Cirkle design-identity primitives (NOT WhatsApp/IG/X/YT)
+   Pulled from the Cirkle design system source repo.
+   ════════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid hsl(var(--glass-border));
+  }
+  .glass-strong {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid hsl(var(--glass-border));
+  }
+  .gradient-text {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gradient-text-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .aurora-bg { background-image: var(--gradient-aurora); }
+  .ring-glow { box-shadow: var(--shadow-glow); }
+  .shadow-float { box-shadow: var(--shadow-float); }
+  .shadow-glass { box-shadow: var(--shadow-glass); }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; }
+
+  .arabesque {
+    background-image:
+      radial-gradient(circle at 0 50%, hsl(var(--gold) / 0.08) 0, transparent 12%),
+      radial-gradient(circle at 100% 50%, hsl(var(--gold) / 0.08) 0, transparent 12%),
+      radial-gradient(circle at 50% 0, hsl(var(--gold) / 0.08) 0, transparent 12%),
+      radial-gradient(circle at 50% 100%, hsl(var(--gold) / 0.08) 0, transparent 12%);
+    background-size: 40px 40px;
+  }
+
+  /* Orbit-ring: rounded card with a gold concentric stroke + soft glow.
+     Used for chat threads, channels, profile cards. */
+  .orbit-ring {
+    position: relative;
+    border-radius: 22px;
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--gold) / 0.18);
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--gold) / 0.08),
+      0 4px 28px hsl(var(--gold) / 0.06);
+    transition: box-shadow .25s ease, border-color .25s ease;
+  }
+  .orbit-ring:hover {
+    border-color: hsl(var(--gold) / 0.35);
+    box-shadow:
+      inset 0 0 0 1px hsl(var(--gold) / 0.15),
+      0 8px 36px hsl(var(--gold) / 0.12);
+  }
+  .orbit-ring::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(var(--gold) / 0.4), transparent 40%, hsl(var(--secondary) / 0.3));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    opacity: .6;
+  }
+
+  /* Signal-dot — animated mesh-network presence indicator. */
+  .signal-dot {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: hsl(var(--secondary));
+    box-shadow: 0 0 0 2px hsl(var(--background));
+  }
+  .signal-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 999px;
+    border: 1.5px solid hsl(var(--secondary) / 0.6);
+    animation: signalPulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .signal-dot[data-state="mesh"]  { background: hsl(var(--primary)); }
+  .signal-dot[data-state="mesh"]::after  { border-color: hsl(var(--primary) / 0.55); }
+  .signal-dot[data-state="off"]   { background: hsl(var(--muted-foreground) / 0.5); }
+  .signal-dot[data-state="off"]::after  { display: none; }
+  @keyframes signalPulse {
+    0%   { transform: scale(0.6); opacity: 0.9; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+  /* Hex tile — hexagonal aspect-ratio for mosaics/grids. */
+  .hex-tile {
+    clip-path: polygon(25% 4%, 75% 4%, 96% 50%, 75% 96%, 25% 96%, 4% 50%);
+    aspect-ratio: 1 / 1.05;
+    overflow: hidden;
+    position: relative;
+    background: hsl(var(--muted) / 0.4);
+  }
+  .hex-tile-stroke { position: relative; }
+  .hex-tile-stroke::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    border: 1px solid hsl(var(--gold) / 0.25);
+    pointer-events: none;
+  }
+
+  /* Gold-stroke — concise tag/chip with fine gradient stroke. */
+  .gold-stroke {
+    position: relative;
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: hsl(var(--card) / 0.4);
+    color: hsl(var(--foreground));
+    font-size: 11px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .gold-stroke::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(120deg, hsl(var(--gold) / 0.7), hsl(var(--secondary) / 0.4));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* City-pulse — concentric expanding rings. */
+  .city-pulse {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .city-pulse > .core {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--gradient-gold);
+    box-shadow: 0 0 14px hsl(var(--gold) / 0.6);
+    z-index: 1;
+  }
+  .city-pulse > .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 1.2px solid hsl(var(--gold) / 0.5);
+    animation: cityPulseRing 3.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .city-pulse > .ring:nth-child(2) { animation-delay: 1.1s; }
+  .city-pulse > .ring:nth-child(3) { animation-delay: 2.2s; }
+  @keyframes cityPulseRing {
+    0%   { transform: scale(0.25); opacity: 0; }
+    20%  { opacity: 0.9; }
+    100% { transform: scale(1.1); opacity: 0; }
+  }
+
+  /* Mesh-fill — diagonal gradient mesh for federation/mesh badges. */
+  .mesh-fill {
+    background:
+      conic-gradient(from 120deg at 50% 50%, hsl(var(--primary) / 0.35), hsl(var(--secondary) / 0.35), hsl(var(--gold) / 0.35), hsl(var(--primary) / 0.35));
+    background-size: 200% 200%;
+    animation: meshShift 8s ease-in-out infinite;
+  }
+  @keyframes meshShift {
+    0%, 100% { background-position: 0% 0%; }
+    50%      { background-position: 100% 100%; }
+  }
 }
 
-@utility wedjat-gradient-soft {
-  background-image: linear-gradient(135deg, color-mix(in oklch, var(--color-wedjat-cyan) 18%, transparent) 0%, color-mix(in oklch, var(--color-wedjat-electric) 12%, transparent) 100%);
+@layer utilities {
+  .animate-shimmer {
+    background: linear-gradient(110deg, transparent 30%, hsl(var(--foreground) / 0.08) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer {
+    to { background-position: -200% 0; }
+  }
+  .animate-orb-float { animation: orbFloat 6s ease-in-out infinite; }
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-12px) scale(1.05); }
+  }
+  .animate-pulse-glow { animation: pulseGlow 2.5s ease-in-out infinite; }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.5); }
+    50%      { box-shadow: 0 0 0 16px hsl(var(--primary) / 0); }
+  }
+  .animate-fade-up { animation: fadeUp 0.6s var(--ease-out-expo) both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-blur-in { animation: blurIn 0.7s var(--ease-out-expo) both; }
+  @keyframes blurIn {
+    from { opacity: 0; filter: blur(20px); }
+    to   { opacity: 1; filter: blur(0); }
+  }
+  .animate-spin-slow { animation: spin 20s linear infinite; }
+  .animate-spin-cirkle { animation: cirkleSpin 30s linear infinite; }
+  @keyframes cirkleSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
 }
 
-@utility wedjat-text-glow {
-  text-shadow: 0 0 12px color-mix(in oklch, var(--color-wedjat-cyan) 60%, transparent),
-               0 0 24px color-mix(in oklch, var(--color-wedjat-cyan) 30%, transparent);
-}
+/* ════════════════════════════════════════════════════════════════════════════
+   Brain-specific utilities (backward-compat with existing widget code)
+   ════════════════════════════════════════════════════════════════════════════ */
 
-@utility wedjat-glow {
-  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-wedjat-cyan) 30%, transparent),
-              0 0 20px -4px color-mix(in oklch, var(--color-wedjat-cyan) 45%, transparent),
-              0 0 40px -8px color-mix(in oklch, var(--color-wedjat-electric) 30%, transparent);
+/* cirkle-gradient — primary brand hero gradient (teal → steel → rose) */
+@utility cirkle-gradient {
+  background-image: var(--gradient-hero);
 }
-
-@utility wedjat-ring {
-  box-shadow: 0 0 0 1px color-mix(in oklch, var(--color-wedjat-cyan) 35%, transparent);
-}
-
-/* Subtle circuit-grid backdrop used behind the brain widget. */
-.wedjat-grid-bg {
+@utility cirkle-gradient-soft {
   background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--color-wedjat-cyan) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--color-wedjat-cyan) 6%, transparent) 1px, transparent 1px);
+    linear-gradient(135deg, hsl(39 45% 57% / 0.15) 0%, hsl(195 56% 23% / 0.1) 100%);
+}
+@utility cirkle-gold-gradient {
+  background-image: var(--gradient-gold);
+}
+@utility cirkle-text-glow {
+  text-shadow:
+    0 0 12px hsl(39 45% 57% / 60%),
+    0 0 24px hsl(39 45% 57% / 30%);
+}
+@utility cirkle-glow {
+  box-shadow:
+    0 0 0 1px hsl(39 45% 57% / 30%),
+    0 0 20px -4px hsl(39 45% 57% / 45%),
+    0 0 40px -8px hsl(195 56% 23% / 30%);
+}
+
+/* brand-* aliases (kept for any code still using the older naming) */
+@utility brand-gradient { background-image: var(--gradient-hero); }
+@utility brand-gradient-soft {
+  background-image:
+    linear-gradient(135deg, hsl(39 45% 57% / 0.15) 0%, hsl(195 56% 23% / 0.1) 100%);
+}
+@utility brand-gold-gradient { background-image: var(--gradient-gold); }
+@utility brand-text-glow {
+  text-shadow:
+    0 0 12px hsl(39 45% 57% / 60%),
+    0 0 24px hsl(39 45% 57% / 30%);
+}
+@utility brand-glow {
+  box-shadow:
+    0 0 0 1px hsl(39 45% 57% / 30%),
+    0 0 20px -4px hsl(39 45% 57% / 45%),
+    0 0 40px -8px hsl(195 56% 23% / 30%);
+}
+
+/* Subtle gold grid backdrop */
+.brand-grid-bg, .cirkle-grid-bg {
+  background-image:
+    linear-gradient(to right, hsl(39 45% 57% / 6%) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(39 45% 57% / 6%) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
-/* Custom scrollbar to match the cyber-tech theme. */
+/* Custom scrollbar — gold-tinted */
 @layer base {
-  *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
   *::-webkit-scrollbar-thumb {
-    background: color-mix(in oklch, var(--color-wedjat-cyan) 30%, var(--color-border));
+    background: hsl(39 45% 57% / 30%);
     border-radius: 9999px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in oklch, var(--color-wedjat-cyan) 50%, var(--color-border));
+    background: hsl(39 45% 57% / 50%);
   }
 
-  /* Smooth pulse animation for the live brain indicator. */
-  @keyframes wedjat-pulse {
+  /* cirkle-pulse — gentle pulse used by the live indicator dot */
+  @keyframes cirkle-pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(0.85); }
+    50%      { opacity: 0.6; transform: scale(0.85); }
   }
-  .wedjat-pulse {
-    animation: wedjat-pulse 1.8s ease-in-out infinite;
-  }
+  .cirkle-pulse { animation: cirkle-pulse 1.8s ease-in-out infinite; }
+  .brand-pulse  { animation: cirkle-pulse 1.8s ease-in-out infinite; }
 }

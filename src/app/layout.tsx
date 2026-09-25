@@ -16,35 +16,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WEDJAT BRAIN — Cognitive Widget",
+  title: "Cirkle Brain AI — Cognitive Widget",
   description:
     "A model-independent cognitive operating layer. The LLM is one replaceable component; the Brain owns identity, memory, knowledge, evidence, retrieval, context, tools, policy, verification, learning, observability, cost, audit.",
-  keywords: ["WEDJAT", "Brain", "cognitive platform", "model-independent", "Next.js", "AI"],
-  authors: [{ name: "Wedjat CTO Office" }],
+  keywords: ["Cirkle", "Brain", "cognitive platform", "model-independent", "Next.js", "AI"],
+  authors: [{ name: "Cirkle CTO Office" }],
   icons: {
     icon: [
-      { url: "/wedjat-favicon.png", type: "image/png", sizes: "256x256" },
+      { url: "/cirkle-mark.svg", type: "image/svg+xml" },
+      { url: "/cirkle-favicon.ico", type: "image/x-icon", sizes: "256x256" },
     ],
-    shortcut: "/wedjat-favicon.png",
-    apple: "/wedjat-favicon.png",
+    shortcut: "/cirkle-mark.svg",
+    apple: "/cirkle-favicon.ico",
   },
   openGraph: {
-    title: "WEDJAT BRAIN",
+    title: "Cirkle Brain AI",
     description: "Model-independent cognitive operating layer",
-    siteName: "Wedjat",
+    siteName: "Cirkle",
     type: "website",
-    images: [{ url: "/wedjat-logo.png", width: 595, height: 477, alt: "WEDJAT Eye of Horus" }],
   },
   twitter: {
     card: "summary",
-    title: "WEDJAT BRAIN",
+    title: "Cirkle Brain AI",
     description: "Model-independent cognitive operating layer",
-    images: ["/wedjat-logo.png"],
+    images: [],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#00D9FF",
+  themeColor: "#C2A060",
   colorScheme: "dark light",
 };
 

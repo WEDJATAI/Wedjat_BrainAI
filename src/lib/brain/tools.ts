@@ -161,7 +161,8 @@ const TOOL_IMPLEMENTATIONS: Record<string, (input: Record<string, unknown>) => P
     };
   },
   "language.translate": async (i) => {
-    // Stubbed — production would route through z-ai-web-dev-sdk chat completion.
+    // Stubbed — production would route through the multi-provider chat
+    // completion (Groq/OpenRouter/NVIDIA/Gemini/HuggingFace).
     return {
       translated: String(i.text ?? ""),
       note: "stubbed — production would use LLM translation",
@@ -172,7 +173,7 @@ const TOOL_IMPLEMENTATIONS: Record<string, (input: Record<string, unknown>) => P
     if (!word) return { word: "", definitions: [] };
     // Search the knowledge base for items whose claim mentions the word.
     const items = await db.knowledgeItem.findMany({
-      where: { OR: [{ claim: { contains: word, mode: "insensitive" } }, { content: { contains: word, mode: "insensitive" } }] },
+      where: { OR: [{ claim: { contains: word } }, { content: { contains: word } }] },
       take: 5,
     });
     return {

@@ -33,7 +33,8 @@ const DEFAULT_RULES: PolicyRules = {
   maxCostPerRequest: 0.5,
   maxLatencyMs: 30000,
   allowedDataClasses: ["PUBLIC", "INTERNAL", "CONFIDENTIAL"],
-  allowedProviders: ["zai"],
+  // CONSENSUS: z-ai removed. Allow all 5 multi-provider providers.
+  allowedProviders: ["groq", "openrouter", "nvidia", "gemini", "huggingface"],
   allowedTools: "*",
   toolRiskCeiling: "MEDIUM",
   humanApprovalRequiredAbove: "MEDIUM",

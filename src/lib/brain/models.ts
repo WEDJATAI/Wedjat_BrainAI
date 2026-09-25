@@ -1,4 +1,4 @@
-// WEDJAT BRAIN V2 — Model abstraction + router + fallback (§45-50, §60).
+// Cirkle Brain AI — Model abstraction + router + fallback (§45-50, §60).
 //
 // Applications must not directly depend on provider-specific SDKs (§45). The
 // model router selects models based on task, complexity, modality, privacy,
@@ -6,15 +6,24 @@
 // fallback (§48) on timeout / rate limit / outage / context overflow / etc.
 // Cost-aware routing (§76). Model data policy (§60): restricted data may only
 // go to approved providers.
+//
+// CONSENSUS: z-ai has been removed entirely. The Brain now routes across
+// 5 independent providers (Groq, OpenRouter, NVIDIA, Gemini, HuggingFace)
+// via the unified `multi-provider` adapter.
 
-import ZAI from "z-ai-web-dev-sdk";
 import { db } from "@/lib/db";
 import type {
   ModelDescriptor, ModelCallResult, ModelTier, TaskType, PolicyMode,
   DataClassification, BrainMode,
 } from "./types";
-import { buildTermVector, serializeVector } from "./vectors";
 import { checkDataClassAllowed, type PolicyRules } from "./policy";
+import {
+  PROVIDER_MODELS,
+  callProviderModel,
+  getModelById,
+  getFallbackChain,
+  type ProviderModel,
+} from "./multi-provider";
 
 // ----------------------------------------------------------------------------
 // Model registry — seeded by /api/brain/seed (§46).
@@ -54,18 +63,15 @@ export function toDescriptor(m: any): ModelDescriptor {
 // ----------------------------------------------------------------------------
 
 export function pickTier(taskType: TaskType, mode: BrainMode | undefined, policyMode: PolicyMode): ModelTier {
-  // §47 routing map
   if (taskType === "high_risk") return "REASONING";
   if (taskType === "reasoning" || taskType === "synthesis") return "REASONING";
   if (taskType === "coding") return "REASONING";
   if (taskType === "tool_use") return "BALANCED";
   if (taskType === "factual") return "BALANCED";
   if (taskType === "simple") return "FAST";
-  // Explicit mode override (§14)
   if (mode === "fast") return "FAST";
   if (mode === "deep") return "REASONING";
   if (mode === "balanced") return "BALANCED";
-  // Policy mode tilt (§76)
   if (policyMode === "LOW_COST") return "FAST";
   if (policyMode === "HIGH_QUALITY" || policyMode === "CRITICAL") return "REASONING";
   return "BALANCED";
@@ -82,7 +88,6 @@ export async function selectModel(opts: {
   const all = await listModels();
   const candidates = all.filter((m) => m.tier === tier);
   if (candidates.length === 0) {
-    // fall back to any active model
     const any = all[0];
     if (!any) throw new Error("no active models registered");
     return { model: any, reason: `no ${tier} model available — using ${any.displayName}` };
@@ -104,8 +109,8 @@ export async function selectModel(opts: {
 }
 
 // ----------------------------------------------------------------------------
-// §45 ModelProvider interface — abstraction over z-ai-web-dev-sdk.
-// The underlying provider can evolve; Wedjat owns the abstraction (§49).
+// §45 ModelProvider interface — abstraction over the multi-provider router.
+// The underlying provider can evolve; Cirkle Brain owns the abstraction (§49).
 // ----------------------------------------------------------------------------
 
 export interface ModelCallInput {
@@ -123,19 +128,65 @@ export async function callModel(input: ModelCallInput): Promise<ModelCallResult>
   let fallbackUsed = false;
   let fallbackReason: string | undefined;
 
-  for (let attemptNo = 0; attemptNo < 2; attemptNo++) {
+  // Build the fallback chain. Primary first, then any explicit fallback, then
+  // any other available model in the same tier from a different provider.
+  const chain = buildAttemptChain(input);
+
+  for (let i = 0; i < chain.length; i++) {
+    const entry = chain[i];
+    const providerModel = entry.providerModel;
+    attempt = entry.descriptor ?? attempt;
     try {
-      const zai = await ZAI.create();
-      const completion = await zai.chat.completions.create({
-        messages: input.messages as any,
-        thinking: { type: "disabled" },
+      const result = await callProviderModel({
+        model: providerModel,
+        messages: input.messages,
+        maxTokens: input.maxTokens,
       });
-      const content = completion.choices[0]?.message?.content ?? "";
-      const tokensIn = estimateTokens(input.messages.map((m) => m.content).join("\n"));
-      const tokensOut = estimateTokens(content);
+
+      // callProviderModel returns success=false on API errors (4xx/5xx) with
+      // empty content + error message. We must try the next provider in the
+      // chain instead of returning empty content to the user.
+      if (!result.success || !result.content || result.content.trim().length === 0) {
+        fallbackReason = result.error
+          ? `${providerModel.modelId} failed: ${result.error}`
+          : `${providerModel.modelId} returned empty content`;
+        if (i < chain.length - 1) {
+          fallbackUsed = true;
+          // advance to the next provider in the chain
+          continue;
+        }
+        // exhausted — record + return the failure
+        await db.modelUsage.create({
+          data: {
+            tenantId: input.tenantId,
+            modelId: attempt.id,
+            tokensIn: 0, tokensOut: 0, costUsd: 0,
+            latencyMs: Date.now() - startedAt,
+            fallbackUsed, success: false,
+            taskType: input.taskType ?? null,
+          },
+        }).catch(() => {});
+        return {
+          model: attempt.modelId,
+          provider: attempt.provider,
+          content: "",
+          tokensIn: 0,
+          tokensOut: 0,
+          costUsd: 0,
+          latencyMs: Date.now() - startedAt,
+          fallbackUsed,
+          fallbackReason,
+          success: false,
+          error: fallbackReason,
+        };
+      }
+
+      // success — record usage + return
+      const tokensIn = result.tokensIn;
+      const tokensOut = result.tokensOut;
       const latencyMs = Date.now() - startedAt;
-      const costUsd = (tokensIn / 1000) * attempt.costInPer1k + (tokensOut / 1000) * attempt.costOutPer1k;
-      // record usage (§50, §75)
+      const costUsd = result.costUsd;
+
       await db.modelUsage.create({
         data: {
           tenantId: input.tenantId,
@@ -149,10 +200,11 @@ export async function callModel(input: ModelCallInput): Promise<ModelCallResult>
           taskType: input.taskType ?? null,
         },
       }).catch(() => {});
+
       return {
         model: attempt.modelId,
         provider: attempt.provider,
-        content,
+        content: result.content,
         tokensIn,
         tokensOut,
         costUsd,
@@ -162,44 +214,91 @@ export async function callModel(input: ModelCallInput): Promise<ModelCallResult>
         success: true,
       };
     } catch (err: any) {
-      fallbackReason = `${attempt.modelId} failed: ${err?.message ?? "unknown"}`;
-      if (attemptNo === 0 && input.fallback) {
-        // §48 explicit fallback
+      // Defensive — callProviderModel should never throw, but just in case
+      // (e.g., network timeout from AbortSignal.timeout).
+      fallbackReason = `${providerModel.modelId} threw: ${err?.message ?? "unknown"}`;
+      if (i < chain.length - 1) {
         fallbackUsed = true;
-        attempt = input.fallback;
         continue;
       }
-      await db.modelUsage.create({
-        data: {
-          tenantId: input.tenantId,
-          modelId: attempt.id,
-          tokensIn: 0, tokensOut: 0, costUsd: 0,
-          latencyMs: Date.now() - startedAt,
-          fallbackUsed, success: false,
-          taskType: input.taskType ?? null,
-        },
-      }).catch(() => {});
-      return {
-        model: attempt.modelId,
-        provider: attempt.provider,
-        content: "",
-        tokensIn: 0,
-        tokensOut: 0,
-        costUsd: 0,
-        latencyMs: Date.now() - startedAt,
-        fallbackUsed,
-        fallbackReason,
-        success: false,
-        error: fallbackReason,
-      };
+      break;
     }
   }
-  // unreachable
+
+  // Record final failed attempt
+  await db.modelUsage.create({
+    data: {
+      tenantId: input.tenantId,
+      modelId: attempt.id,
+      tokensIn: 0, tokensOut: 0, costUsd: 0,
+      latencyMs: Date.now() - startedAt,
+      fallbackUsed, success: false,
+      taskType: input.taskType ?? null,
+    },
+  }).catch(() => {});
+
   return {
-    model: attempt.modelId, provider: attempt.provider, content: "",
-    tokensIn: 0, tokensOut: 0, costUsd: 0, latencyMs: Date.now() - startedAt,
-    fallbackUsed, fallbackReason, success: false, error: "exhausted fallbacks",
+    model: attempt.modelId,
+    provider: attempt.provider,
+    content: "",
+    tokensIn: 0,
+    tokensOut: 0,
+    costUsd: 0,
+    latencyMs: Date.now() - startedAt,
+    fallbackUsed,
+    fallbackReason,
+    success: false,
+    error: fallbackReason ?? "exhausted fallbacks",
   };
+}
+
+// ----------------------------------------------------------------------------
+// Build the chain of (ProviderModel, ModelDescriptor) pairs to try.
+// Order: primary → explicit fallback → any other available same-tier model.
+// ----------------------------------------------------------------------------
+
+interface AttemptEntry {
+  providerModel: ProviderModel;
+  descriptor?: ModelDescriptor;
+}
+
+function buildAttemptChain(input: ModelCallInput): AttemptEntry[] {
+  const chain: AttemptEntry[] = [];
+  const seen = new Set<string>();
+
+  const pushFromDescriptor = (d?: ModelDescriptor) => {
+    if (!d) return;
+    if (seen.has(d.modelId)) return;
+    const pm = getModelById(d.modelId);
+    if (!pm) return;
+    seen.add(d.modelId);
+    chain.push({ providerModel: pm, descriptor: d });
+  };
+
+  pushFromDescriptor(input.model);
+  pushFromDescriptor(input.fallback);
+
+  // Add other models in the same tier as the primary, from different providers
+  // (uses the in-memory multi-provider registry — these may not be in the DB).
+  const tier = input.model.tier;
+  const fallbacks = getFallbackChain(tier as any);
+  for (const pm of fallbacks) {
+    if (seen.has(pm.modelId)) continue;
+    seen.add(pm.modelId);
+    chain.push({ providerModel: pm });
+  }
+
+  // Last-resort: any available model from any tier.
+  if (chain.length === 0) {
+    for (const pm of PROVIDER_MODELS) {
+      if (seen.has(pm.modelId)) continue;
+      seen.add(pm.modelId);
+      chain.push({ providerModel: pm });
+      if (chain.length >= 5) break;
+    }
+  }
+
+  return chain;
 }
 
 function estimateTokens(text: string): number {

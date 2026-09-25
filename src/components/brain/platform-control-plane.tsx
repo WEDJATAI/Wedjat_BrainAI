@@ -130,10 +130,10 @@ export function PlatformControlPlane() {
       </div>
 
       {/* Acceptance suite runner */}
-      <Card className="border-[color:var(--color-wedjat-cyan)]/20">
+      <Card className="border-[color:var(--color-cirkle-cyan)]/20">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Cross-Platform Acceptance</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> Cross-Platform Acceptance</CardTitle>
             <Button size="sm" variant="outline" className="h-6 gap-1 px-2 text-[10px]" onClick={runAcceptance} disabled={acceptanceRunning}>
               {acceptanceRunning ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />}
               Run all
@@ -161,7 +161,7 @@ export function PlatformControlPlane() {
       <Card className="flex-1 min-h-0">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-wedjat-cyan)]" /> Connected Platforms</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> Connected Platforms</CardTitle>
             <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={load} disabled={loading}><RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} /></Button>
           </div>
         </CardHeader>
@@ -187,9 +187,9 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
   const statusTone = p.status === "ACTIVE" ? "ok" : p.status === "DISABLED" ? "err" : "warn";
   const adapterTone = p.adapterStatus === "AUDITED" ? "ok" : p.adapterStatus === "REGISTERED" ? "info" : "warn";
   return (
-    <div className={cn("rounded-lg border bg-card transition-colors", expanded && "ring-1 ring-[color:var(--color-wedjat-cyan)]/30")}>
+    <div className={cn("rounded-lg border bg-card transition-colors", expanded && "ring-1 ring-[color:var(--color-cirkle-cyan)]/30")}>
       <button onClick={onToggle} className="flex w-full items-center gap-2 px-2.5 py-2 text-left hover:bg-accent/50">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[color:var(--color-wedjat-cyan)]/10 text-[color:var(--color-wedjat-cyan)]">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan)]">
           {DOMAIN_ICONS[p.domain] ?? <Boxes className="h-3.5 w-3.5" />}
         </div>
         <div className="min-w-0 flex-1">
@@ -204,7 +204,7 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
             </span>
             <span>·</span>
             <span>{p.adapterStatus}</span>
-            {p.runtimeAdapterLoaded && <span className="text-[color:var(--color-wedjat-cyan)]">· adapter ✓</span>}
+            {p.runtimeAdapterLoaded && <span className="text-[color:var(--color-cirkle-cyan)]">· adapter ✓</span>}
           </div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
@@ -242,8 +242,8 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
           </div>
           {(p.repoUrl || p.productionUrl) && (
             <div className="mt-1.5 flex items-center gap-2">
-              {p.repoUrl && <a href={p.repoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-0.5 text-[9px] text-[color:var(--color-wedjat-cyan)] hover:underline"><ExternalLink className="h-2.5 w-2.5" /> repo</a>}
-              {p.productionUrl && <a href={p.productionUrl} target="_blank" rel="noreferrer" className="flex items-center gap-0.5 text-[9px] text-[color:var(--color-wedjat-cyan)] hover:underline"><ExternalLink className="h-2.5 w-2.5" /> prod</a>}
+              {p.repoUrl && <a href={p.repoUrl} target="_blank" rel="noreferrer" className="flex items-center gap-0.5 text-[9px] text-[color:var(--color-cirkle-cyan)] hover:underline"><ExternalLink className="h-2.5 w-2.5" /> repo</a>}
+              {p.productionUrl && <a href={p.productionUrl} target="_blank" rel="noreferrer" className="flex items-center gap-0.5 text-[9px] text-[color:var(--color-cirkle-cyan)] hover:underline"><ExternalLink className="h-2.5 w-2.5" /> prod</a>}
             </div>
           )}
           <div className="mt-2 flex items-center justify-between">
@@ -261,8 +261,8 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
 function Stat({ label, value, tone }: { label: string; value: number; tone?: "ok" | "info" | "warn" }) {
   return (
     <div className={cn("rounded-md border p-1.5 text-center",
-      tone === "ok" ? "border-emerald-500/30 bg-emerald-500/5" : tone === "info" ? "border-[color:var(--color-wedjat-cyan)]/30 bg-[color:var(--color-wedjat-cyan)]/5" : "border-border bg-muted/30")}>
-      <p className={cn("text-base font-bold leading-tight", tone === "ok" ? "text-emerald-600 dark:text-emerald-400" : tone === "info" ? "text-[color:var(--color-wedjat-cyan)]" : "")}>{value}</p>
+      tone === "ok" ? "border-emerald-500/30 bg-emerald-500/5" : tone === "info" ? "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/5" : "border-border bg-muted/30")}>
+      <p className={cn("text-base font-bold leading-tight", tone === "ok" ? "text-emerald-600 dark:text-emerald-400" : tone === "info" ? "text-[color:var(--color-cirkle-cyan)]" : "")}>{value}</p>
       <p className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );

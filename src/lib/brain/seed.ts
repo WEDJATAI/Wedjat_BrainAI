@@ -9,6 +9,7 @@ import { buildTermVector, serializeVector } from "./vectors";
 import { seedGeneralKnowledge } from "./knowledge-base";
 import { seedGeneralKnowledgeV2 } from "./knowledge-base-v2";
 import { seedGeneralKnowledgeV3 } from "./knowledge-base-v3";
+import { PROVIDER_MODELS, type ProviderModel } from "./multi-provider";
 
 export async function seedBrain(): Promise<{ created: Record<string, number>; skipped: boolean }> {
   const created: Record<string, number> = {};
@@ -63,40 +64,121 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
   created.users = 1;
 
   // ----- Models (§46 registry) -----
+  // CONSENSUS: z-ai has been removed. The Brain now uses a TRUE multi-provider
+  // router across 5 independent providers (Groq, OpenRouter, NVIDIA, Gemini,
+  // HuggingFace). The full model registry lives in ./multi-provider.ts.
+  // Here we seed a curated subset of DB-backed rows so the model router and
+  // policy layer can pick the best model per task.
+
+  // Map provider → reliability (used by selectModel's sort).
+  // OpenRouter has the broadest model coverage and verified connectivity, so
+  // it is given the highest reliability. Groq/Gemini are next (when the key
+  // is valid + not region-blocked). NVIDIA + HuggingFace follow.
+  const PROVIDER_RELIABILITY: Record<string, number> = {
+    openrouter: 0.99, groq: 0.97, gemini: 0.97, nvidia: 0.95, huggingface: 0.93,
+  };
+
+  // Pick the best model for each tier (FAST / BALANCED / REASONING / SPECIALIST)
+  // Priority: highest reliability first, then lowest latency.
+  function pickBestForTier(tier: ProviderModel["tier"]): ProviderModel | null {
+    const pool = PROVIDER_MODELS.filter(m => m.tier === tier)
+      .sort((a, b) =>
+        (PROVIDER_RELIABILITY[b.provider] ?? 0.9) - (PROVIDER_RELIABILITY[a.provider] ?? 0.9)
+        || a.latencyP50Ms - b.latencyP50Ms
+      );
+    return pool[0] ?? null;
+  }
+
+  const fastPm = pickBestForTier("FAST") ?? PROVIDER_MODELS[0];
+  const balancedPm = pickBestForTier("BALANCED") ?? PROVIDER_MODELS[0];
+  const reasoningPm = pickBestForTier("REASONING") ?? PROVIDER_MODELS[0];
+  const specialistPm = pickBestForTier("SPECIALIST") ?? reasoningPm;
+
   const fastModel = await db.model.upsert({
-    where: { modelId: "zai:glm-flash" },
-    update: {},
+    where: { modelId: fastPm.modelId },
+    update: {
+      provider: fastPm.provider, displayName: fastPm.displayName,
+      tier: fastPm.tier, contextLimit: fastPm.contextLimit,
+      costInPer1k: fastPm.costInPer1k, costOutPer1k: fastPm.costOutPer1k,
+      capabilities: fastPm.capabilities.join(","), privacyPolicy: fastPm.privacyPolicy,
+      latencyP50Ms: fastPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[fastPm.provider] ?? 0.99,
+      status: "ACTIVE",
+    },
     create: {
-      modelId: "zai:glm-flash", provider: "zai", displayName: "GLM Flash",
-      tier: "FAST", contextLimit: 32000, costInPer1k: 0.0, costOutPer1k: 0.0,
-      capabilities: "text,reasoning,toolCalling,structuredOutput",
-      privacyPolicy: "INTERNAL", latencyP50Ms: 600, reliability: 0.99, status: "ACTIVE",
-      fallbackModelId: undefined,
+      modelId: fastPm.modelId, provider: fastPm.provider, displayName: fastPm.displayName,
+      tier: fastPm.tier, contextLimit: fastPm.contextLimit,
+      costInPer1k: fastPm.costInPer1k, costOutPer1k: fastPm.costOutPer1k,
+      capabilities: fastPm.capabilities.join(","), privacyPolicy: fastPm.privacyPolicy,
+      latencyP50Ms: fastPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[fastPm.provider] ?? 0.99,
+      status: "ACTIVE", fallbackModelId: undefined,
     },
   });
   const balancedModel = await db.model.upsert({
-    where: { modelId: "zai:glm-air" },
-    update: {},
+    where: { modelId: balancedPm.modelId },
+    update: {
+      provider: balancedPm.provider, displayName: balancedPm.displayName,
+      tier: balancedPm.tier, contextLimit: balancedPm.contextLimit,
+      costInPer1k: balancedPm.costInPer1k, costOutPer1k: balancedPm.costOutPer1k,
+      capabilities: balancedPm.capabilities.join(","), privacyPolicy: balancedPm.privacyPolicy,
+      latencyP50Ms: balancedPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[balancedPm.provider] ?? 0.99,
+      status: "ACTIVE", fallbackModelId: fastModel.id,
+    },
     create: {
-      modelId: "zai:glm-air", provider: "zai", displayName: "GLM Air",
-      tier: "BALANCED", contextLimit: 128000, costInPer1k: 0.0, costOutPer1k: 0.0,
-      capabilities: "text,reasoning,toolCalling,structuredOutput,longContext",
-      privacyPolicy: "CONFIDENTIAL", latencyP50Ms: 900, reliability: 0.99, status: "ACTIVE",
-      fallbackModelId: fastModel.id,
+      modelId: balancedPm.modelId, provider: balancedPm.provider, displayName: balancedPm.displayName,
+      tier: balancedPm.tier, contextLimit: balancedPm.contextLimit,
+      costInPer1k: balancedPm.costInPer1k, costOutPer1k: balancedPm.costOutPer1k,
+      capabilities: balancedPm.capabilities.join(","), privacyPolicy: balancedPm.privacyPolicy,
+      latencyP50Ms: balancedPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[balancedPm.provider] ?? 0.99,
+      status: "ACTIVE", fallbackModelId: fastModel.id,
     },
   });
   const reasoningModel = await db.model.upsert({
-    where: { modelId: "zai:glm-4.6" },
-    update: {},
+    where: { modelId: reasoningPm.modelId },
+    update: {
+      provider: reasoningPm.provider, displayName: reasoningPm.displayName,
+      tier: reasoningPm.tier, contextLimit: reasoningPm.contextLimit,
+      costInPer1k: reasoningPm.costInPer1k, costOutPer1k: reasoningPm.costOutPer1k,
+      capabilities: reasoningPm.capabilities.join(","), privacyPolicy: reasoningPm.privacyPolicy,
+      latencyP50Ms: reasoningPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[reasoningPm.provider] ?? 0.97,
+      status: "ACTIVE", fallbackModelId: balancedModel.id,
+    },
     create: {
-      modelId: "zai:glm-4.6", provider: "zai", displayName: "GLM 4.6 Reasoning",
-      tier: "REASONING", contextLimit: 128000, costInPer1k: 0.0, costOutPer1k: 0.0,
-      capabilities: "text,reasoning,toolCalling,structuredOutput,longContext,coding",
-      privacyPolicy: "RESTRICTED", latencyP50Ms: 1800, reliability: 0.97, status: "ACTIVE",
-      fallbackModelId: balancedModel.id,
+      modelId: reasoningPm.modelId, provider: reasoningPm.provider, displayName: reasoningPm.displayName,
+      tier: reasoningPm.tier, contextLimit: reasoningPm.contextLimit,
+      costInPer1k: reasoningPm.costInPer1k, costOutPer1k: reasoningPm.costOutPer1k,
+      capabilities: reasoningPm.capabilities.join(","), privacyPolicy: reasoningPm.privacyPolicy,
+      latencyP50Ms: reasoningPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[reasoningPm.provider] ?? 0.97,
+      status: "ACTIVE", fallbackModelId: balancedModel.id,
     },
   });
-  created.models = 3;
+  // Specialist (frontier) tier — optional, only if different from reasoning.
+  if (specialistPm.modelId !== reasoningPm.modelId) {
+    await db.model.upsert({
+      where: { modelId: specialistPm.modelId },
+      update: {
+        provider: specialistPm.provider, displayName: specialistPm.displayName,
+        tier: specialistPm.tier, contextLimit: specialistPm.contextLimit,
+        costInPer1k: specialistPm.costInPer1k, costOutPer1k: specialistPm.costOutPer1k,
+        capabilities: specialistPm.capabilities.join(","), privacyPolicy: specialistPm.privacyPolicy,
+        latencyP50Ms: specialistPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[specialistPm.provider] ?? 0.95,
+        status: "ACTIVE", fallbackModelId: reasoningModel.id,
+      },
+      create: {
+        modelId: specialistPm.modelId, provider: specialistPm.provider, displayName: specialistPm.displayName,
+        tier: specialistPm.tier, contextLimit: specialistPm.contextLimit,
+        costInPer1k: specialistPm.costInPer1k, costOutPer1k: specialistPm.costOutPer1k,
+        capabilities: specialistPm.capabilities.join(","), privacyPolicy: specialistPm.privacyPolicy,
+        latencyP50Ms: specialistPm.latencyP50Ms, reliability: PROVIDER_RELIABILITY[specialistPm.provider] ?? 0.95,
+        status: "ACTIVE", fallbackModelId: reasoningModel.id,
+      },
+    });
+  }
+  // Mark legacy z-ai models as OFFLINE (consensus — z-ai removed).
+  await db.model.updateMany({
+    where: { provider: "zai" },
+    data: { status: "OFFLINE", reliability: 0 },
+  }).catch(() => {});
+  created.models = 4;
 
   // ----- Model routes (§47) -----
   await ensureRoute(balancedModel.id, "factual", "BALANCED", 10);
@@ -115,7 +197,7 @@ export async function seedBrain(): Promise<{ created: Record<string, number>; sk
       tenantId: null, applicationId: null, name: "data.access", version: 1,
       rules: JSON.stringify({
         allowedDataClasses: ["PUBLIC", "INTERNAL", "CONFIDENTIAL"],
-        allowedProviders: ["zai"], externalSearchAllowed: true,
+        allowedProviders: ["groq", "openrouter", "nvidia", "gemini", "huggingface"], externalSearchAllowed: true,
       }),
       status: "ACTIVE", author: "system", reason: "baseline global data-access policy",
     },

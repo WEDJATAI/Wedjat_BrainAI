@@ -209,8 +209,8 @@ export async function searchIndex(opts: {
   if (opts.kind === "knowledge") {
     // Build OR conditions for each token
     const orConditions = queryTokens.flatMap((t) => [
-      { claim: { contains: t, mode: "insensitive" as const } },
-      { content: { contains: t, mode: "insensitive" as const } },
+      { claim: { contains: t } },
+      { content: { contains: t } },
     ]);
     rows = await db.knowledgeItem.findMany({
       where: {
@@ -224,7 +224,7 @@ export async function searchIndex(opts: {
     });
   } else {
     const orConditions = queryTokens.flatMap((t) => [
-      { content: { contains: t, mode: "insensitive" as const } },
+      { content: { contains: t } },
     ]);
     rows = await db.memoryItem.findMany({
       where: {

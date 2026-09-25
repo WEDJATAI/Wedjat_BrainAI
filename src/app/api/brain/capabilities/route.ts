@@ -2,6 +2,13 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { seedBrain } from "@/lib/brain/seed";
+import {
+  PROVIDER_MODELS,
+  getAvailableProviders,
+  isProviderAvailable,
+  getProviderEnvVar,
+  type ProviderName,
+} from "@/lib/brain/multi-provider";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,10 +26,26 @@ export async function GET() {
     db.memoryItem.count({ where: { status: "ACTIVE" } }),
   ]);
 
+  // Build multi-provider router status across all 5 providers (no z-ai).
+  const allProviders: ProviderName[] = ["groq", "openrouter", "nvidia", "gemini", "huggingface"];
+  const providers = allProviders.map(name => ({
+    name,
+    envVar: getProviderEnvVar(name),
+    available: isProviderAvailable(name),
+    modelCount: PROVIDER_MODELS.filter(m => m.provider === name).length,
+    tiers: Array.from(new Set(PROVIDER_MODELS.filter(m => m.provider === name).map(m => m.tier))),
+  }));
+
   return NextResponse.json({
-    brain: "WEDJAT BRAIN V2",
+    brain: "Cirkle Brain AI",
     version: "0.1.0",
     spec: "model-independent cognitive operating layer",
+    router: {
+      providers,
+      availableProviders: getAvailableProviders(),
+      totalModels: PROVIDER_MODELS.length,
+      zaiRemoved: true,   // consensus — z-ai fully removed
+    },
     endpoints: [
       "POST /api/brain/respond",
       "POST /api/brain/retrieve",
