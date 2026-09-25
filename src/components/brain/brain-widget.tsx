@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { Send, Loader2, ShieldCheck, AlertTriangle, Database, Cpu, Wrench, Activity, GitBranch, ChevronRight, CircleDot, CheckCircle2, XCircle, Clock, DollarSign, Zap, Layers, FileText, Network, Globe, ThumbsUp, ThumbsDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +25,11 @@ interface ChatMessage {
   state?: BrainStreamState;
   question?: string; // the user's question that prompted this assistant message
   createdAt: number;
+}
+
+/** Helper to set the --signal-delay CSS var on a signal-dot for staggered loaders. */
+function signalDelay(delay: string): React.CSSProperties {
+  return { ["--signal-delay" as any]: delay } as React.CSSProperties;
 }
 
 const MODES: { value: BrainMode; label: string; hint: string }[] = [
@@ -100,18 +104,21 @@ export function BrainWidget() {
   return (
     <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
       {/* Left: chat */}
-      <Card className="flex h-[calc(100vh-9.5rem)] flex-col overflow-hidden">
-        <CardHeader className="border-b pb-4">
+      <Card className="glass-strong gold-stroke-frame flex h-[calc(100vh-9.5rem)] flex-col overflow-hidden rounded-2xl border-0 p-0 shadow-glass sm:rounded-3xl">
+        <CardHeader className="border-b border-[hsl(var(--gold)/0.15)] bg-transparent pb-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <div className="relative flex h-9 w-9 items-center justify-center rounded-lg cirkle-gradient text-white shadow-sm cirkle-glow">
                 <CirkleMark size={28} className="drop-shadow-[0_0_4px_rgba(194,160,96,0.4)]" />
                 <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-[color:var(--color-cirkle-cyan)] ring-2 ring-background">
-                  <span className="h-1.5 w-1.5 cirkle-pulse rounded-full bg-[color:var(--color-cirkle-cyan-deep)]" />
+                  <span className="signal-dot" data-state="mesh" style={{ width: 4, height: 4 } as React.CSSProperties} />
                 </span>
               </div>
               <div>
-                <CardTitle className="text-base leading-tight">Cirkle Brain AI</CardTitle>
+                <CardTitle className="text-base leading-tight">
+                  <span className="gradient-text-gold">Cirkle</span>{" "}
+                  <span className="text-foreground">Brain AI</span>
+                </CardTitle>
                 <CardDescription className="text-[11px] leading-tight">Cognitive operating layer · model-independent</CardDescription>
               </div>
             </div>
@@ -134,7 +141,7 @@ export function BrainWidget() {
             )}
           </div>
         </CardContent>
-        <div className="border-t p-3">
+        <div className="border-t border-[hsl(var(--gold)/0.12)] p-3">
           <div className="flex items-end gap-2">
             <Textarea
               value={input}
@@ -143,13 +150,14 @@ export function BrainWidget() {
               placeholder="Ask the Brain…  (Enter to send, Shift+Enter for newline)"
               className="min-h-[44px] max-h-40 resize-none"
               disabled={streaming}
+              aria-label="Ask the Brain"
             />
             {streaming ? (
-              <Button variant="outline" size="icon" onClick={stop} className="h-11 w-11 shrink-0" title="Stop">
+              <Button variant="outline" size="icon" onClick={stop} className="h-11 w-11 shrink-0" title="Stop" aria-label="Stop generation">
                 <XCircle className="h-4 w-4" />
               </Button>
             ) : (
-              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 cirkle-gradient hover:opacity-90 cirkle-glow" title="Send">
+              <Button size="icon" onClick={() => send()} disabled={!input.trim()} className="h-11 w-11 shrink-0 cirkle-gradient hover:opacity-90 cirkle-glow" title="Send" aria-label="Send message">
                 <Send className="h-4 w-4" />
               </Button>
             )}
@@ -161,9 +169,9 @@ export function BrainWidget() {
       <CognitiveTrace messages={messages} activeId={activeMessageId} />
 
       {/* Right: admin console (capabilities/health/metrics/audit/memory/knowledge/candidates) */}
-      <Card className="hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden xl:flex">
-        <CardHeader className="border-b pb-3">
-          <CardTitle className="flex items-center gap-2 text-sm"><Network className="h-4 w-4" /> Admin Console</CardTitle>
+      <Card className="glass-strong gold-stroke-frame hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden rounded-2xl border-0 p-0 shadow-glass xl:flex sm:rounded-3xl">
+        <CardHeader className="border-b border-[hsl(var(--gold)/0.15)] bg-transparent pb-3">
+          <CardTitle className="flex items-center gap-2 text-sm"><Network className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Admin Console</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 overflow-hidden p-0">
           <AdminConsole />
@@ -225,41 +233,72 @@ function ModeSelector({ value, onChange, disabled }: { value: BrainMode; onChang
 }
 
 // ---------------------------------------------------------------------------
-// Empty state with sample prompts
+// Empty state with sample prompts — premium hero mark + gold-stroke chips
 // ---------------------------------------------------------------------------
 function EmptyState({ onPick }: { onPick: (p: string) => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl cirkle-gradient-soft ring-1 ring-[color:var(--color-cirkle-cyan)]/30">
-        <CirkleMark size={56} className="drop-shadow-[0_0_10px_rgba(194,160,96,0.5)]" />
+    <div className="relative flex h-full flex-col items-center justify-center gap-5 overflow-y-auto p-6 text-center">
+      {/* 96px CirkleMark wrapped in concentric expanding rings (cirkle-hero-pulse). */}
+      <div className="cirkle-hero-pulse animate-blur-in">
+        <span className="ring" aria-hidden />
+        <span className="ring" aria-hidden />
+        <span className="ring" aria-hidden />
+        <CirkleMark
+          size={96}
+          className="drop-shadow-[0_0_18px_rgba(194,160,96,0.55)]"
+        />
       </div>
-      <div className="space-y-1">
-        <h3 className="text-base font-semibold">Cirkle Brain</h3>
-        <p className="mx-auto max-w-sm text-xs text-muted-foreground">
+
+      {/* Hero text with gradient-text + fade-up. */}
+      <div className="animate-fade-up space-y-2">
+        <h3 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          <span className="gradient-text">Cirkle Brain</span>
+        </h3>
+        <p className="gradient-text-gold mx-auto max-w-md text-sm font-light leading-relaxed sm:text-base">
           A model-independent cognitive layer. Identity, memory, knowledge, evidence, retrieval, tools, policy, verification, learning, observability — all owned by the Brain, not the model.
         </p>
       </div>
-      <div className="grid w-full max-w-md grid-cols-1 gap-1.5">
-        {SAMPLE_PROMPTS.map((p) => (
-          <button key={p} onClick={() => onPick(p)} className="group flex items-center gap-2 rounded-md border bg-card px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-            <ChevronRight className="h-3 w-3 text-[color:var(--color-cirkle-cyan)]" />
-            <span className="flex-1">{p}</span>
-          </button>
-        ))}
+
+      {/* Sample prompts as gold-stroke chips over a soft mesh-fill backdrop. */}
+      <div className="relative w-full max-w-md">
+        <div
+          className="mesh-fill pointer-events-none absolute -inset-3 -z-10 rounded-2xl opacity-15 blur-2xl"
+          aria-hidden
+        />
+        <div className="grid grid-cols-1 gap-1.5">
+          {SAMPLE_PROMPTS.map((p, i) => (
+            <button
+              key={p}
+              onClick={() => onPick(p)}
+              className="gold-stroke hover-lift-glow group animate-fade-up justify-start px-3 py-2 text-left text-xs text-muted-foreground transition-colors hover:text-foreground"
+              style={{ animationDelay: `${0.05 * i + 0.15}s` }}
+            >
+              <ChevronRight className="h-3 w-3 shrink-0 text-[color:var(--color-cirkle-cyan)] transition-transform group-hover:translate-x-0.5" />
+              <span className="flex-1 leading-snug">{p}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Chat bubble
+// Chat bubble — premium glass treatment with gold-stroke-frame (user) and
+// orbit-ring (assistant). Streaming uses a 3-dot signal-dot loader.
 // ---------------------------------------------------------------------------
 function ChatBubble({ message, active }: { message: ChatMessage; active: boolean }) {
   if (message.role === "user") {
     return (
-      <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-sm cirkle-gradient px-3 py-2 text-sm text-white shadow-sm">
-          {message.content}
+      <div className="flex justify-end animate-fade-up">
+        {/* User bubble: glass-strong + subtle hero-gradient overlay at 20% + gold-stroke frame. */}
+        <div className="gold-stroke-frame relative max-w-[85%] overflow-hidden rounded-[22px] rounded-br-md glass-strong px-3 py-2 text-sm text-foreground shadow-glass">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-20"
+            style={{ backgroundImage: "var(--gradient-hero)" }}
+            aria-hidden
+          />
+          <span className="relative">{message.content}</span>
         </div>
       </div>
     );
@@ -267,22 +306,19 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
   const state = message.state;
   const streaming = active && !state?.done;
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 animate-fade-up">
       <div className="flex items-start gap-2">
-        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg cirkle-gradient-soft ring-1 ring-[color:var(--color-cirkle-cyan)]/30">
+        <div className="orbit-ring mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg !rounded-xl">
           <CirkleMark size={20} aria-hidden className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1 space-y-2">
           {message.content ? (
-            <div className="whitespace-pre-wrap rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-sm leading-relaxed">
-              {message.content}
+            <div className="orbit-ring relative overflow-hidden rounded-[22px] rounded-tl-md px-3 py-2 text-sm leading-relaxed">
+              <span className="relative">{message.content}</span>
               {streaming && <span className="ml-0.5 inline-block h-3.5 w-1 cirkle-pulse bg-[color:var(--color-cirkle-cyan)] align-middle" />}
             </div>
           ) : streaming ? (
-            <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm border bg-card px-3 py-2 text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-[color:var(--color-cirkle-cyan)]" />
-              <span>Brain is thinking…</span>
-            </div>
+            <BrainReasoning />
           ) : null}
           {state && !streaming && <ResponseChips state={state} />}
           {state && !streaming && state.response && (
@@ -294,6 +330,24 @@ function ChatBubble({ message, active }: { message: ChatMessage; active: boolean
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// BrainReasoning — premium loader: 3 staggered signal-dots + gradient label.
+// Replaces the flat Loader2 spinner used when the Brain is streaming but has
+// not yet emitted any tokens.
+// ---------------------------------------------------------------------------
+function BrainReasoning() {
+  return (
+    <div className="glass gold-stroke-frame flex items-center gap-2.5 rounded-[22px] rounded-tl-md px-3 py-2 text-xs">
+      <div className="flex items-center gap-1.5" role="status" aria-label="Brain is reasoning">
+        <span className="signal-dot" data-state="mesh" style={{ ...signalDelay("0s"), width: 8, height: 8 } as React.CSSProperties} />
+        <span className="signal-dot" data-state="mesh" style={{ ...signalDelay("0.3s"), width: 8, height: 8 } as React.CSSProperties} />
+        <span className="signal-dot" data-state="mesh" style={{ ...signalDelay("0.6s"), width: 8, height: 8 } as React.CSSProperties} />
+      </div>
+      <span className="gradient-text-gold font-medium">Brain is reasoning…</span>
     </div>
   );
 }
@@ -409,16 +463,17 @@ function verificationTone(s: EvidenceStatus): "ok" | "warn" | "err" | "muted" {
 }
 
 // ---------------------------------------------------------------------------
-// Cognitive trace (middle column) — shows the trace + evidence + tools for
-// the active (most recent assistant) message.
+// Cognitive trace (middle column) — wrapped in glass, premium step chips
+// with gold-stroke frames, gradient-text names, signal-dot for in-progress,
+// staggered fade-up on completion.
 // ---------------------------------------------------------------------------
 function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activeId: string | null }) {
   const active = messages.find((m) => m.id === activeId && m.role === "assistant");
   const state = active?.state;
   return (
-    <Card className="hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden lg:flex">
-      <CardHeader className="border-b pb-3">
-        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Cognitive Trace</CardTitle>
+    <Card className="glass-strong gold-stroke-frame hidden h-[calc(100vh-9.5rem)] flex-col overflow-hidden rounded-2xl border-0 p-0 shadow-glass lg:flex sm:rounded-3xl">
+      <CardHeader className="border-b border-[hsl(var(--gold)/0.15)] bg-transparent pb-3">
+        <CardTitle className="flex items-center gap-2 text-sm"><Activity className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Cognitive Trace</span></CardTitle>
         <CardDescription className="text-[11px]">Real-time execution path — no private hidden reasoning exposed</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden p-0">
@@ -434,7 +489,7 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
             <div className="p-3">
               {!state ? (
                 <div className="flex h-full items-center justify-center py-10 text-center text-xs text-muted-foreground">
-                  Send a message to see the Brain's cognitive trace.
+                  Send a message to see the Brain&apos;s cognitive trace.
                 </div>
               ) : (
                 <>
@@ -466,23 +521,37 @@ function CognitiveTrace({ messages, activeId }: { messages: ChatMessage[]; activ
 function TraceList({ steps }: { steps: TraceStep[] }) {
   if (steps.length === 0) return <EmptyHint icon={<Activity className="h-4 w-4" />} text="Trace will appear here as the Brain executes." />;
   return (
-    <ol className="relative space-y-1 border-l border-dashed border-border pl-4">
-      {steps.map((s, i) => (
-        <li key={i} className="relative">
-          <span className={cn("absolute -left-[1.4rem] top-1 flex h-3 w-3 items-center justify-center rounded-full ring-2 ring-background",
-            s.status === "COMPLETED" ? "bg-[color:var(--color-cirkle-cyan)]" : s.status === "FAILED" ? "bg-rose-500" : s.status === "SKIPPED" ? "bg-muted-foreground" : "bg-amber-500 animate-pulse")}>
-            {s.status === "COMPLETED" ? <CheckCircle2 className="h-2.5 w-2.5 text-white" /> : s.status === "FAILED" ? <XCircle className="h-2.5 w-2.5 text-white" /> : <CircleDot className="h-2 w-2 text-white" />}
-          </span>
-          <div className="flex items-baseline justify-between gap-2">
-            <div className="min-w-0">
-              <p className="text-xs font-medium leading-tight">{s.stepName}</p>
-              <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.stepType}</p>
+    <ol className="relative space-y-1.5">
+      {steps.map((s, i) => {
+        const inProgress = s.status !== "COMPLETED" && s.status !== "FAILED" && s.status !== "SKIPPED";
+        return (
+          <li
+            key={i}
+            className="glass gold-stroke-frame animate-fade-up relative rounded-lg px-2.5 py-1.5"
+            style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+          >
+            <div className="flex items-baseline justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
+                {inProgress ? (
+                  <span className="signal-dot" data-state="mesh" style={{ width: 8, height: 8 } as React.CSSProperties} aria-label="In progress" />
+                ) : s.status === "COMPLETED" ? (
+                  <CheckCircle2 className="h-3 w-3 shrink-0 text-[color:var(--color-cirkle-cyan)]" />
+                ) : s.status === "FAILED" ? (
+                  <XCircle className="h-3 w-3 shrink-0 text-rose-500" />
+                ) : (
+                  <CircleDot className="h-3 w-3 shrink-0 text-muted-foreground" />
+                )}
+                <div className="min-w-0">
+                  <p className="gradient-text truncate text-xs font-medium leading-tight">{s.stepName}</p>
+                  <p className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.stepType}</p>
+                </div>
+              </div>
+              {s.durationMs !== undefined && <Badge variant="outline" className="shrink-0 text-[9px] font-mono">{s.durationMs}ms</Badge>}
             </div>
-            {s.durationMs !== undefined && <Badge variant="outline" className="shrink-0 text-[9px] font-mono">{s.durationMs}ms</Badge>}
-          </div>
-          {s.reasonCode && <p className="mt-0.5 text-[10px] text-muted-foreground">↳ {s.reasonCode}</p>}
-        </li>
-      ))}
+            {s.reasonCode && <p className="mt-0.5 text-[10px] text-muted-foreground">↳ {s.reasonCode}</p>}
+          </li>
+        );
+      })}
     </ol>
   );
 }

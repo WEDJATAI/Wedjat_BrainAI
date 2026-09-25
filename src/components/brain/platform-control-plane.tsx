@@ -130,10 +130,10 @@ export function PlatformControlPlane() {
       </div>
 
       {/* Acceptance suite runner */}
-      <Card className="border-[color:var(--color-cirkle-cyan)]/20">
+      <Card className="orbit-ring shadow-float !rounded-xl !border-0">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> Cross-Platform Acceptance</CardTitle>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Shield className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Cross-Platform Acceptance</span></CardTitle>
             <Button size="sm" variant="outline" className="h-6 gap-1 px-2 text-[10px]" onClick={runAcceptance} disabled={acceptanceRunning}>
               {acceptanceRunning ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />}
               Run all
@@ -144,12 +144,12 @@ export function PlatformControlPlane() {
           <CardContent className="pt-0 pb-2">
             <div className="space-y-1">
               {acceptanceResults.map((r) => (
-                <div key={r.scenario} className="flex items-center justify-between gap-2 rounded border bg-muted/30 px-2 py-1 text-[10px]">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    {r.status === "PASSED" ? <CheckCircle2 className="h-3 w-3 text-emerald-500 shrink-0" /> : r.status === "FAILED" ? <XCircle className="h-3 w-3 text-rose-500 shrink-0" /> : <AlertTriangle className="h-3 w-3 text-amber-500 shrink-0" />}
+                <div key={r.scenario} className="gold-stroke-frame glass flex items-center justify-between gap-2 rounded border-0 px-2 py-1 text-[10px]">
+                  <div className="flex min-w-0 items-center gap-1.5">
+                    {r.status === "PASSED" ? <CheckCircle2 className="h-3 w-3 shrink-0 text-emerald-500" /> : r.status === "FAILED" ? <XCircle className="h-3 w-3 shrink-0 text-rose-500" /> : <AlertTriangle className="h-3 w-3 shrink-0 text-amber-500" />}
                     <span className="truncate font-mono">{r.scenario}</span>
                   </div>
-                  <Badge variant="outline" className={cn("text-[9px] shrink-0", r.status === "PASSED" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : r.status === "FAILED" ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300" : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300")}>{r.status}</Badge>
+                  <Badge variant="outline" className={cn("shrink-0 text-[9px]", r.status === "PASSED" ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : r.status === "FAILED" ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300" : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300")}>{r.status}</Badge>
                 </div>
               ))}
             </div>
@@ -158,11 +158,11 @@ export function PlatformControlPlane() {
       </Card>
 
       {/* Platform list */}
-      <Card className="flex-1 min-h-0">
+      <Card className="orbit-ring shadow-float !rounded-xl !border-0 flex-1 min-h-0">
         <CardHeader className="pb-2 pt-2.5">
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> Connected Platforms</CardTitle>
-            <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={load} disabled={loading}><RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} /></Button>
+            <CardTitle className="flex items-center gap-1.5 text-xs"><Network className="h-3.5 w-3.5 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Connected Platforms</span></CardTitle>
+            <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={load} disabled={loading} aria-label="Refresh platforms"><RefreshCw className={cn("h-3 w-3", loading && "animate-spin")} /></Button>
           </div>
         </CardHeader>
         <CardContent className="pt-0 pb-2 h-full">
@@ -184,36 +184,40 @@ export function PlatformControlPlane() {
 }
 
 function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; expanded: boolean; onToggle: () => void; onDisable: () => void }) {
-  const statusTone = p.status === "ACTIVE" ? "ok" : p.status === "DISABLED" ? "err" : "warn";
-  const adapterTone = p.adapterStatus === "AUDITED" ? "ok" : p.adapterStatus === "REGISTERED" ? "info" : "warn";
+  const isActive = p.status === "ACTIVE";
   return (
-    <div className={cn("rounded-lg border bg-card transition-colors", expanded && "ring-1 ring-[color:var(--color-cirkle-cyan)]/30")}>
-      <button onClick={onToggle} className="flex w-full items-center gap-2 px-2.5 py-2 text-left hover:bg-accent/50">
+    <div className={cn("orbit-ring !rounded-lg transition-all", expanded && "!border-[hsl(var(--gold)/0.4)]")}>
+      <button onClick={onToggle} className="flex w-full items-center gap-2 px-2.5 py-2 text-left hover:bg-accent/40" aria-expanded={expanded}>
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan)]">
           {DOMAIN_ICONS[p.domain] ?? <Boxes className="h-3.5 w-3.5" />}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="truncate text-xs font-semibold">{p.displayName}</span>
-            <Badge variant="outline" className="text-[9px] shrink-0">{p.domain}</Badge>
+            <span className="truncate text-xs font-semibold gradient-text">{p.displayName}</span>
+            <Badge variant="outline" className="shrink-0 text-[9px]">{p.domain}</Badge>
           </div>
           <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
-            <span className={cn("flex items-center gap-0.5", statusTone === "ok" ? "text-emerald-600" : statusTone === "err" ? "text-rose-600" : "text-amber-600")}>
-              <span className={cn("h-1.5 w-1.5 rounded-full", statusTone === "ok" ? "bg-emerald-500" : statusTone === "err" ? "bg-rose-500" : "bg-amber-500")} />
-              {p.status}
+            <span className="flex items-center gap-0.5">
+              <span
+                className="signal-dot"
+                data-state={isActive ? "mesh" : "off"}
+                style={{ width: 5, height: 5 } as React.CSSProperties}
+                aria-hidden
+              />
+              <span className={cn(isActive ? "text-foreground" : "text-rose-600 dark:text-rose-300")}>{p.status}</span>
             </span>
             <span>·</span>
             <span>{p.adapterStatus}</span>
             {p.runtimeAdapterLoaded && <span className="text-[color:var(--color-cirkle-cyan)]">· adapter ✓</span>}
           </div>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex shrink-0 items-center gap-1">
           <RiskBadge risk={p.riskCeiling} />
           <ClassBadge cls={p.dataClassCeiling} />
         </div>
       </button>
       {expanded && (
-        <div className="border-t bg-muted/20 px-2.5 py-2 text-[10px]">
+        <div className="border-t border-[hsl(var(--gold)/0.15)] bg-muted/20 px-2.5 py-2 text-[10px]">
           <p className="mb-1.5 text-muted-foreground">{p.description}</p>
           <div className="grid grid-cols-2 gap-1.5">
             <Field label="Model policy" value={p.modelPolicy} />
@@ -260,9 +264,19 @@ function PlatformRow({ p, expanded, onToggle, onDisable }: { p: PlatformRow; exp
 
 function Stat({ label, value, tone }: { label: string; value: number; tone?: "ok" | "info" | "warn" }) {
   return (
-    <div className={cn("rounded-md border p-1.5 text-center",
-      tone === "ok" ? "border-emerald-500/30 bg-emerald-500/5" : tone === "info" ? "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/5" : "border-border bg-muted/30")}>
-      <p className={cn("text-base font-bold leading-tight", tone === "ok" ? "text-emerald-600 dark:text-emerald-400" : tone === "info" ? "text-[color:var(--color-cirkle-cyan)]" : "")}>{value}</p>
+    <div className={cn(
+      "gold-stroke-frame glass rounded-md p-1.5 text-center",
+      tone === "ok" && "!bg-emerald-500/5",
+      tone === "info" && "!bg-[color:var(--color-cirkle-cyan)]/5",
+    )}>
+      <p className={cn(
+        "text-base font-bold leading-tight",
+        tone === "ok"
+          ? "text-emerald-600 dark:text-emerald-400"
+          : tone === "info"
+            ? "gradient-text"
+            : "gradient-text",
+      )}>{value}</p>
       <p className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );

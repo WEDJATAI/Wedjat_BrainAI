@@ -1222,3 +1222,98 @@ Stage Summary:
 - Lint clean, dev server healthy, page renders without errors
 
 Cost: $0.00 (only used the free VLM check via z-ai CLI for verification)
+
+---
+Task ID: UI-UPSCALE-1
+Agent: UI Architect + Frontend Styling Expert
+Task: Upscale the Cirkle Brain AI UI to state-of-the-art breathtaking design
+
+Work Log:
+
+**`src/app/globals.css`** — Added 5 new premium utility classes (no existing primitives removed):
+- Enhanced `.signal-dot::after` to honor a `--signal-delay` CSS variable for staggered loaders (non-breaking — defaults to 0s)
+- Added `@keyframes signalDotBreath` + `.signal-dot[data-state="mesh"]` opacity-pulse animation (also staggered via `--signal-delay`) so multiple dots in a row form a "thinking" indicator
+- Added `.gold-stroke-frame` — the gold-stroke chip's gradient border extracted into a reusable frame utility (uses a gold→secondary→rose gradient via mask-composite trick) so any container can wear the gold border treatment
+- Added `.hover-lift-glow` — premium hover effect: `translateY(-2px)` + soft gold box-shadow, applied to chips/buttons
+- Added `.cirkle-hero-pulse` — a 96px variant of `city-pulse` for the EmptyState hero mark (three concentric expanding rings + the 96px CirkleMark centered)
+- Added `.gold-edge-bottom` + `.gold-edge-top` — 1px gold-tinted inset shadow for the sticky header/footer borders
+
+**`src/app/page.tsx`** — Rewrote the page shell for premium feel:
+- Layer 1: `aurora-bg` radial mesh gradient on a fixed full-screen `-z-20` layer (uses existing `--gradient-aurora` of rose/teal/gold)
+- Layer 2: `arabesque` gold-dot pattern overlay at `opacity-[0.07]` on a fixed `-z-10` layer
+- Layer 3: existing `cirkle-grid-bg` subtle gold grid kept at `opacity-30`
+- Header: sticky with `bg-background/70 backdrop-blur-xl`, `gold-edge-bottom` border (inset gold 1px), `border-b border-[hsl(var(--gold)/0.18)]`
+- Header CirkleMark wrapped in `animate-blur-in` for premium mount; responsive 36px (mobile) → 40px (desktop)
+- Replaced the old Badge+plain pulse-dot with a `gold-stroke` chip containing a `signal-dot data-state="mesh"` for "Acme · Mashahd" tenant indicator (hidden on mobile, visible md+)
+- ThemeToggle now has `aria-label`
+- Main wrapped in a `glass-strong` container with `ring-glow` halo + `shadow-glass`, `rounded-2xl` (sm: `rounded-[28px]`)
+- Footer: `gold-edge-top` border, `signal-dot data-state="mesh"` for "Tenant isolation" indicator
+
+**`src/components/brain/brain-widget.tsx`** — Premium empty state, chat bubbles, loader, trace panel:
+- Added `signalDelay()` helper that returns `{ ['--signal-delay']: '<delay>' }` for staggered signal-dots
+- Removed unused `Image` import (dead code cleanup)
+- Chat Card / CognitiveTrace Card / Admin Card: now use `glass-strong gold-stroke-frame !border-0 shadow-glass rounded-2xl sm:rounded-3xl` for the premium glass look
+- All inner Card borders now use `border-[hsl(var(--gold)/0.15)]` instead of default border
+- Header card avatar: small `signal-dot data-state="mesh"` replaces the old `cirkle-pulse` dot
+- Header card title: "Cirkle" now uses `gradient-text-gold`, "Brain AI" uses default foreground
+- **EmptyState (premium)**:
+  - 96px CirkleMark wrapped in `cirkle-hero-pulse` (three concentric expanding gold rings) with `animate-blur-in` mount
+  - Hero text "Cirkle Brain" uses `gradient-text` (teal→steel→rose), 2xl on mobile / 3xl on desktop, with `animate-fade-up`
+  - Subtitle uses `gradient-text-gold` font-light
+  - 6 sample prompts rendered as `gold-stroke` chips (not bordered boxes) with `hover-lift-glow`, `group hover:translate-x-0.5` chevron animation, and staggered `animate-fade-up` (delay = `0.05 * i + 0.15`s)
+  - Soft `mesh-fill` backdrop blurred behind the prompt list at `opacity-15`
+- **ChatBubble (premium)**:
+  - User bubble: `glass-strong` + `gold-stroke-frame` border, `rounded-[22px] rounded-br-md`, with `var(--gradient-hero)` overlay at `opacity-20`, `shadow-glass`
+  - Assistant bubble: `orbit-ring` (the existing premium primitive — gold concentric stroke + soft glow on hover), `rounded-[22px] rounded-tl-md`
+  - Assistant avatar: `orbit-ring !rounded-xl` with the 20px CirkleMark
+  - Both bubbles mount with `animate-fade-up`
+- **BrainReasoning (premium loader)**: replaced the old `Loader2 animate-spin` with three `signal-dot data-state="mesh"` dots in a row, staggered via `--signal-delay: 0s/0.3s/0.6s`, with `gradient-text-gold` "Brain is reasoning…" label, wrapped in `glass gold-stroke-frame rounded-[22px] rounded-tl-md`. Has `role="status"` + `aria-label="Brain is reasoning"`
+- **TraceList (premium)**:
+  - Each step is now a `glass gold-stroke-frame` chip (was a plain `<li>` with a dashed border-left timeline)
+  - "In progress" steps show a `signal-dot data-state="mesh"` instead of an amber pulsing dot
+  - COMPLETED steps use a `CheckCircle2` icon in teal, FAILED uses rose XCircle, SKIPPED uses muted CircleDot
+  - Step name uses `gradient-text` (teal→steel→rose)
+  - Each step animates in with `animate-fade-up` staggered by `Math.min(i * 0.05, 0.4)s`
+- CognitiveTrace Card title "Cognitive Trace" uses `gradient-text`
+- Added `aria-label`s to Textarea, Send and Stop buttons
+
+**`src/components/brain/admin-console.tsx`** — Premium cards + indicators:
+- All Cards (HealthPanel, CapabilitiesPanel, MetricsPanel, AuditPanel, CandidatesPanel, KnowledgePanel, MemoryAdminPanel) now use `orbit-ring shadow-float !rounded-xl !border-0` for the premium orbit treatment with float shadow
+- All card titles now wrapped in `<span className="gradient-text">` (Self-Diagnostics, Capabilities, Observability, Audit Log, Learning Candidates, Knowledge, Memory)
+- Health state badge: replaced flat `Badge` with a `gold-stroke` chip containing a `signal-dot data-state={state==="HEALTHY"?"mesh":"off"}` — gives the premium mesh-network presence indicator
+- Capabilities count tiles: upgraded from `rounded-md border bg-muted/30` to `gold-stroke-frame glass` with the count number rendered in `gradient-text`
+- Metric component: upgraded to `gold-stroke-frame glass` with the value rendered in `gradient-text`
+- All list items (recent runs, audit events, candidates, knowledge items, memories): upgraded from `rounded border bg-muted/30` to `gold-stroke-frame glass !border-0` for the premium chip-on-glass look
+- Candidate decision badge: replaced `Badge` with `gold-stroke` chip, PENDING candidates get a `signal-dot data-state="mesh"`
+- All refresh buttons now have `aria-label`s
+
+**`src/components/brain/platform-control-plane.tsx`** — Premium platform rows:
+- Cross-Platform Acceptance Card + Connected Platforms Card: now use `orbit-ring shadow-float !rounded-xl !border-0`
+- Card titles wrapped in `gradient-text` (Cross-Platform Acceptance, Connected Platforms)
+- Acceptance result rows: upgraded to `gold-stroke-frame glass !border-0`
+- Stat component: upgraded to `gold-stroke-frame glass rounded-md`, value rendered with `gradient-text` (or emerald-600/400 for tone="ok" Active stat)
+- PlatformRow container: upgraded from `rounded-lg border bg-card` to `orbit-ring !rounded-lg` — gives the gold concentric stroke + soft glow
+- Platform status: replaced colored background dot with a `signal-dot data-state={isActive?"mesh":"off"}` — premium mesh indicator (pulsing rings when ACTIVE)
+- Platform display name: now uses `gradient-text` (gold→rose→teal)
+- Refresh button has `aria-label="Refresh platforms"`
+- Expanded row border separator uses `border-[hsl(var(--gold)/0.15)]`
+
+Stage Summary:
+- The UI now has the state-of-the-art premium SaaS aesthetic requested:
+  - Aurora mesh gradient backdrop + subtle gold arabesque pattern + gold grid (3 fixed layers, all using existing Cirkle design tokens)
+  - Sticky header with `gold-edge-bottom` border, glass blur, animated CirkleMark mount, and a `gold-stroke` Acme · Mashahd badge with pulsing `signal-dot`
+  - Main content wrapped in a `glass-strong` container with `ring-glow` gold halo + `shadow-glass`
+  - Empty state features a 96px CirkleMark wrapped in 3 concentric expanding gold rings (cirkle-hero-pulse), gradient-text hero title, gold-stroke sample prompt chips with hover-lift-glow, and a soft mesh-fill backdrop
+  - Chat bubbles: user uses glass-strong + gold-stroke-frame + 20% hero gradient overlay; assistant uses the orbit-ring primitive (gold concentric stroke + glow on hover)
+  - BrainReasoning loader: 3 staggered signal-dots with mesh-state pulsing + gradient-text-gold "Brain is reasoning…" label (replaces the flat Loader2 spinner)
+  - Trace steps: glass + gold-stroke-frame chips with signal-dot indicators for in-progress, gradient-text step names, staggered fade-up animation
+  - Admin console + platform control plane cards: orbit-ring + shadow-float + gradient-text titles + gold-stroke badges with signal-dot indicators
+- Mobile responsive verified at 375px (agent-browser): the chat column stacks alone, the badge + subtitle hide on mobile, the EmptyState hero scales gracefully, the CirkleMark in header is 36px on mobile / 40px on desktop
+- Verified end-to-end: sent "What is 2 + 2?" via the textbox, got a real streamed response from Mistral 7B Instruct (OpenRouter fallback) in 6458ms with full cognitive trace populated (12 steps with durations), feedback buttons appeared, "1 tool" + "UNKNOWN" verification chips displayed correctly — no functionality lost
+- Lint clean: `bun run lint` → 0 errors
+- Dev server healthy: `GET / 200` repeatedly, no compile errors in dev.log
+- Screenshots:
+  - Desktop 1440x900 empty state: `/tmp/ui-upscaled.png`
+  - Mobile 375x812 empty state: `/tmp/ui-upscaled-mobile.png`
+  - Desktop 1440x900 after sending a chat message (with trace populated): `/tmp/ui-upscaled-chat.png`
+- Lint status: clean (0 errors)

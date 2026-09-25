@@ -62,18 +62,26 @@ function useFetch<T>(path: string, deps: any[] = []) {
 function HealthPanel() {
   const { data, loading, reload } = useFetch<any>("/api/brain/health");
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><Heart className="h-4 w-4 text-rose-500" /> Self-Diagnostics</CardTitle>
-          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
+          <CardTitle className="flex items-center gap-2 text-sm"><Heart className="h-4 w-4 text-rose-500" /> <span className="gradient-text">Self-Diagnostics</span></CardTitle>
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading} aria-label="Refresh health"><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
       <CardContent className="space-y-1.5">
         {loading ? <Loading /> : data ? (
           <>
             <div className="flex items-center gap-2">
-              <Badge className={cn(data.state === "HEALTHY" ? "border-[color:var(--color-cirkle-cyan)]/30 bg-[color:var(--color-cirkle-cyan)]/10 text-[color:var(--color-cirkle-cyan-deep)] dark:text-[color:var(--color-cirkle-glow)]" : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300")}>{data.state}</Badge>
+              <span className="gold-stroke gap-1 text-[10px]">
+                <span
+                  className="signal-dot"
+                  data-state={data.state === "HEALTHY" ? "mesh" : "off"}
+                  style={{ width: 6, height: 6 } as React.CSSProperties}
+                  aria-hidden
+                />
+                <span className={cn(data.state === "HEALTHY" ? "text-foreground" : "text-amber-600 dark:text-amber-300")}>{data.state}</span>
+              </span>
               <span className="text-[10px] text-muted-foreground">{data.latencyMs}ms</span>
             </div>
             <div className="space-y-1">
@@ -97,17 +105,17 @@ function HealthPanel() {
 function CapabilitiesPanel() {
   const { data, loading } = useFetch<any>("/api/brain/capabilities");
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-sm"><Layers className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Capabilities</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-sm"><Layers className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Capabilities</span></CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         {loading || !data ? <Loading /> : (
           <>
             <div className="grid grid-cols-3 gap-1.5">
               {Object.entries(data.counts).map(([k, v]: any) => (
-                <div key={k} className="rounded-md border bg-muted/30 p-1.5 text-center">
-                  <p className="text-sm font-bold">{v}</p>
+                <div key={k} className="gold-stroke-frame glass rounded-md p-1.5 text-center">
+                  <p className="gradient-text text-sm font-bold leading-tight">{String(v)}</p>
                   <p className="text-[9px] uppercase tracking-wide text-muted-foreground">{k}</p>
                 </div>
               ))}
@@ -145,10 +153,10 @@ function MetricsPanel() {
     finally { setRunning(false); }
   }
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><Gauge className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Observability</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-sm"><Gauge className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Observability</span></CardTitle>
           <Button size="sm" variant="outline" className="h-7 gap-1 text-xs" onClick={runEval} disabled={running}>
             {running ? <Loader2 className="h-3 w-3 animate-spin" /> : <Play className="h-3 w-3" />}
             Run golden eval
@@ -196,7 +204,7 @@ function MetricsPanel() {
                 <div className="space-y-1">
                   {data.recentRuns.length === 0 ? <p className="text-[10px] text-muted-foreground">No runs yet.</p> :
                     data.recentRuns.map((r: any) => (
-                      <div key={r.requestId} className="rounded border bg-muted/30 p-1.5 text-[10px]">
+                      <div key={r.requestId} className="gold-stroke-frame glass rounded border-0 p-1.5 text-[10px]">
                         <div className="flex items-center justify-between">
                           <span className="font-mono">{r.requestId.slice(0, 8)}</span>
                           <Badge variant="outline" className="text-[9px]">{r.status}</Badge>
@@ -217,11 +225,11 @@ function MetricsPanel() {
 function AuditPanel() {
   const { data, loading, reload } = useFetch<any>("/api/brain/audit?limit=50");
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><ScrollText className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Audit Log</CardTitle>
-          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
+          <CardTitle className="flex items-center gap-2 text-sm"><ScrollText className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Audit Log</span></CardTitle>
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading} aria-label="Refresh audit"><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -230,7 +238,7 @@ function AuditPanel() {
             <div className="space-y-1">
               {data.events.length === 0 ? <p className="text-xs text-muted-foreground">No audit events yet.</p> :
                 data.events.map((e: any) => (
-                  <div key={e.id} className="rounded border bg-muted/30 p-1.5 text-[10px]">
+                  <div key={e.id} className="gold-stroke-frame glass rounded border-0 p-1.5 text-[10px]">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-mono">{e.action}</span>
                       <Badge variant="outline" className={cn("text-[9px]",
@@ -263,11 +271,11 @@ function CandidatesPanel() {
     } catch (e: any) { toast.error(e?.message ?? "failed"); }
   }
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><AlertTriangle className="h-4 w-4 text-amber-500" /> Learning Candidates</CardTitle>
-          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
+          <CardTitle className="flex items-center gap-2 text-sm"><AlertTriangle className="h-4 w-4 text-amber-500" /> <span className="gradient-text">Learning Candidates</span></CardTitle>
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading} aria-label="Refresh candidates"><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -275,10 +283,15 @@ function CandidatesPanel() {
           <div className="space-y-1.5">
             {data.candidates.length === 0 ? <p className="text-xs text-muted-foreground">No candidates yet — send a message to generate one.</p> :
               data.candidates.slice(0, 10).map((c: any) => (
-                <div key={c.id} className="rounded border bg-muted/30 p-1.5 text-[10px]">
+                <div key={c.id} className="gold-stroke-frame glass rounded border-0 p-1.5 text-[10px]">
                   <div className="flex items-center justify-between gap-2">
                     <Badge variant="outline" className="text-[9px]">{c.category}</Badge>
-                    <Badge variant="outline" className={cn("text-[9px]", c.decision === "PENDING" ? "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300" : "border-border bg-muted")}>{c.decision}</Badge>
+                    <span className="gold-stroke text-[9px]">
+                      {c.decision === "PENDING" && (
+                        <span className="signal-dot" data-state="mesh" style={{ width: 5, height: 5 } as React.CSSProperties} aria-hidden />
+                      )}
+                      <span className={c.decision === "PENDING" ? "text-amber-600 dark:text-amber-300" : "text-muted-foreground"}>{c.decision}</span>
+                    </span>
                   </div>
                   <p className="mt-0.5 truncate text-muted-foreground" title={c.proposed}>{c.proposed?.slice(0, 100)}</p>
                   <div className="mt-1 flex items-center justify-between">
@@ -302,11 +315,11 @@ function CandidatesPanel() {
 function KnowledgePanel() {
   const { data, loading, reload } = useFetch<any>("/api/brain/knowledge");
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><BookOpen className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Knowledge</CardTitle>
-          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
+          <CardTitle className="flex items-center gap-2 text-sm"><BookOpen className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Knowledge</span></CardTitle>
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading} aria-label="Refresh knowledge"><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -315,7 +328,7 @@ function KnowledgePanel() {
             <div className="space-y-1.5">
               {data.items.length === 0 ? <p className="text-xs text-muted-foreground">No knowledge items.</p> :
                 data.items.map((k: any) => (
-                  <div key={k.id} className="rounded border bg-muted/30 p-1.5 text-[10px]">
+                  <div key={k.id} className="gold-stroke-frame glass rounded border-0 p-1.5 text-[10px]">
                     <div className="flex items-center justify-between gap-2">
                       <Badge variant="outline" className="text-[9px]">{k.type}</Badge>
                       <Badge variant="outline" className="text-[9px]">{k.status}</Badge>
@@ -335,11 +348,11 @@ function KnowledgePanel() {
 function MemoryAdminPanel() {
   const { data, loading, reload } = useFetch<any>("/api/brain/memory");
   return (
-    <Card>
+    <Card className="orbit-ring shadow-float !rounded-xl !border-0">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> Memory</CardTitle>
-          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading}><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
+          <CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-[color:var(--color-cirkle-cyan)]" /> <span className="gradient-text">Memory</span></CardTitle>
+          <Button size="sm" variant="ghost" className="h-7 w-7 p-0" onClick={reload} disabled={loading} aria-label="Refresh memory"><RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} /></Button>
         </div>
       </CardHeader>
       <CardContent>
@@ -348,7 +361,7 @@ function MemoryAdminPanel() {
             <div className="space-y-1.5">
               {data.memories.length === 0 ? <p className="text-xs text-muted-foreground">No memories.</p> :
                 data.memories.map((m: any) => (
-                  <div key={m.id} className="rounded border bg-muted/30 p-1.5 text-[10px]">
+                  <div key={m.id} className="gold-stroke-frame glass rounded border-0 p-1.5 text-[10px]">
                     <div className="flex items-center justify-between gap-2">
                       <Badge variant="outline" className="text-[9px]">{m.domain}/{m.type}</Badge>
                       <Badge variant="outline" className="text-[9px]">{m.status}</Badge>
@@ -370,8 +383,8 @@ function MemoryAdminPanel() {
 
 function Metric({ label, value }: { label: string; value: React.ReactNode }) {
   return (
-    <div className="rounded-md border bg-muted/30 p-1.5">
-      <p className="text-sm font-bold leading-tight">{value}</p>
+    <div className="gold-stroke-frame glass rounded-md p-1.5">
+      <p className="gradient-text text-sm font-bold leading-tight">{value}</p>
       <p className="text-[9px] uppercase tracking-wide text-muted-foreground">{label}</p>
     </div>
   );
